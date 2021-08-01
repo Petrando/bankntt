@@ -147,18 +147,19 @@ const Events = () => {
 		<section className={styles.eventsSection}>
 			<h2 className={styles.eventsTitle}>Events</h2>
 			<p className={styles.eventsAbout}>
-				Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
-				Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum
+				Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est 
+        laborum.
 			</p>
 			<Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageCount={pageCount} />
 			<div className={styles.eventImages}>
-				{
-					events.map((d, i) => (<ImageInGrid key={i} 
-													   title={d.title} 
-													   about={d.about} 
-													   photo={"/images/events/" + d.photo + ".jpg"}
-										  />))
-				}
+				  {
+          events.map((d, i) => (<ImageInGrid key={i} 
+                             title={d.title} 
+                             about={d.about} 
+                             photo={"/images/events/" + d.photo + ".jpg"}
+                      />))
+        }
 			</div>
 		</section>
 	)
