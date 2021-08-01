@@ -14,19 +14,19 @@ const Footer: FC = () => {
               No. 12 tanggal 18 Oktober 1961.
             </p>
             <div className={styles.footerContacts}>
-              <a href={"mailto:robot-support@ncs.com.sg"} target={"_blank"}
+              <a href={"mailto:bankntt@gmail.com"} target={"_blank"}
                 className={styles.textWithIcon}       
               >
                 <div className={styles.textWithIcon}>
                   <img src="/images/icons/mail.svg" alt="icon" />{" "}
-                  <p>robot-support@ncs.com.sg</p>
+                  <p>bankntt@gmail.com</p>
                 </div>
               </a>
-              <a href={"https://www.linkedin.com/company/ncs-group/"} target={"_blank"}
+              <a href={"#"} target={"_blank"}
                 className={styles.textWithIcon}
               >                
                   <img src="/images/icons/linkin.svg" alt="icon" />
-                  <p>NCS Linkedin Page</p>               
+                  <p>Bank NTT Linkedin Page</p>               
               </a>                   
             </div> 
           </div>                 
