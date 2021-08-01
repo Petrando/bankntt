@@ -1,6 +1,6 @@
 import {FC} from "react"
 import Link from "next/link"
-import styles from "../../styles/components/LearnMore.module.css";
+import styles from "../../styles/components/Learnmore.module.css";
 
 interface LearnLinkI {
   linkTo:string;
