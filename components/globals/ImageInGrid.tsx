@@ -16,8 +16,6 @@ const ImageInGrid: FC<ImageInGridI> = ({
   photo,
   title,
   titleColor,
-  width,
-  height,
   about,
   linkTo, learnMoreLabel
 }) => {  
