@@ -47,7 +47,7 @@ import styles from "../../styles/home/Events.module.css";
  	},
  	{
  		photo:"BNTT_BPJSTK_FOTObanner",
- 		title:"Penandatanganan MOU Jamos",
+ 		title:"Penandatanganan MOU Jamsos",
  		about:"Penandatanganan MOU Pinjaman Daerah & Pelaksanaan Jaminan Sosial Ketenagakerjaan di NTT"
  	},
  	{
