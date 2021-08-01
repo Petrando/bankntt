@@ -138,10 +138,12 @@ const Events = () => {
  	}, []);
  	
  	const events = eventData.filter((d, i)=>{
+    const startIdx = itemPerPage * currentPage;
+    const endIdx = startIdx + itemPerPage - 1;
  		return (
- 			i >= (itemPerPage * currentPage) && i <= (itemPerPage *(currentPage + (itemPerPage - 1)))
+ 			i >= startIdx && i <= endIdx
  		)
- 	});
+ 	});  
 
 	return (
 		<section className={styles.eventsSection}>
