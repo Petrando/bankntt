@@ -1,0 +1,59 @@
+.container {
+	margin-top: 15px;
+	margin-bottom: 10px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	width: 81.25%;
+}
+
+.prevNextButton, .pageButton {
+	padding: 3px 10px;
+	font-size: 15px;
+	background: #ffffff;
+	color: #636363;
+	border: 2px solid transparent;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: color 0.25s font-size 0.25s;
+	display: flex; justify-content: center; align-items: center;
+	font-weight: bold;
+  	letter-spacing: 1px;
+  	margin-left: 2px;
+  	margin-right: 2px;
+}
+
+
+/*
+.prevNextButton {
+	min-width: 40px;
+}
+
+.pageButton {
+	min-width: 30px;
+}
+*/
+.prevNextButton:hover, .pageButton:hover {
+	color: #82e6ff;
+	border: 2px solid #82e6ff;	
+	font-size: 17.5px;	
+	padding: 1.5px 8.5px;	
+}
+
+.notActive {
+	pointer-events: none;
+	opacity: 0.4;
+}
+
+.notActive:hover {
+	color: #636363;
+	border: 2px solid transparent;
+}
+
+@media (max-width: 648px){
+	.container {
+		justify-content: flex-start;
+		width: 90%;
+	}
+}

@@ -1,0 +1,138 @@
+.tabunganSection {
+  max-width: 100vw;  
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #e2f0f7;
+  margin-top: 0px;
+  position: relative;
+}
+
+.tabunganTitle {
+  font-weight: bold;
+  font-size: 32px;
+  line-height: 37px;
+  letter-spacing: 0.02em;
+  text-align: left;
+  margin-top: 50px;
+  margin-bottom: 0px;
+  width: 81.25%;
+}
+
+.tabunganAbout {
+  text-align: left;
+  color: #636363;
+  width: 81.25%;
+  margin-bottom: 0px;
+  margin-top: 8px;
+}
+
+.tabunganImages {
+  width: 81.25%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: minmax(260px, auto);
+  grid-gap: 10px;
+}
+
+
+@media (max-width: 648px){
+  .tabunganTitle {
+    text-align: center;
+    width: 90%;
+  }
+  .tabunganAbout {
+    text-align: center;
+    width: 90%;
+  }
+
+  .tabunganImages {
+    width: 90%;    
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, minmax(220px, auto));
+  }
+
+}
+
+@media (min-width: 649px) and (max-width: 1024px){
+  .tabunganImages {       
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(2, minmax(240px, auto));
+  }
+}
+
+.imageContainer {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.imageHoverInfo {
+  position: absolute;
+  left: 0px;
+  top: 80%;
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  /*background-color: rgba(0, 0, 0, 0);*/
+  background-image: linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 10%);
+  pointer-events: none;
+  transition: top 0.2s;
+}
+
+.imageHoverInfo .description {
+  color: #ffffff;
+  opacity: 0;
+  font-size: 14px;
+  transition: opacity 0.25s;
+}
+
+.imageTitle {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 27px;
+  color: #ffffff;
+  margin: 0px;
+  padding: 0px;
+}
+
+.imageContainer:hover .imageHoverInfo {
+  top: 0%;
+  background-color: rgba(0, 0, 0, 0.6);
+  background-image: none;
+}
+
+.imageContainer:hover .description {
+  opacity: 1;
+}
+
+.imageContainer:hover .imageTitle {
+  position: static;
+}
+
+.viewMore {
+  font-weight: 500;
+  line-height: 32px;
+  letter-spacing: 0.01em;
+  text-align: center;
+  color: #49c2e0;
+  margin-top: 16px;
+  margin-bottom: 60.5px;
+  display: none;
+  pointer-events: none;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .imageHoverInfo {
+    top: 72.5%;
+  }
+  .viewMore {
+    display: inline-block;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+}

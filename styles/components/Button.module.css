@@ -1,0 +1,65 @@
+.button, .buttonWithMediaQuery {
+  padding: 12px 23px;
+  background: #4fb0c8;
+
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+
+  border: 1px solid #49C2E0;
+  box-sizing: border-box;
+  border-radius: 10px;
+  min-width: 200px;
+  cursor: pointer;
+  transition: background-color 0.25s;
+}
+
+.button:hover, .buttonWithMediaQuery:hover {
+  background: #82e6ff;
+  border: 1px solid #82E6FF;
+}
+
+.fullwidth {
+  width: 100%;
+}
+
+.aquaButton {
+  color: #4fb0c8;
+  border: 1px solid #4fb0c8;
+  background-color: transparent;
+}
+
+.aquaButton:hover {
+  color: #48dbff;
+  border: 1px solid #48dbff;
+  background-color: transparent;
+}
+
+@media (max-width: 648px){
+  .button {
+      padding: 6px 15px;
+      font-size: 13.5px;
+      min-width: 150px;
+      border-radius: 12px;
+  }
+}
+
+@media (max-width: 600px){
+  .buttonWithMediaQuery {
+    padding: 6px 10px;
+    font-size: 14px;    
+    min-width: 175px !important;
+    width: auto !important;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1450px) {
+  .buttonWithMediaQuery {
+    padding: 8px 13px;
+    font-size: 15px;
+    min-width: 150px;
+  }
+}
+

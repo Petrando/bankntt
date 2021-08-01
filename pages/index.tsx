@@ -1,14 +1,20 @@
 import Head from 'next/head'
+import Layout from "../components/layout"
+import Hero from "../components/home/Hero"
+import Tabungan from "../components/home/Tabungan"
+import Events from "../components/home/Events"
 
 export default function Home() {
   return (
-    <div className="container">
+    <Layout>
       <Head>
-        <title>Create Next App</title>
+        <title>Bank NTT - preview site</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main>
+      <Hero />
+      <Tabungan />
+      <Events />
+      <div className={"main"}>
         <h1 className="title">
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
@@ -46,7 +52,7 @@ export default function Home() {
             </p>
           </a>
         </div>
-      </main>
+      </div>
 
       <footer>
         <a
@@ -69,13 +75,14 @@ export default function Home() {
           align-items: center;
         }
 
-        main {
+        .main {
           padding: 5rem 0;
           flex: 1;
           display: flex;
           flex-direction: column;
           justify-content: center;
           align-items: center;
+          background-color: lightsteelblue;
         }
 
         footer {
@@ -204,6 +211,6 @@ export default function Home() {
           box-sizing: border-box;
         }
       `}</style>
-    </div>
+    </Layout>
   )
 }
