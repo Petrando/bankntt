@@ -120,7 +120,7 @@ const Navbar: FC = () => {
   };
 
   const listenToResize = () => {    
-    const screenWidth = window.innnerWidth > 0?window.innnerWidth:screen.width;    
+    const screenWidth = window.innerWidth > 0?window.innerWidth:screen.width;    
     setIsMidScreensize(screenWidth <= 950);    
   };
 
