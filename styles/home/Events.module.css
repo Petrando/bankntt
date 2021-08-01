@@ -50,7 +50,7 @@
 
   .eventImages {
     width: 90%;
-    margin-bottom: 40px;
+    margin-bottom: 70px;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(6, minmax(290px, auto));
   }
@@ -64,7 +64,7 @@
   .eventImages {       
     grid-template-columns: 1fr 1fr;
     grid-template-rows: repeat(3, minmax(290px, auto));
-    margin-bottom: 55px;
+    margin-bottom: 80px;
   }
 }
 
