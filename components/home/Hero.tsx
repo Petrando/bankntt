@@ -11,7 +11,7 @@ const Hero = () =>
 		<main className={styles.hero}>			
 			<div className={styles.heroOverlay} />
 			<h2 className={styles.heroTitle}>
-				Bank Pembangunan Daerah NTT
+				Bank Nusa Tenggara Timur
 			</h2>
 			<p className={styles.heroAbout}>
 				Terlibat bersama dalam keseharian mewujudkan kesejahteraan masyarakat Flobamora

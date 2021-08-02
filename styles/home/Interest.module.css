@@ -1,0 +1,77 @@
+.interestMain {
+	max-width: 100%;	
+  	margin-top: 0px;
+	background-color: lightsteelblue;
+}
+
+.flexRule {
+	display: flex;
+  	flex-direction: column;
+  	justify-content: flex-start;
+  	align-items: center;
+}
+
+.tableCards {
+	width: 81.25%;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: minmax(260px, auto);
+	grid-gap: 10px;
+	margin-bottom: 45px;
+	margin-top: 45px;
+}
+
+.tableCard {
+	width: 100%;
+	border: 1px solid #636363;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.interestTitle {  
+  margin-top: 15px;  
+  margin-bottom: 0px;
+  padding: 25px auto;
+  font-size: 22.5px;  
+  letter-spacing: 0.02em;
+  text-align: left;  
+  width: 95%;  
+}
+
+@media (max-width: 648px){
+	.tableCards {
+		width: 90%;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: center;
+	}	
+
+	.tableCard {
+		width: 100%;
+		display: flex;
+  		flex-direction: column;
+  		justify-content: flex-start;
+	  	align-items: center;
+	}
+
+	.interestTitle {
+		margin: auto;
+		margin-top: 15px;
+		text-align: center;
+	}
+}
+
+@media (min-width: 649px) and (max-width: 1024px){
+	.tableCards {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		flex-wrap: wrap;
+	}
+
+	.tableCard {
+		width: 48.5%;
+	}
+}

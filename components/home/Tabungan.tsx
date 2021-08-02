@@ -48,7 +48,7 @@ const Tabungan = () => {
 				{
 					tabungan.map((d, i) => (<ImageInGrid key={i} {...d} 
 												linkTo="#" 
-												learnMoreLabel="Selengkapnya"
+												learnMoreLabel="Info Lengkap"
 											/>))
 				}
 			</div>
