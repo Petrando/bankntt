@@ -9,6 +9,15 @@
   position: relative;
 }
 
+.scrollAnchor {
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  opacity: 0;
+  pointer-events: none;
+  top: -110px;
+}
+
 .eventsTitle {
   font-weight: bold;
   font-size: 32px;
@@ -30,11 +39,13 @@
 
 .eventImages {
   width: 81.25%;
-  margin-bottom: 90px;
+  margin-top: 20px;
+  margin-bottom: 0px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: repeat(2, minmax(290px, auto));
   grid-gap: 10px;
+  position: relative;
 }
 
 
@@ -50,7 +61,7 @@
 
   .eventImages {
     width: 90%;
-    margin-bottom: 70px;
+    /*margin-bottom: 70px;*/
     grid-template-columns: 1fr;
     grid-template-rows: repeat(6, minmax(290px, auto));
   }
@@ -64,7 +75,7 @@
   .eventImages {       
     grid-template-columns: 1fr 1fr;
     grid-template-rows: repeat(3, minmax(290px, auto));
-    margin-bottom: 80px;
+    /*margin-bottom: 80px;*/
   }
 }
 

@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react"
+import {useState, useEffect, useRef} from "react"
 import Pagination from "../globals/Pagination";
 import ImageInGrid from "../globals/ImageInGrid";
 import styles from "../../styles/home/Events.module.css";
@@ -132,11 +132,23 @@ const itemPerPage = 6;
 const Events = () => {
  	const [currentPage, setCurrentPage] = useState<number>(0);
  	const [pageCount, setPageCount] = useState<number>(0);
+  const [pageChanged, setPageChanged] = useState<boolean>(false);
+  const scrollRef = useRef<HTMLDivElement>();
 
  	useEffect(()=>{
  		setPageCount(Math.ceil(eventData.length/itemPerPage));
  	}, []);
  	
+  useEffect(()=>{
+      if(!pageChanged){
+        setPageChanged(true);
+      }else {
+          setTimeout(()=>{
+            scrollRef.current.scrollIntoView();
+          }, 250);          
+      }      
+  }, [currentPage]);
+
  	const events = eventData.filter((d, i)=>{
     const startIdx = itemPerPage * currentPage;
     const endIdx = startIdx + itemPerPage - 1;
@@ -152,17 +164,18 @@ const Events = () => {
 				Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
         Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est 
         laborum.
-			</p>
-			<Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageCount={pageCount} />
-			<div className={styles.eventImages}>
+			</p>              
+			  <div className={styles.eventImages}>
 				  {
-          events.map((d, i) => (<ImageInGrid key={i} 
+            events.map((d, i) => (<ImageInGrid key={i} 
                              title={d.title} 
                              about={d.about} 
                              photo={"/images/events/" + d.photo + ".jpg"}
                       />))
-        }
-			</div>
+          }
+          <div className={styles.scrollAnchor} ref={scrollRef} />
+			  </div>      
+      <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} pageCount={pageCount} />
 		</section>
 	)
 }
