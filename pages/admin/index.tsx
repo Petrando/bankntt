@@ -6,7 +6,7 @@ import fetchJson from "../../lib/fetchJson";
 import Button from "../../components/globals/Button";
 
 const Admin = () => {    
-  const { user, mutateUser } = useUser({ redirectTo: "/" });
+  const { user, mutateUser } = useUser({ redirectTo: "/admin/login" });
   const router = useRouter();
   const { events, loadingEvents } = useEvents(user);
 
@@ -17,7 +17,7 @@ const Admin = () => {
       await fetchJson("/api/logout", { method: "POST" }),
       false,
     );
-    router.push("/");
+    router.push("/admin/login");
   }
 
   return (
