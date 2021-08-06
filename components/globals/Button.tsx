@@ -4,13 +4,16 @@ import styles from "../../styles/components/Button.module.css";
 interface ButtonI {
   label: string;
   fullwidth?: boolean;
+  onClickHandler?: ()=>void;
 }
 
-const Button: FC<ButtonI> = ({ label, fullwidth }) => {
+const Button: FC<ButtonI> = ({ label, fullwidth, onClickHandler }) => {
+
   return (
     <button
       type="button"
       className={`${styles.button} ${fullwidth && styles.fullwidth}`}
+      onClick={typeof onClickHandler!=="undefined"?onClickHandler:()=>{}}
     >
       {label}
     </button>

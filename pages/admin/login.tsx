@@ -7,17 +7,20 @@ import fetchJson from "../../lib/fetchJson";
 const Login = () => {
   // here we just check if user is already logged in and redirect to profile
   const { mutateUser } = useUser({
-    redirectTo: "/profile-sg",
+    redirectTo: "/admin",
     redirectIfFound: true,
   });
 
-  const [errorMsg, setErrorMsg] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [errorMsg, setErrorMsg] = useState<string>("");
 
-  async function handleSubmit(event) {
-    event.preventDefault();
+  async function handleLogin(event) {
+    //event.preventDefault();
 
+    //: event.currentTarget.username.value,
     const body = {
-      username: event.currentTarget.username.value,
+      username, password
     };
 
     try {
@@ -38,10 +41,15 @@ const Login = () => {
       <div className={"loginContainer"}>
       <div className="login">   
         <label htmlFor="username">Username:</label>
-        <input type="text" id="username" name="username" placeholder="Your username" />     
+        <input type="text" id="username" name="username" placeholder="Your username" 
+          onChange={(e)=>{setUsername(e.target.value)}}
+        />     
         <label htmlFor="password">Passsword:</label>
-        <input className={"lastChild"} type="password" id="password" name="password" placeholder="" />     
-        <Button label={"Login"} fullwidth />            
+        <input className={"lastChild"} type="password" id="password" name="password" placeholder="" 
+          onChange={(e)=>{setPassword(e.target.value)}}
+        />     
+        <Button label={"Login"} fullwidth onClickHandler={handleLogin} />            
+        {errorMsg && <p className="error">{errorMsg}</p>}
       </div>
       <style jsx>{`
         .loginContainer {
@@ -58,6 +66,10 @@ const Login = () => {
           padding: 1rem;
           border: 1px solid #ccc;
           border-radius: 4px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
         }
 
         @media (max-width: 648px) {
@@ -75,10 +87,7 @@ const Login = () => {
             margin-bottom: 0px;
         }
 
-        .login label,
-        .login button {
-          margin-top: 32px;
-        }
+        
         .login label {          
           letter-spacing: 0.01em;
           text-align: left;
@@ -93,6 +102,7 @@ const Login = () => {
         .login input,
         .login textarea {
           margin-top: 10px;
+          margin-bottom:10px;
           padding-left: 15px;
           border-radius: 4px;
           border: 1px solid #636363;
@@ -106,6 +116,10 @@ const Login = () => {
 
         .login input:last-child {
           margin-bottom: 20px;
+        }
+        .error {
+            color: brown;
+            margin: 1rem 0 0;
         }
       `}</style>
     </div>
