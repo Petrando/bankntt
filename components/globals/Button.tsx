@@ -1,10 +1,11 @@
+import { any } from "prop-types";
 import { FC } from "react";
 import styles from "../../styles/components/Button.module.css";
 
 interface ButtonI {
   label: string;
   fullwidth?: boolean;
-  onClickHandler?: ()=>void;
+  onClickHandler?: (event:any)=>Promise<void> | ((event:any)=>void);
 }
 
 const Button: FC<ButtonI> = ({ label, fullwidth, onClickHandler }) => {

@@ -1,28 +1,14 @@
 import React, { useState } from "react";
 import useUser from "../../lib/useUser";
-import useEvents from "../../lib/useEvents";
-import { useRouter } from "next/router";
-import fetchJson from "../../lib/fetchJson";
-import Button from "../../components/globals/Button";
+import Layout from "../../components/admin/layout";
 
 const Admin = () => {    
   const { user, mutateUser } = useUser({ redirectTo: "/admin/login" });
-  const router = useRouter();
-  const { events, loadingEvents } = useEvents(user);
-
-  async function handleLogout(event) {
-    //event.preventDefault();
-   
-    mutateUser(
-      await fetchJson("/api/logout", { method: "POST" }),
-      false,
-    );
-    router.push("/admin/login");
-  }
 
   return (
+      <Layout>
       <div className={"mainContainer"}>
-      <Button label={"LOGOUT"} fullwidth onClickHandler={handleLogout} />                    
+      Admin menu here                   
       <style jsx>{`
         .mainContainer {
           max-width:100%;
@@ -34,6 +20,7 @@ const Admin = () => {
         }        
       `}</style>
     </div>
+    </Layout>
   );
 };
 
