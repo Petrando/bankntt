@@ -1,6 +1,12 @@
+interface fetchOptionsI {
+  method:string;
+  header?:any;
+  body?:string;
+}
+
 export default async function fetchJson(...args) {
   try {
-    const response = await fetch(...args);
+    const response = await fetch(...args as [string, fetchOptionsI]);
 
     // if the server replies, there's always some data in json
     // if there's a network error, it will throw at the previous line
@@ -10,7 +16,7 @@ export default async function fetchJson(...args) {
       return data;
     }
 
-    const error = new Error(response.statusText);
+    const error: {[k: string]: any} = new Error(response.statusText);
     error.response = response;
     error.data = data;
     throw error;
