@@ -1,7 +1,7 @@
 import React from "react";
 import useUser from "../lib/useUser";
 import useEvents from "../lib/useEvents";
-import Layout from "../components/Layout";
+import Layout from "../components/layout";
 
 const SgProfile = () => {
   const { user } = useUser({ redirectTo: "/login" });

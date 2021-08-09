@@ -1,6 +1,8 @@
+/*
 import React from "react";
-import Layout from "../components/Layout";
-import withSession from "../lib/session";
+import { GetServerSideProps } from 'next'
+import Layout from "../components/layout";
+import withSession, {NextIronHandler} from "../lib/session";
 import PropTypes from "prop-types";
 
 const SsrProfile = ({ user }) => {
@@ -32,7 +34,7 @@ const SsrProfile = ({ user }) => {
   );
 };
 
-export const getServerSideProps = withSession(async function ({ req, res }) {
+export const getServerSideProps:GetServerSideProps = withSession(async function ({ req, res }) {
   const user = req.session.get("user");
 
   if (user === undefined) {
@@ -60,3 +62,12 @@ SsrProfile.propTypes = {
     avatarUrl: PropTypes.string,
   }),
 };
+*/
+
+const Something = () => {
+  return (
+    <p>Something....</p>
+  )
+}
+
+export default Something;
