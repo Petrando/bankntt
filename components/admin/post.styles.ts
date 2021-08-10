@@ -24,8 +24,14 @@ export const styles = (theme: Theme) => createStyles({
     },
     drawer: {
       background: "#D8DCD6",
+      flexGrow: 1,
       position: "static",
       transition: "width .7s",
+    },
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
     },
     closed: {
       width: "0px",

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Button from "../../components/globals/Button";
 import useUser from "../../lib/useUser";
 import fetchJson from "../../lib/fetchJson";
+import login from "../api/login";
 
 const Login = () => {
   // here we just check if user is already logged in and redirect to profile
@@ -23,13 +24,20 @@ const Login = () => {
     };
 
     try {
-      mutateUser(
-        await fetchJson("/api/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        }),
-      );
+      const loginResult = await fetchJson("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      console.log(loginResult);
+      if(!loginResult.isLoggedIn){
+        setErrorMsg("username/password error");
+      }else {
+        setErrorMsg("");
+        mutateUser(loginResult);
+      }
+      
     } catch (error) {
       console.error("An unexpected error happened:", error);
       setErrorMsg(error.data.message);

@@ -1,113 +1,27 @@
-import {FC} from "react";
+import { FC, useState, useEffect } from "react";
+import useSWR from 'swr';
 import styles from  "../../styles/home/Interest.module.css";
 
-const interests = [
-	{
-		title:"Bunga Giro",
-		rates:[
-			{
-				range:"Saldo s/d Rp 5 juta",
-				rate:"0.00%"
-
-			},
-			{
-				range:"Saldo diatas 5 juta s/d 500 juta",
-				rate:"0.25%"
-
-			},
-			{
-				range:"Saldo diatas 500 juta s/d 10 milyar",
-				rate:"1.00%"
-
-			},
-			{
-				range:"Saldo diatas 10 milyar s/d 50 milyar",
-				rate:"1.25%"
-
-			},
-			{
-				range:"Saldo diatas 50 milyar",
-				rate:"1.50%"
-
-			}
-		],
-		firstColumnTitle:"Saldo"
-	},
-	{
-		title:"Bunga Tabungan",
-		rates:[
-			{
-				range:"Saldo s/d Rp 50 ribu",
-				rate:"1.00%"
-
-			},
-			{
-				range:"Saldo diatas 50 ribu s/d 5 juta",
-				rate:"1.00%"
-
-			},
-			{
-				range:"Saldo diatas 5 juta s/d 100 juta",
-				rate:"1.25%"
-
-			},
-			{
-				range:"Saldo diatas 100 juta s/d 1 milyar",
-				rate:"1.25%"
-
-			},
-			{
-				range:"Saldo diatas 1 milyar",
-				rate:"1.75%"
-
-			}
-		],
-		firstColumnTitle:"Saldo"
-	},
-	{
-		title:"Bunga Deposito",
-		rates:[
-			{
-				range:"Jangka waktu 1 Bulan",
-				rate:"3.50%"
-
-			},
-			{
-				range:"Jangka waktu 3 Bulan",
-				rate:"3.75%"
-
-			},
-			{
-				range:"Jangka waktu 6 Bulan",
-				rate:"4.25%"
-
-			},
-			{
-				range:"Jangka waktu 9 Bulan",
-				rate:"4.25%"
-
-			},
-			{
-				range:"Jangka waktu 12 Bulan",
-				rate:"4.50%"
-
-			},
-			{
-				range:"Jangka waktu 24 Bulan",
-				rate:"4.50%"
-
-			}			
-		],
-		firstColumnTitle: "Jangka Waktu"
-	}
-]
+const fetcher = (url) => fetch(url).then((res) => res.json())
 
 const InterestRate = () => {
+	const { data, error } = useSWR('/api/interests/listInterests', fetcher);
+
 	return (
 		<section className={`${styles.interestMain} ${styles.flexRule}`}>
 			<div className={styles.tableCards}>
 				{
-					interests.map((d, i) => (<TableCard key={i} {...d} />))
+					data &&
+					data.length > 0 &&
+					data.map((d, i) => (<TableCard key={i} {...d} />))
+				}
+				{
+					error &&
+					<h3>Connection error</h3>
+				}
+				{
+					!data &&
+					<h3>Loading....</h3>
 				}
 			</div>
 		</section>
@@ -130,20 +44,24 @@ const TableCard:FC<TableCardI> = ({title, rates, firstColumnTitle}) => {
 		<div className={`${styles.tableCard} ${styles.flexRule}`}>
 			<h2 className={styles.interestTitle}>{title}</h2>
 			<table className={"interests"}>
+				<thead>
 				<tr>
 					<th>
 						{firstColumnTitle}
 					</th>
 					<th>Rate</th>
 				</tr>
+				</thead>
+				<tbody>
 				{
 					rates.map((d, i) => (
 						<tr key={i}>
 							<td>{d.range}</td>
-							<td>{d.rate}</td>
+							<td>{d.rate}%</td>
 						</tr>
 					))
 				}
+				</tbody>
 			</table>
 			<style jsx>
 				{

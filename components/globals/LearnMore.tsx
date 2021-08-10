@@ -10,8 +10,8 @@ interface LearnLinkI {
 const LearnMore: FC<LearnLinkI> = ({linkTo, label}) => {
   return (
     <Link href={linkTo}>
-      <a className={styles.learnMore}>
-        <p>{label}</p>
+      <span className={styles.learnMore}>
+        <span className={styles.label}>{label}</span>
         <svg
           width="16"
           height="16"
@@ -36,7 +36,7 @@ const LearnMore: FC<LearnLinkI> = ({linkTo, label}) => {
             strokeLinejoin="round"
           />
         </svg>
-      </a>
+      </span>
     </Link>
   );
 };

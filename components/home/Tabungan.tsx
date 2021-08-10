@@ -1,4 +1,3 @@
-import {useState, useEffect} from "react"
 import ImageInGrid from "../globals/ImageInGrid";
 import LearnMore from "../globals/LearnMore";
 import styles from "../../styles/home/Tabungan.module.css";

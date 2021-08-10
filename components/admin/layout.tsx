@@ -1,10 +1,36 @@
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
-import Drawer from "@material-ui/core/Drawer";
+import {Drawer, Paper, Grid } from "@material-ui/core/";
 import useUser from "../../lib/useUser";
 import TopNav from "./topnav";
 import { styles } from "./post.styles";
+
+const menuList = [
+    {
+        label:"Produk Dana",
+        to:"/admin/dana",
+        subMenu:[
+            {
+                label:"Tabungan", to:"/admin/dana/tabungan"
+            },
+            {
+                label:"Deposito", to:"/admin/dana/deposito"
+            },
+            {
+                label:"Giro", to:"/admin/dana/giro"
+            }
+        ]
+    },
+    {
+        label:"Events",
+        to:"/admin/events"
+    },
+    {
+        label:"Interest Rate",
+        to:"/admin/interests"
+    }
+]
 
 const useStyles = makeStyles(styles);
 
@@ -30,7 +56,11 @@ export default function Layout({ children, home }: {
                     }),
                 }}
             >
-                Drawer
+                <Grid container spacing={1}>
+                    {
+                        menuList.map((d, i)=><MenuItem key={i} {...d} />)
+                    }
+                </Grid>
             </Drawer>
             <main className={classes.main}>
                 {
@@ -45,4 +75,21 @@ export default function Layout({ children, home }: {
         `}</style>
   	</div>
   )
+}
+
+interface MenuItemI {
+    label:string;
+    to:string;
+    subMenu?:MenuItemI[];
+}
+
+const MenuItem = ({label, to, subMenu}:MenuItemI) => {
+    const classes = useStyles();
+    return (
+        <Grid item xs={12}>
+            <Paper className={classes.paper}>
+                {label}
+            </Paper>
+        </Grid>
+    )
 }
