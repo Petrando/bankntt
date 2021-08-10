@@ -57,9 +57,12 @@ export default function ButtonAppBar({toggleOpened, isOpened}:AppBarI) {
             isOpened?<ChevronLeftIcon />:<MenuIcon />
           }
         </span>
-        <Typography variant="h6" className={classes.title}>
-          Welcome, {user.username}
-        </Typography>
+        {
+              typeof user !== "undefined" &&
+              <Typography variant="h6" className={classes.title}>
+                Welcome, {user.username}
+              </Typography>
+          } 
       </span>
       <p style={{cursor:"pointer", marginRight:"10px"}} onClick={(e)=>handleLogout(e)} >
         Logout
