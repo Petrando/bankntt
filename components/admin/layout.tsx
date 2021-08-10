@@ -1,10 +1,12 @@
 import { useState } from "react";
+import Link from "next/link"
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import {Drawer, Paper, Grid } from "@material-ui/core/";
 import useUser from "../../lib/useUser";
 import TopNav from "./topnav";
 import { styles } from "./post.styles";
+import layoutStyles from "../../styles/admin/Layout.module.css";
 
 const menuList = [
     {
@@ -46,7 +48,27 @@ export default function Layout({ children, home }: {
   return (
   	<div className={'container'}>
   		<TopNav toggleOpened={()=>{setIsOpened(!isOpened)}} isOpened={isOpened} />
-        <div className={classes.container}>
+        <div className={layoutStyles.layoutContent}>
+            <div className={`${layoutStyles.drawer} ${isOpened?layoutStyles.opened:layoutStyles.closed}`}>
+                Drawer
+            </div>
+            <div className={layoutStyles.main}>
+                {
+                    children
+                }
+            </div>
+        </div>
+  		<style jsx>{`
+        	.container {
+                max-width: 100%;
+          		min-height: 100vh;          		        	
+        	}
+        `}</style>
+  	</div>
+  )
+}
+/*
+<div className={classes.container}>
             <Drawer
                 variant="permanent"
                 classes={{
@@ -68,14 +90,7 @@ export default function Layout({ children, home }: {
   		        }
             </main>
         </div> 		
-  		<style jsx>{`
-        	.container {
-          		min-height: 100vh;          		        	
-        	}
-        `}</style>
-  	</div>
-  )
-}
+*/        
 
 interface MenuItemI {
     label:string;
@@ -86,10 +101,14 @@ interface MenuItemI {
 const MenuItem = ({label, to, subMenu}:MenuItemI) => {
     const classes = useStyles();
     return (
+        <Link href={to}>
         <Grid item xs={12}>
             <Paper className={classes.paper}>
                 {label}
             </Paper>
         </Grid>
+        </Link>
+
+
     )
 }

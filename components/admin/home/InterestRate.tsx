@@ -1,8 +1,8 @@
 import { FC, useState, useEffect } from "react";
 import useSWR from 'swr';
-import { TableCardI } from "../../types";
-import styles from  "../../styles/home/Interest.module.css";
-import tableStyles from "../../styles/components/InterestTable.module.css";
+import { TableCardI } from "../../../types";
+import styles from  "../../../styles/home/Interest.module.css";
+import tableStyles from "../../../styles/components/InterestTable.module.css";
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 

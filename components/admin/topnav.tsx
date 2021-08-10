@@ -10,6 +10,7 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import useUser from "../../lib/useUser";
 import { useRouter } from "next/router";
 import fetchJson from "../../lib/fetchJson";
+import styles from "../../styles/admin/Navbar.module.css";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -47,7 +48,28 @@ export default function ButtonAppBar({toggleOpened, isOpened}:AppBarI) {
   }
 
   return (
-    <div className={classes.root}>
+    <div className={styles.navbar}>
+      <span style={{width:"auto", display:"flex", justifyContent:"center", alignItems:"center", marginLeft:"10px"}}>
+        <span style={{cursor:"pointer", marginRight:"8px"}}
+          onClick={toggleOpened}
+        >
+          {        
+            isOpened?<ChevronLeftIcon />:<MenuIcon />
+          }
+        </span>
+        <Typography variant="h6" className={classes.title}>
+          Welcome, {user.username}
+        </Typography>
+      </span>
+      <p style={{cursor:"pointer", marginRight:"10px"}} onClick={(e)=>handleLogout(e)} >
+        Logout
+      </p>
+    </div>
+  );
+}
+
+/*
+<div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu"
@@ -67,5 +89,4 @@ export default function ButtonAppBar({toggleOpened, isOpened}:AppBarI) {
         </Toolbar>
       </AppBar>
     </div>
-  );
-}
+    */

@@ -1,0 +1,28 @@
+.layoutContent {
+    max-width: 100%;
+    min-height: calc(100vh - 100px);
+    display: flex;
+    justify-content: center;
+}
+.drawer {
+    background-color: #D8DCD6;
+   
+    transition: width .7s;
+    min-height: calc(100vh - 100px);
+    overflow: hidden;
+  }
+  .paper {
+    cursor: pointer;
+    text-align: center;
+  }
+  .closed {
+    width: 0px;
+  }
+  .opened {
+    width: 240px;
+  }
+  .main {
+    flex: 1;
+    background: #f7f5f5;
+    color: black;
+  }

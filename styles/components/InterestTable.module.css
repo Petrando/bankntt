@@ -1,0 +1,34 @@
+
+.interests {  
+    border-collapse: collapse;
+    width: 95%;
+    margin-top: 0px;
+    margin-bottom: 15px;  							
+}
+
+.interests td, .interests th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.interests tr:nth-child(even){background-color: #f2f2f2;}
+
+.interests tr:nth-child(odd){background-color: #ffffff;}
+
+.interests tr:hover {background-color: #ddd;}
+
+.interests th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #04AA6D;
+    color: white;
+}
+
+.interests tr *:first-child {
+  width: 85%;
+}
+
+.interests tr *:last-child {
+  width: 15%;
+}

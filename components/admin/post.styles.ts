@@ -29,6 +29,7 @@ export const styles = (theme: Theme) => createStyles({
       transition: "width .7s",
     },
     paper: {
+      cursor: "pointer",
       padding: theme.spacing(2),
       textAlign: 'center',
       color: theme.palette.text.secondary,
