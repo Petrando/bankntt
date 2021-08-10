@@ -50,7 +50,9 @@ export default function Layout({ children, home }: {
   		<TopNav toggleOpened={()=>{setIsOpened(!isOpened)}} isOpened={isOpened} />
         <div className={layoutStyles.layoutContent}>
             <div className={`${layoutStyles.drawer} ${isOpened?layoutStyles.opened:layoutStyles.closed}`}>
-                Drawer
+                {
+                    menuList.map((d, i)=><MenuItem key={i} {...d} />)
+                }
             </div>
             <div className={layoutStyles.main}>
                 {
@@ -101,12 +103,10 @@ interface MenuItemI {
 const MenuItem = ({label, to, subMenu}:MenuItemI) => {
     const classes = useStyles();
     return (
-        <Link href={to}>
-        <Grid item xs={12}>
-            <Paper className={classes.paper}>
+        <Link href={to}>    
+            <div className={layoutStyles.paper}>
                 {label}
-            </Paper>
-        </Grid>
+            </div>        
         </Link>
 
 

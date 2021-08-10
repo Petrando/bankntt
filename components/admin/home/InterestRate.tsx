@@ -10,7 +10,7 @@ const InterestRate = () => {
 	const { data, error } = useSWR('/api/interests/listInterests', fetcher);
 
 	return (
-		<section className={`${styles.interestMain} ${styles.flexRule}`}>
+		<section className={"interestMain"}>
 			<div className={styles.tableCards}>
 				{
 					data &&
@@ -26,6 +26,19 @@ const InterestRate = () => {
 					<h3>Loading....</h3>
 				}
 			</div>
+			<style jsx>
+				{
+					`
+						.interestMain {
+							max-width: 100%;	
+							width: 100%;
+						  	margin-top: 0px;
+							height: 100%;
+							background-color: lightsteelblue;
+						}
+					`
+				}
+			</style>
 		</section>
 	)
 }

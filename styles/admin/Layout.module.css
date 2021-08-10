@@ -14,6 +14,18 @@
   .paper {
     cursor: pointer;
     text-align: center;
+    padding: 20px 0px;
+    margin:5px 4px;
+    background-color: #ffffff;
+    color: #636363;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    transition: all 0.25s;
+  }
+
+  .paper:hover {
+      color:#000;
+      border: 1px solid #000;
   }
   .closed {
     width: 0px;
@@ -25,4 +37,5 @@
     flex: 1;
     background: #f7f5f5;
     color: black;
+    align-items: stretch;
   }
