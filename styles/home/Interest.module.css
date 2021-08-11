@@ -74,4 +74,8 @@
 	.tableCard {
 		width: 48.5%;
 	}
+
+	.editedTableCard {
+		width: 100%;
+	}
 }

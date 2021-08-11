@@ -1,22 +1,34 @@
 import { FC, useState, useEffect } from "react";
 import useSWR from 'swr';
 import EditIcon from '@material-ui/icons/Edit';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { TableCardI } from "../../../types";
 import styles from  "../../../styles/home/Interest.module.css";
 import tableStyles from "../../../styles/components/InterestTable.module.css";
+import ModalLayout from "../../globals/ModalLayout";
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 const InterestRate = () => {
 	const { data, error } = useSWR('/api/interests/listInterests', fetcher);
+	const [editedIdx, setEditedIdx] = useState<number>(-1);
 
+	const editedData = data?data.filter((d, i)=>i===editedIdx)[0]:{};
 	return (
 		<section className={"interestMain"}>
 			<div className={`${styles.tableCards} ${"tableCards"}`}>
 				{
 					data &&
 					data.length > 0 &&
-					data.map((d, i) => (<TableCard key={i} {...d} />))
+					data.map((d, i) => (<TableCard key={i} {...d} setEdited={()=>{setEditedIdx(i);}}/>))
+				}
+				{
+					editedIdx !== -1 &&
+					<ModalLayout closeModal={()=>{setEditedIdx(-1);}}>
+						<div className={"editedContainer"}>
+							<EditedTableCard {...editedData} setEdited={()=>{setEditedIdx(-1)}} />
+						</div>
+					</ModalLayout>
 				}
 				{
 					error &&
@@ -42,6 +54,18 @@ const InterestRate = () => {
 							width:95%;
 							height:auto;
 						}
+						.editedContainer {
+							width:648px;
+							height:auto;
+							background-color:#ffffff;
+							display:flex;justify-content:space-around;align-items:center;
+							border-radius:5px;
+						}
+						@media (max-width:648px) {
+							.editedContainer {
+								width:90%;
+							}
+						}
 					`
 				}
 			</style>
@@ -49,12 +73,12 @@ const InterestRate = () => {
 	)
 }
 
-const TableCard:FC<TableCardI> = ({title, rates, firstColumnTitle}) => {
+const TableCard:FC<TableCardI> = ({title, rates, firstColumnTitle, setEdited}) => {
 	return (
 		<div className={`${styles.tableCard} ${styles.flexRule}`}>
-			<div className={"titleContainer"}>
+			<div className={tableStyles.titleContainer}>
 				<h2 className={`${styles.interestTitle}`}>{title}</h2>
-				<span className={"editButton"}>
+				<span className={tableStyles.editButton} onClick={setEdited}>
 					Edit
 					<EditIcon fontSize="inherit" />
 				</span>
@@ -79,32 +103,42 @@ const TableCard:FC<TableCardI> = ({title, rates, firstColumnTitle}) => {
 				}
 				</tbody>
 			</table>
-			<style jsx>
-				{`
-					.titleContainer {
-						margin-top:15px;
-						width:95%;
-						display:flex; justify-content:space-between;align-items:center;
-						margin:0px; padding:0px;
-						margin-bottom: 5px;						
-					}	
-					.editButton {
-						display:flex;justify-content:center;align-items:center;
-						cursor:pointer;
-						font-size:16px;
-						padding:5px 8px;						
-						border-radius: 3px;
-						transition:all 0.25s;
-						margin-top:15px;
-					}
-					.editButton:hover {
-						background-color: rgba(0, 0, 0, 0.8);
-						color:#ffffff;
-					}
-				`}
-			</style>		
 		</div>
 	)
 }
 
+const EditedTableCard:FC<TableCardI> = ({title, rates, firstColumnTitle, setEdited}) => {
+	return (
+		<div className={`${styles.tableCard} ${styles.flexRule} ${styles.editedTableCard}`}>
+			<div className={tableStyles.titleContainer}>
+				<h2 className={`${styles.interestTitle}`}>{title}</h2>
+				<span className={tableStyles.editButton} onClick={setEdited}>					
+					<CheckCircleOutlineIcon fontSize="large" />
+				</span>
+			</div>			
+			<table className={`${tableStyles.interests} ${tableStyles.editedInterest}`}>
+				<thead>
+				<tr>
+					<th>
+						{firstColumnTitle}
+					</th>
+					<th>Rate</th>
+					<th></th>
+				</tr>
+				</thead>
+				<tbody>
+				{
+					rates.map((d, i) => (
+						<tr key={i}>
+							<td>{d.range}</td>
+							<td>{d.rate}%</td>
+							<td></td>
+						</tr>
+					))
+				}
+				</tbody>
+			</table>
+		</div>
+	)
+}
 export default InterestRate;

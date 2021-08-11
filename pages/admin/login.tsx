@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Button from "../../components/globals/Button";
 import useUser from "../../lib/useUser";
 import fetchJson from "../../lib/fetchJson";
-import login from "../api/login";
 
 const Login = () => {
   // here we just check if user is already logged in and redirect to profile

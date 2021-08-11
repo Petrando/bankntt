@@ -85,31 +85,7 @@ export default function Layout({ children, home }: {
         `}</style>
   	</div>
   )
-}
-/*
-<div className={classes.container}>
-            <Drawer
-                variant="permanent"
-                classes={{
-                    paper: clsx(classes.drawer, {
-                        [classes.closed]: !isOpened,
-                        [classes.opened]: isOpened,
-                    }),
-                }}
-            >
-                <Grid container spacing={1}>
-                    {
-                        menuList.map((d, i)=><MenuItem key={i} {...d} />)
-                    }
-                </Grid>
-            </Drawer>
-            <main className={classes.main}>
-                {
-  			        children
-  		        }
-            </main>
-        </div> 		
-*/        
+}     
 
 interface MenuItemI {
     label:string;

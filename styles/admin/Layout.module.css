@@ -40,3 +40,12 @@
     color: black;
     align-items: stretch;
   }
+
+  @media (max-width: 648px) {
+    .opened {
+      width: 40vw;
+    }
+    .paper {
+      padding:15px 0px;
+    }
+  }

@@ -1,4 +1,24 @@
 
+.titleContainer {
+  margin-top:15px;
+  width:95%;
+  display:flex; justify-content:space-between;align-items:center;
+  margin:0px; padding:0px;
+  margin-bottom: 5px;						
+}	
+.editButton {
+  display:flex;justify-content:center;align-items:center;
+  cursor:pointer;
+  font-size:16px;
+  padding:5px 8px;						
+  border-radius: 3px;
+  transition:all 0.25s;
+  margin-top:15px;
+}
+.editButton:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+  color:#ffffff;
+}
 .interests {  
     border-collapse: collapse;
     width: 95%;
@@ -32,3 +52,12 @@
 .interests tr *:last-child {
   width: 15%;
 }
+
+.editedInterest tr *:first-child {
+  width: 70%;
+}
+
+.editedInterest td *:nth-child(2) {
+  width:15%;
+}
+
