@@ -30,7 +30,6 @@ const Login = () => {
         body: JSON.stringify(body),
       });
 
-      console.log(loginResult);
       if(!loginResult.isLoggedIn){
         setErrorMsg("username/password error");
       }else {

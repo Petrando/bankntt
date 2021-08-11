@@ -44,27 +44,44 @@ export default function Layout({ children, home }: {
   const classes = useStyles();
   const { user, mutateUser } = useUser({redirectTo:"/admin/login"});
   const [isOpened, setIsOpened] = useState(true);
-  
+
   return (
   	<div className={'container'}>
-  		<TopNav toggleOpened={()=>{setIsOpened(!isOpened)}} isOpened={isOpened} />
-        <div className={layoutStyles.layoutContent}>
-            <div className={`${layoutStyles.drawer} ${isOpened?layoutStyles.opened:layoutStyles.closed}`}>
-                {
-                    menuList.map((d, i)=><MenuItem key={i} {...d} />)
-                }
+        {
+            user?.isLoggedIn &&
+            <>
+            <TopNav toggleOpened={()=>{setIsOpened(!isOpened)}} isOpened={isOpened} />
+            <div className={layoutStyles.layoutContent}>
+                <div className={`${layoutStyles.drawer} ${isOpened?layoutStyles.opened:layoutStyles.closed}`}>
+                    {
+                        menuList.map((d, i)=><MenuItem key={i} {...d} />)
+                    }
+                </div>
+                <div className={layoutStyles.main}>
+                    {
+                        children
+                    }
+                </div>  
             </div>
-            <div className={layoutStyles.main}>
-                {
-                    children
-                }
+            </>
+        }
+        {
+            !user &&
+            <div className={'loadingContainer'}>
+                <h3>Loading....</h3>
             </div>
-        </div>
+        }
   		<style jsx>{`
         	.container {
                 max-width: 100%;
           		min-height: 100vh;          		        	
         	}
+            .loadingContainer {
+                width:100%;
+                height:100vh;
+                display:flex;align-items:center;
+                justify-content:center;
+            }
         `}</style>
   	</div>
   )
