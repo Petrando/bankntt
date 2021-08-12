@@ -45,19 +45,24 @@
     color: white;
 }
 
-.interests tr *:first-child {
+.interests tr td:first-child {
   width: 85%;
 }
 
-.interests tr *:last-child {
+.interests tr td:last-child {
   width: 15%;
 }
 
-.editedInterest tr *:first-child {
+.editedInterest tr td:first-child {
   width: 70%;
 }
 
-.editedInterest td *:nth-child(2) {
+.editedInterest td td:nth-child(2), .editedInterest td td:nth-child(3) {
   width:15%;
+}
+
+.inactiveButton {
+  opacity:0.5;
+  pointer-events: none;
 }
 

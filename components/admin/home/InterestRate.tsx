@@ -1,6 +1,10 @@
 import { FC, useState, useEffect } from "react";
 import useSWR from 'swr';
 import EditIcon from '@material-ui/icons/Edit';
+import SaveIcon from '@material-ui/icons/Save';
+import CancelIcon from '@material-ui/icons/Cancel';
+import BlockIcon from '@material-ui/icons/Block';
+import ClearIcon from '@material-ui/icons/Clear';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import { TableCardI } from "../../../types";
 import styles from  "../../../styles/home/Interest.module.css";
@@ -25,7 +29,12 @@ const InterestRate = () => {
 				{
 					editedIdx !== -1 &&
 					<ModalLayout closeModal={()=>{setEditedIdx(-1);}}>
-						<div className={"editedContainer"}>
+						<div className={"editedContainer"}
+							onClick={(e)=>{
+								e.stopPropagation();
+								e.preventDefault();
+							}}
+						>
 							<EditedTableCard {...editedData} setEdited={()=>{setEditedIdx(-1)}} />
 						</div>
 					</ModalLayout>
@@ -108,11 +117,18 @@ const TableCard:FC<TableCardI> = ({title, rates, firstColumnTitle, setEdited}) =
 }
 
 const EditedTableCard:FC<TableCardI> = ({title, rates, firstColumnTitle, setEdited}) => {
+	const [editedRateIdx, setEditedRate] = useState<number>(-1);
+	const [aRowIsDirty, setARowIsDirty] = useState<boolean>(false);
+
+	const changeEditedRate = (idx) => {
+		setEditedRate(idx===editedRateIdx?-1:idx);
+	}
+
 	return (
 		<div className={`${styles.tableCard} ${styles.flexRule} ${styles.editedTableCard}`}>
 			<div className={tableStyles.titleContainer}>
 				<h2 className={`${styles.interestTitle}`}>{title}</h2>
-				<span className={tableStyles.editButton} onClick={setEdited}>					
+				<span className={`${tableStyles.editButton} ${aRowIsDirty && tableStyles.inactiveButton}`} onClick={setEdited}>					
 					<CheckCircleOutlineIcon fontSize="large" />
 				</span>
 			</div>			
@@ -129,16 +145,124 @@ const EditedTableCard:FC<TableCardI> = ({title, rates, firstColumnTitle, setEdit
 				<tbody>
 				{
 					rates.map((d, i) => (
-						<tr key={i}>
-							<td>{d.range}</td>
-							<td>{d.rate}%</td>
-							<td></td>
-						</tr>
+						<EditableRateRow key={i} 
+							{...d}
+							iAmEdited={i===editedRateIdx}
+							myIdx={i}
+							changeEditedRate={()=>{changeEditedRate(i)}}
+							stopEdit={()=>{setEditedRate(-1);}}
+							setARowIsDirty={(rowIsDirty)=>{setARowIsDirty(rowIsDirty)}}
+							aRowIsDirty={aRowIsDirty}
+						/>
 					))
 				}
 				</tbody>
 			</table>
 		</div>
+	)
+}
+
+interface EditedRowI {
+	range:string;
+	rate:string;
+	iAmEdited:boolean;
+	myIdx:number;
+	changeEditedRate:(idx:number)=>void;
+	stopEdit:()=>void;
+	setARowIsDirty:(rowIsDirty:boolean)=>void;
+	aRowIsDirty:boolean;
+}
+
+const EditableRateRow = ({range, rate, iAmEdited, changeEditedRate, myIdx, stopEdit, setARowIsDirty, aRowIsDirty}:EditedRowI) => {
+	const [myRange, setMyRange] = useState<string>("");
+	const [myRate, setMyRate] = useState<number>(0);
+
+	useEffect(()=>{
+		initiateStates();
+	}, []);
+
+	const initiateStates = () => {
+		setMyRange(range);
+		setMyRate(parseFloat(rate));
+	}
+
+	const editDirty = myRange!==range || myRate !== parseFloat(rate);
+
+	useEffect(()=>{
+		setARowIsDirty(editDirty);
+	}, [editDirty])
+	return (
+		<tr>
+			<td>
+			{
+				iAmEdited?
+				<input
+					className={"inputClass"} 
+					type="text" value={myRange} onChange={(e)=>{setMyRange(e.target.value);}} />:
+				myRange
+			}
+			</td>
+			<td>
+			{
+				iAmEdited?
+				<input 
+					className={"inputClass"}
+					type="number" value={myRate} onChange={(e)=>{setMyRate(parseFloat(e.target.value));}} />:
+				myRate
+			}
+			</td>
+			<td><span className={"buttonsContainer"}>
+			{
+				iAmEdited?
+				<>
+					<span className={`${"spanButton"} ${!editDirty && tableStyles.inactiveButton}`}>
+						<SaveIcon />
+					</span>
+					<span className={"spanButton"} 
+						  onClick={()=>{
+							  stopEdit();
+							  initiateStates();
+						  }}>
+						<CancelIcon  />
+					</span>
+				</>:
+				<span className={`${"spanButton"} ${aRowIsDirty && tableStyles.inactiveButton}`}
+					onClick={()=>{
+						changeEditedRate(myIdx)
+					}}
+				>
+					<EditIcon />
+				</span>
+			}
+			</span>				
+			</td>
+			<style jsx>
+				{`
+					.spanButton {
+						display: inline;
+						cursor:pointer;
+						padding:2px;
+						border-radius:3px;
+						transition:all 0.25s;
+					}
+
+					.spanButton:hover {
+						color:#ffffff;
+						background-color:#000000;
+					}
+					.buttonsContainer{
+						width:100%%;
+						display:flex;
+						justify-content:center;
+						align-items:center;
+					}
+					.inputClass {
+						width:100%;
+					}
+					
+				`}
+			</style>
+		</tr>
 	)
 }
 export default InterestRate;
