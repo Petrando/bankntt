@@ -126,6 +126,7 @@ const TableCard:FC<TableCardI> = ({ title, rates, firstColumnTitle, setEdited}) 
 const EditedTableCard:FC<TableCardI> = ({ _id, title, rates, firstColumnTitle, setEdited, updateInterestData}) => {
 	const [editedRateIdx, setEditedRate] = useState<number>(-1);
 	const [aRowIsDirty, setARowIsDirty] = useState<boolean>(false);
+	const [errorMsg, setErrorMsg] = useState<string>("");
 
 	const changeEditedRate = (idx) => {
 		setEditedRate(idx===editedRateIdx?-1:idx);
@@ -150,6 +151,8 @@ const EditedTableCard:FC<TableCardI> = ({ _id, title, rates, firstColumnTitle, s
 				updateInterestData();
 				setEditedRate(-1);
 				setARowIsDirty(false);
+			}else{
+				setErrorMsg("Update failed.");
 			}
 			
 		  } catch (error) {
@@ -192,6 +195,10 @@ const EditedTableCard:FC<TableCardI> = ({ _id, title, rates, firstColumnTitle, s
 				}
 				</tbody>
 			</table>
+			{
+				errorMsg!=="" &&
+				<h3 style={{width:"100%", textAlign:"center"}}>{errorMsg}</h3>
+			}
 		</div>
 	)
 }
