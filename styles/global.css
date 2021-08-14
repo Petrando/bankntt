@@ -40,3 +40,21 @@ img {
   max-width: 100%;
   display: block;
 }
+
+.spanButton {
+  display: inline;
+  cursor:pointer;
+  padding:2px;
+  border-radius:3px;
+  transition:all 0.25s;
+}
+
+.spanButton:hover {
+  color:#ffffff;
+  background-color:#000000;
+}
+
+.inactiveButton {
+  opacity:0.5;
+  pointer-events: none;
+}

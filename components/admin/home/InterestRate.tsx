@@ -10,14 +10,19 @@ import { TableCardI } from "../../../types";
 import styles from  "../../../styles/home/Interest.module.css";
 import tableStyles from "../../../styles/components/InterestTable.module.css";
 import ModalLayout from "../../globals/ModalLayout";
+import fetchJson from "../../../lib/fetchJson";
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 const InterestRate = () => {
-	const { data, error } = useSWR('/api/interests/listInterests', fetcher);
+	const { data, mutate, error } = useSWR('/api/interests/listInterests', fetcher);
 	const [editedIdx, setEditedIdx] = useState<number>(-1);
 
 	const editedData = data?data.filter((d, i)=>i===editedIdx)[0]:{};
+
+	const updateInterestData = () => {
+		mutate();
+	}
 	return (
 		<section className={"interestMain"}>
 			<div className={`${styles.tableCards} ${"tableCards"}`}>
@@ -25,29 +30,30 @@ const InterestRate = () => {
 					data &&
 					data.length > 0 &&
 					data.map((d, i) => (<TableCard key={i} {...d} setEdited={()=>{setEditedIdx(i);}}/>))
-				}
-				{
-					editedIdx !== -1 &&
-					<ModalLayout closeModal={()=>{setEditedIdx(-1);}}>
-						<div className={"editedContainer"}
-							onClick={(e)=>{
-								e.stopPropagation();
-								e.preventDefault();
-							}}
-						>
-							<EditedTableCard {...editedData} setEdited={()=>{setEditedIdx(-1)}} />
-						</div>
-					</ModalLayout>
-				}
-				{
-					error &&
-					<h3>Connection error</h3>
-				}
-				{
-					!data &&
-					<h3>Loading....</h3>
-				}
+				}				
 			</div>
+			{
+				editedIdx !== -1 &&
+				<ModalLayout closeModal={()=>{setEditedIdx(-1);}}>
+					<div className={"editedContainer"}
+						onClick={(e)=>{
+							e.stopPropagation();
+							e.preventDefault();
+						}}
+					>
+						<EditedTableCard {...editedData} setEdited={()=>{setEditedIdx(-1)}} 
+														  updateInterestData={()=>{updateInterestData();}} />
+					</div>
+				</ModalLayout>
+			}
+			{
+				error &&
+				<h3 style={{width:"100%", textAlign:"center"}}>Connection error</h3>
+			}
+			{
+				!data &&
+				<h3>Loading....</h3>
+			}
 			<style jsx>
 				{
 					`
@@ -58,6 +64,7 @@ const InterestRate = () => {
 							height: 100%;
 							background-color: lightsteelblue;
 							display:flex;justify-content:space-around;align-items:center;
+							flex-wrap:wrap;
 						}
 						.tableCards {
 							width:95%;
@@ -82,7 +89,7 @@ const InterestRate = () => {
 	)
 }
 
-const TableCard:FC<TableCardI> = ({title, rates, firstColumnTitle, setEdited}) => {
+const TableCard:FC<TableCardI> = ({ title, rates, firstColumnTitle, setEdited}) => {
 	return (
 		<div className={`${styles.tableCard} ${styles.flexRule}`}>
 			<div className={tableStyles.titleContainer}>
@@ -116,7 +123,7 @@ const TableCard:FC<TableCardI> = ({title, rates, firstColumnTitle, setEdited}) =
 	)
 }
 
-const EditedTableCard:FC<TableCardI> = ({title, rates, firstColumnTitle, setEdited}) => {
+const EditedTableCard:FC<TableCardI> = ({ _id, title, rates, firstColumnTitle, setEdited, updateInterestData}) => {
 	const [editedRateIdx, setEditedRate] = useState<number>(-1);
 	const [aRowIsDirty, setARowIsDirty] = useState<boolean>(false);
 
@@ -124,11 +131,37 @@ const EditedTableCard:FC<TableCardI> = ({title, rates, firstColumnTitle, setEdit
 		setEditedRate(idx===editedRateIdx?-1:idx);
 	}
 
+	const saveEdit = async (newEditData) => {
+		const updatedRates = rates.slice();
+		updatedRates[editedRateIdx] = newEditData;
+
+		const body = {
+			_id,
+			rates:updatedRates
+		}
+		try {
+			const updateResult = await fetchJson("/api/interests/updateInterest", {
+			  method: "POST",
+			  headers: { "Content-Type": "application/json" },
+			  body: JSON.stringify(body),
+			});
+			
+			if(updateResult.message==="success"){
+				updateInterestData();
+				setEditedRate(-1);
+				setARowIsDirty(false);
+			}
+			
+		  } catch (error) {
+			console.error("An unexpected error happened:", error);
+		  }
+	}
+
 	return (
 		<div className={`${styles.tableCard} ${styles.flexRule} ${styles.editedTableCard}`}>
 			<div className={tableStyles.titleContainer}>
 				<h2 className={`${styles.interestTitle}`}>{title}</h2>
-				<span className={`${tableStyles.editButton} ${aRowIsDirty && tableStyles.inactiveButton}`} onClick={setEdited}>					
+				<span className={`${tableStyles.editButton} ${aRowIsDirty && "inactiveButton"}`} onClick={setEdited}>					
 					<CheckCircleOutlineIcon fontSize="large" />
 				</span>
 			</div>			
@@ -153,6 +186,7 @@ const EditedTableCard:FC<TableCardI> = ({title, rates, firstColumnTitle, setEdit
 							stopEdit={()=>{setEditedRate(-1);}}
 							setARowIsDirty={(rowIsDirty)=>{setARowIsDirty(rowIsDirty)}}
 							aRowIsDirty={aRowIsDirty}
+							saveEdit={(newEditData)=>{saveEdit(newEditData)}}
 						/>
 					))
 				}
@@ -170,10 +204,16 @@ interface EditedRowI {
 	changeEditedRate:(idx:number)=>void;
 	stopEdit:()=>void;
 	setARowIsDirty:(rowIsDirty:boolean)=>void;
+	saveEdit:(newEditData:EditedI)=>void;
 	aRowIsDirty:boolean;
 }
 
-const EditableRateRow = ({range, rate, iAmEdited, changeEditedRate, myIdx, stopEdit, setARowIsDirty, aRowIsDirty}:EditedRowI) => {
+interface EditedI {
+	range:string;
+	rate:number;
+}
+
+const EditableRateRow = ({range, rate, iAmEdited, changeEditedRate, myIdx, stopEdit, setARowIsDirty, saveEdit, aRowIsDirty}:EditedRowI) => {
 	const [myRange, setMyRange] = useState<string>("");
 	const [myRate, setMyRate] = useState<number>(0);
 
@@ -191,6 +231,7 @@ const EditableRateRow = ({range, rate, iAmEdited, changeEditedRate, myIdx, stopE
 	useEffect(()=>{
 		setARowIsDirty(editDirty);
 	}, [editDirty])
+
 	return (
 		<tr>
 			<td>
@@ -210,12 +251,19 @@ const EditableRateRow = ({range, rate, iAmEdited, changeEditedRate, myIdx, stopE
 					type="number" value={myRate} onChange={(e)=>{setMyRate(parseFloat(e.target.value));}} />:
 				myRate
 			}
+			{
+				!iAmEdited && "%"
+			}
 			</td>
 			<td><span className={"buttonsContainer"}>
 			{
 				iAmEdited?
 				<>
-					<span className={`${"spanButton"} ${!editDirty && tableStyles.inactiveButton}`}>
+					<span className={`${"spanButton"} ${!editDirty && "inactiveButton"}`}
+						onClick={()=>{
+							saveEdit({range:myRange, rate:myRate});
+						}}
+					>
 						<SaveIcon />
 					</span>
 					<span className={"spanButton"} 
@@ -226,7 +274,7 @@ const EditableRateRow = ({range, rate, iAmEdited, changeEditedRate, myIdx, stopE
 						<CancelIcon  />
 					</span>
 				</>:
-				<span className={`${"spanButton"} ${aRowIsDirty && tableStyles.inactiveButton}`}
+				<span className={`${"spanButton"} ${aRowIsDirty && "inactiveButton"}`}
 					onClick={()=>{
 						changeEditedRate(myIdx)
 					}}
@@ -238,18 +286,7 @@ const EditableRateRow = ({range, rate, iAmEdited, changeEditedRate, myIdx, stopE
 			</td>
 			<style jsx>
 				{`
-					.spanButton {
-						display: inline;
-						cursor:pointer;
-						padding:2px;
-						border-radius:3px;
-						transition:all 0.25s;
-					}
-
-					.spanButton:hover {
-						color:#ffffff;
-						background-color:#000000;
-					}
+					
 					.buttonsContainer{
 						width:100%%;
 						display:flex;
@@ -265,4 +302,5 @@ const EditableRateRow = ({range, rate, iAmEdited, changeEditedRate, myIdx, stopE
 		</tr>
 	)
 }
+
 export default InterestRate;
