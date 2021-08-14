@@ -22,11 +22,24 @@
     border-radius: 5px;
     border: 1px solid transparent;
     transition: all 0.25s;
+    display: flex;
+    justify-content: center;
   }
 
   .paper:hover {
       color:#000;
       border: 1px solid #000;
+  }
+
+  .subMenuContainer {
+    background-color: #D8DCD6;
+    transition: all .25s;
+    padding:5px;
+    margin:0px 4xp 4px;
+  }
+
+  .subMenuItem {
+    padding: 15px 0px;
   }
   .closed {
     width: 0px;

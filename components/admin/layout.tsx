@@ -3,6 +3,7 @@ import Link from "next/link"
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import {Drawer, Paper, Grid } from "@material-ui/core/";
+import {ArrowDropUp, ArrowDropDown} from '@material-ui/icons/';
 import useUser from "../../lib/useUser";
 import TopNav from "./topnav";
 import { styles } from "./post.styles";
@@ -95,13 +96,61 @@ interface MenuItemI {
 
 const MenuItem = ({label, to, subMenu}:MenuItemI) => {
     const classes = useStyles();
+    const [menuActive, setActive] = useState<boolean>(false);
+    
+    return (
+        <>
+            {
+                subMenu?
+                <>
+                    <div className={`${layoutStyles.paper} ${menuActive && subMenu && "activeMenu"}`}
+                        onClick={()=>{setActive(!menuActive)}}
+                    >
+                        <span style={{width:"80%"}}>
+                            {label}
+                        </span>
+                        <span style={{width:"20%"}}>
+                        {
+                            menuActive?
+                            <ArrowDropUp />:
+                            <ArrowDropDown />
+                        }
+                        </span>
+                    </div>
+                {
+                    
+                    menuActive && 
+                    <div className={layoutStyles.subMenuContainer}>
+                        {
+                            subMenu.map((d, i)=><SubMenuItem key={i} {...d} />)
+                        }
+                    </div>
+                }
+                </>
+                :
+                <Link href={subMenu?"#":to}>    
+                    <div className={layoutStyles.paper}>
+                        {label}
+                    </div>
+                </Link>
+            } 
+            <style jsx>{`
+                .activeMenu {
+                    margin-bottom:0px !important;
+                }
+            `}</style>                               
+        </>
+    )
+}
+
+const SubMenuItem = ({label, to}:MenuItemI) => {
+    const classes = useStyles();
+
     return (
         <Link href={to}>    
-            <div className={layoutStyles.paper}>
+            <div className={`${layoutStyles.paper} ${layoutStyles.subMenuItem}`}>
                 {label}
-            </div>        
+            </div>
         </Link>
-
-
     )
 }
