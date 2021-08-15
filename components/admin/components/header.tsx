@@ -1,4 +1,5 @@
 import AddIcon from '@material-ui/icons/Add';
+import buttonStyles from "../../../styles/components/Button.module.css";
 
 interface HeaderI {
     title:string;
@@ -13,12 +14,13 @@ const Header = ({title, addNew}:HeaderI) =>{
             </h2>
             <div className={"headerButtonContainer"}>
                 <span className={"headerButton"}>
-                    Tambahkan{" "}<AddIcon fontSize={"medium"} />
+                    Tambah{" "}<AddIcon fontSize={"medium"} />
                 </span>
             </div>
             <style jsx>{`
                 .header {
                     display:flex;justify-content:center;
+                    flex-wrap:wrap;
                 }
                 .headerTitle {
                     text-align:center;
@@ -30,7 +32,7 @@ const Header = ({title, addNew}:HeaderI) =>{
                 }
 
                 .headerButton {
-                    padding:10px 8px;
+                    padding:10px 10px;
                     display:flex; justify-content:center; align-items:center;
                     border-radius: 10px;
                     transition:all 0.25s;     
@@ -40,6 +42,7 @@ const Header = ({title, addNew}:HeaderI) =>{
                 .headerButton:hover {
                     color:#ffffff;
                     background-color:darkblue;
+                    font-weight:bold;
                 }
             `}</style>
         </div>
