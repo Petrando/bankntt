@@ -13,6 +13,17 @@ export const getSavings = async () => {
 	return savings;
 }
 
+export const addASaving = async (newSavingData) => {
+	console.log(newSavingData);
+	const { db } = await connectToDatabase();
+
+	const newSaving = await db
+		.collection("tabungan")
+		.insertOne( { ...newSavingData} );
+
+	return newSaving;
+}
+
 export const updateSaving = async (updateData) => {
 	const { db } = await connectToDatabase();
   

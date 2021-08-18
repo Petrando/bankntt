@@ -11,8 +11,7 @@ import styles from  "../../../styles/home/Interest.module.css";
 import tableStyles from "../../../styles/components/InterestTable.module.css";
 import ModalLayout from "../../globals/ModalLayout";
 import fetchJson from "../../../lib/fetchJson";
-
-const fetcher = (url) => fetch(url).then((res) => res.json())
+import fetcher from "../../../lib/fetcher";
 
 const InterestRate = () => {
 	const { data, mutate, error } = useSWR('/api/interests/listInterests', fetcher);

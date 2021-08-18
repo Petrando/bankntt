@@ -43,8 +43,8 @@ export default function Layout({ children, home }: {
 													}
 ) {
   const classes = useStyles();
-  //const { user, mutateUser } = useUser({redirectTo:"/admin/login"});
-  const { user, mutateUser } = useUser();
+  const { user, mutateUser } = useUser({redirectTo:"/admin/login"});
+  //const { user, mutateUser } = useUser();
   const [isOpened, setIsOpened] = useState(true);
 
   return (

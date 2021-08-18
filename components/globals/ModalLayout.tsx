@@ -6,6 +6,7 @@ interface ModalI {
 }
 
 const ModalLayout = ({children, closeModal}:ModalI) => {
+    
     return (
         <div className={"modal"} onClick={closeModal}>
             {
@@ -15,6 +16,7 @@ const ModalLayout = ({children, closeModal}:ModalI) => {
                 {`
                     .modal {
                         width:100%;
+                        max-height:100vh;
                         height:100vh;
                         position:fixed;
                         left:0px;
@@ -22,9 +24,9 @@ const ModalLayout = ({children, closeModal}:ModalI) => {
                         z-index: 3000;
                         display:flex;
                         justify-content:center;
-                        align-items:center;
                         transition: all 0.25s;
-                        background-color: rgba(0, 0, 0, 0.75)
+                        background-color: rgba(0, 0, 0, 0.75);
+                        overflow-y:auto;
                     }
                 `}
             </style>
