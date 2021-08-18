@@ -362,6 +362,7 @@ const AddNewSaving = ({closeAdding}:{closeAdding:()=>void}) => {
                     }
                     .photoContainer {
                         width:calc(40% - 5px);
+                        min-height:100px;
                         margin:8px 0px 0px;
                         padding:0px;
                         position:relative;
