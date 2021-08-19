@@ -17,7 +17,7 @@ const Hero = () =>
 				Terlibat bersama dalam keseharian mewujudkan kesejahteraan masyarakat Flobamora
 			</p>	
 			<div className={styles.heroButtons}>
-          		<Link href="/#">
+          		<Link href="/produk/dana">
             		<a>
               			<Button label="Produk Dana" />
             		</a>
