@@ -14,7 +14,6 @@ export const getSavings = async () => {
 }
 
 export const addASaving = async (newSavingData) => {
-	console.log(newSavingData);
 	const { db } = await connectToDatabase();
 
 	const newSaving = await db

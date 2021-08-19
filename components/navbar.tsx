@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import styles from "../styles/components/Navbar.module.css";
+import { ArrowDropDown } from "@material-ui/icons";
 
 interface IconStrokeI {
   stroke: string;
@@ -93,6 +94,72 @@ const NavIcon: FC<NavIconI> = ({ showNavMenu, navbarOnTop, asPath }) => {
   );
 };
 
+const NavMenuList = [         
+  { label: "Produk & Layanan", to: "#",
+    subMenu : [
+      {
+        label:"Dana", to:"/produk/dana", subMenu : [
+          {label:"Tabungan", to:"#"},
+          {label:"Deposito", to:"#"},
+          {label:"Giro", to:"#"},
+          {label:"Anjungan Tunai Mandiri (ATM)", to:"#"},
+          {label:"Electronic Data Capture (EDC)", to:"#"},
+          {label:"SMS Banking & Mobile Banking", to:"#"},                  
+        ]
+      },
+      {
+        label:"Kredit", to:"#", subMenu : [
+          {label:"UPL Mikro", to:"#"},
+          {label:"Garansi Bank", to:"#"},
+          {label:"Kredit Multi Usaha", to:"#"},
+          {label:"Kredit Multi Guna", to:"#"},
+          {label:"Kredit Komersil Umum", to:"#"},
+          {label:"Kredit Properti", to:"#"},
+          {label:"Kredit Pegawai Vertikal", to:"#"},
+        ]
+      },              
+      {label:"Suku Bunga Dasar Kredit", to:"#"},
+      {label:"Laku Pandai Bank NTT", to:"#"}
+    ]
+  },
+  { label: "Layanan 24 Jam", to: "#", subMenu:[
+    {label:"ATM", to:"#"},
+    {label:"SMS Banking", to:"#"},
+    {label:"Mobile Banking", to:"#"},
+    {label:"NTT Pay", to:"#"},
+    {label:"Call Center Bank NTT", to:"#"},
+    {label:"Whistle Blowing System", to:"#"},
+    {label:"Pengaduan Anti Gratifikasi", to:"#"},
+  ] },                  
+  { label: "Tentang Kami", to: "#", subMenu:[
+    {label:"Sejarah Singkat", to:"#"},
+    {label:"Visi & Misi", to:"#"},
+    {label:"Direksi & Struktur Organisasi", to:"#"},
+    {label:"Dewan Komisaris", to:"#"},
+    {label:"Kontak Kami", to:"#", subMenu:[
+      {label:"Pengunguman", to:"#"},
+      {label:"Press Release", to:"#"}
+    ]},
+    {label:"Majalah Internal", to:"#"},
+    {label:"CSR", to:"#", subMenu:[
+      {label:"Tahun Buku 2015", to:"#"},
+      {label:"Tahun Buku 2016", to:"#"},
+      {label:"Tahun Buku 2017", to:"#"},
+      {label:"Tahun Buku 2018", to:"#"},
+      {label:"Tahun Buku 2019", to:"#"}
+    ]},
+    {label:"Daftar Pemegang Saham", to:"#"}
+  ]},
+  { label: "Jaringan Kantor", to: "#" },
+  { label: "Info Lowongan", to: "#" }, 
+  { label: "Laporan Publikasi", to: "#", subMenu: [
+    {label:"Neraca Publikasi", to:"#"},
+    {label:"Good Corporate Governance", to:"#"},
+    {label:"Laporan Tahunan", to:"#"},
+    {label:"Laporan Rasio Pengungkit", to:"#"}
+  ]}
+]
+
 const Navbar: FC = () => {
   const [showNavMenu, setShowNavMenu] = useState<boolean>(false);
   const [navbarOnTop, setNavbarOnTop] = useState<boolean>(true);
@@ -151,71 +218,7 @@ const Navbar: FC = () => {
       }`}             
     >
       <div className={"navbarMenu"}>
-        {[         
-          { label: "Produk & Layanan", to: "#",
-            subMenu : [
-              {
-                label:"Kredit", to:"#", subMenu : [
-                  {label:"UPL Mikro", to:"#"},
-                  {label:"Garansi Bank", to:"#"},
-                  {label:"Kredit Multi Usaha", to:"#"},
-                  {label:"Kredit Multi Guna", to:"#"},
-                  {label:"Kredit Komersil Umum", to:"#"},
-                  {label:"Kredit Properti", to:"#"},
-                  {label:"Kredit Pegawai Vertikal", to:"#"},
-                ]
-              },
-              {
-                label:"Dana", to:"#", subMenu : [
-                  {label:"Tabungan", to:"#"},
-                  {label:"Deposito", to:"#"},
-                  {label:"Giro", to:"#"},
-                  {label:"Anjungan Tunai Mandiri (ATM)", to:"#"},
-                  {label:"Electronic Data Capture (EDC)", to:"#"},
-                  {label:"SMS Banking & Mobile Banking", to:"#"},                  
-                ]
-              },
-              {label:"Suku Bunga Dasar Kredit", to:"#"},
-              {label:"Laku Pandai Bank NTT", to:"#"}
-            ]
-          },
-          { label: "Layanan 24 Jam", to: "#", subMenu:[
-            {label:"ATM", to:"#"},
-            {label:"SMS Banking", to:"#"},
-            {label:"Mobile Banking", to:"#"},
-            {label:"NTT Pay", to:"#"},
-            {label:"Call Center Bank NTT", to:"#"},
-            {label:"Whistle Blowing System", to:"#"},
-            {label:"Pengaduan Anti Gratifikasi", to:"#"},
-          ] },                  
-          { label: "Tentang Kami", to: "#", subMenu:[
-            {label:"Sejarah Singkat", to:"#"},
-            {label:"Visi & Misi", to:"#"},
-            {label:"Direksi & Struktur Organisasi", to:"#"},
-            {label:"Dewan Komisaris", to:"#"},
-            {label:"Kontak Kami", to:"#", subMenu:[
-              {label:"Pengunguman", to:"#"},
-              {label:"Press Release", to:"#"}
-            ]},
-            {label:"Majalah Internal", to:"#"},
-            {label:"CSR", to:"#", subMenu:[
-              {label:"Tahun Buku 2015", to:"#"},
-              {label:"Tahun Buku 2016", to:"#"},
-              {label:"Tahun Buku 2017", to:"#"},
-              {label:"Tahun Buku 2018", to:"#"},
-              {label:"Tahun Buku 2019", to:"#"}
-            ]},
-            {label:"Daftar Pemegang Saham", to:"#"}
-          ]},
-          { label: "Jaringan Kantor", to: "#" },
-          { label: "Info Lowongan", to: "#" }, 
-          { label: "Laporan Publikasi", to: "#", subMenu: [
-            {label:"Neraca Publikasi", to:"#"},
-            {label:"Good Corporate Governance", to:"#"},
-            {label:"Laporan Tahunan", to:"#"},
-            {label:"Laporan Rasio Pengungkit", to:"#"}
-          ]}
-        ].map((d, i) => (
+        {NavMenuList.map((d, i) => (
           <NavItem key={i} {...d} 
                    navbarOnTop={navbarOnTop} 
                    isMidScreensize={isMidScreensize}
@@ -293,16 +296,45 @@ const NavItem: FC<NavItemI> = ({ label, to, navbarOnTop, isMidScreensize, curren
 
   const iAmHovered = label === currentHover && typeof subMenu !== "undefined";  
 
+  const mySubSubMenu = (subSubMenu) => {
+    return (
+      <div className={styles.navbarSubSubMenu}>
+        {
+              subSubMenu.map((d, i) => (
+                <Link href={d.to} key={i}>
+                  <span
+                    className={`${styles.subMenuItem}`}                           
+                  >
+                    {d.label}                        
+                  </span>
+                </Link>
+              ))
+            } 
+      </div>
+    )
+  }
+
   const mySubMenu = () => {      
       return (
-          <div className={styles.navbarSubMenu}>
+          <div className={`${styles.navbarSubMenu}`}>
             {
               subMenu.map((d, i) => (
                 <Link href={d.to} key={i}>
                   <span
                     className={`${styles.subMenuItem}`}                           
                   >
-                    {d.label}        
+                    {
+                      !isMidScreensize && d.subMenu?
+                      labelChevron(d.label, false):
+                      <>
+                        {d.label}
+                      </>
+                    }   
+                    {
+                      !isMidScreensize &&
+                      d.subMenu &&
+                      mySubSubMenu(d.subMenu)
+                    }     
                   </span>
                 </Link>
               ))
@@ -311,6 +343,19 @@ const NavItem: FC<NavItemI> = ({ label, to, navbarOnTop, isMidScreensize, curren
       )
   }
 
+  const labelChevron = (label:string, isSubMenu:boolean) => {
+    return (
+      <>
+        <p className={`${styles.menuLabel} ${!isSubMenu && styles.menuLabelLeft}`}>
+          {label}
+        </p>
+        <span className={`${styles.menuChevron} ${"centerRowFlex"}`}>
+          <ArrowDropDown/>
+        </span>
+      </>
+    )
+  }
+  
   const mySubMenu_mobile = () => {      
       return (
           <div className={"navbarSubMenu"}            
@@ -356,20 +401,26 @@ const NavItem: FC<NavItemI> = ({ label, to, navbarOnTop, isMidScreensize, curren
           </div>
       )
   }
+
   return (    
     <Link href={to}>
+      <>
       <a
-        className={`
-          ${styles.menuItem}                  
-        `}        
+        className={`${styles.menuItem}`}        
         onClick={()=>{
           setCurrentHover(typeof subMenu==="undefined"?"":currentHover===label?"":label);
         }}                
       >
-        {label}
+        {
+           !isMidScreensize && subMenu?
+            labelChevron(label, true):
+            <>
+              {label}
+            </>
+        }
         {
           !isMidScreensize &&
-          typeof subMenu !== "undefined" &&
+          subMenu &&
           mySubMenu()
         }
         {
@@ -378,6 +429,7 @@ const NavItem: FC<NavItemI> = ({ label, to, navbarOnTop, isMidScreensize, curren
           mySubMenu_mobile()
         }
       </a>
+      </>
     </Link>
   );
 };

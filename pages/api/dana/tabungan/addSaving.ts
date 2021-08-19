@@ -1,11 +1,11 @@
 const formidable = require('formidable');
-import { Photo } from "@material-ui/icons";
+import { NextApiRequest, NextApiResponse } from 'next'
 import { addASaving } from "../../../../lib/dana/tabungan";
 
-async function addSaving(req, res) {
+async function addSaving(req:NextApiRequest, res:NextApiResponse) {
     try {
         const form = new formidable.IncomingForm({ keepExtensions: true });
-        form.parse(req, async function (err, fields, files) {
+        form.parse(req, async function (err, fields:{name:string, about:string, termsFeatures:string}, files:{photo:File}) {
           if (err) {
 
           } 

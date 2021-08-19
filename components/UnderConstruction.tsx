@@ -1,4 +1,4 @@
-const Message = () => {
+const UnderConstruction = () => {
     return (
         <div style={{display:"flex", alignItems:"center", justifyContent:"center", height:"calc(100vh - 100px)"}}>
             <h3>Under Construction</h3>
@@ -6,4 +6,4 @@ const Message = () => {
     )
 }
 
-export default Message;
+export default UnderConstruction;

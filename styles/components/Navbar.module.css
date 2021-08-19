@@ -70,7 +70,7 @@
 }
 
 .menuItem, .subMenuItem {
-  padding: 12px 23px;
+  padding: 12px 12px;
   border-radius: 100px;
   border: 1px solid transparent;
   text-align: center;
@@ -83,7 +83,21 @@
   display: flex; justify-content: center; align-items: center;
 }
 
-.navbarSubMenu {
+.menuLabel {
+  flex:0.9;
+  text-align:center;
+  margin:0px;
+}
+.menuLabelLeft {
+  text-align:left;
+}
+.menuChevron {
+  flex:0.1;
+  margin:0px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.navbarSubMenu, .navbarSubSubMenu {
   position: absolute;
   width: 15vw;
   min-height: 20px;
@@ -96,9 +110,14 @@
   background-color: #001a2e;
   height: 0px;
   opacity: 0;
-  overflow: hidden;
   pointer-events: none;
-  transition: opacity 0.25s height 0.25s;
+  /*transition: all 0.25s;*/
+}
+
+.navbarSubSubMenu {
+  left:100%;
+  top:0px;
+  background-color: #090530;
 }
 
 .navbarSubMenu_smallScreen {
@@ -133,7 +152,7 @@
   color: #49c2e0;
 }
 
-.menuItem:hover .navbarSubMenu {
+.menuItem:hover .navbarSubMenu, .subMenuItem:hover .navbarSubSubMenu {
   height: auto;
   opacity: 1;
   pointer-events: auto;
@@ -151,6 +170,18 @@
 .subMenuItem:hover {
   color: #4fb0c8 !important;   
   text-decoration: none;
+}
+
+.menuItem:hover .menuChevron {
+  transform: rotate(180deg);
+}
+
+.menuItem:hover .subMenuItem .menuChevron {
+  transform: none;
+}
+
+.subMenuItem:hover .menuChevron{
+  transform: rotate(180deg) !important;
 }
 
 @media (max-width: 950px) {

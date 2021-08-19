@@ -1,6 +1,7 @@
+import { NextApiRequest, NextApiResponse } from 'next'
 import { deleteSaving } from "../../../../lib/dana/tabungan";
 
-export  default async function deleteASaving(req, res) {
+export  default async function deleteASaving(req:NextApiRequest, res:NextApiResponse) {
     try {
         const deleteResult = await deleteSaving(req.body._id);  
         //const  {modifiedCount} = updateResult;

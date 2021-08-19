@@ -1,6 +1,7 @@
+import { NextApiRequest, NextApiResponse } from 'next'
 import { getSavings } from "../../../../lib/dana/tabungan";
 
-export default async function savingList(req, res) {
+export default async function savingList(req:NextApiRequest, res:NextApiResponse) {
     try {
         const savings = await getSavings();  
         res.json(savings);
