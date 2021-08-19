@@ -1,9 +1,9 @@
 import React from "react";
 import Link from "next/link";
 import {AccountBalanceWallet, Atm, CreditCardTwoTone, AttachMoney, PhoneAndroid, PhonelinkSetup} from '@material-ui/icons/';
-import Layout from "../../components/layout";
-import Button, {AquaButton} from "../../components/globals/Button";
-import styles from "../../styles/produk/DanaMain.module.css";
+import Layout from "../../../components/layout";
+import Button, {AquaButton} from "../../../components/globals/Button";
+import styles from "../../../styles/produk/DanaMain.module.css";
 
 const Dana = () => {
     const DanaButton = ({idx, isTop, label, to, icon}:
