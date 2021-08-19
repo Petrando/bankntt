@@ -1,4 +1,4 @@
-import React, {useRef} from "react";
+import React from "react";
 import Link from "next/link";
 import {AccountBalanceWallet, Atm, CreditCardTwoTone, AttachMoney, PhoneAndroid, PhonelinkSetup} from '@material-ui/icons/';
 import Layout from "../../components/layout";
@@ -6,7 +6,6 @@ import Button, {AquaButton} from "../../components/globals/Button";
 import styles from "../../styles/produk/DanaMain.module.css";
 
 const Dana = () => {
-    const myRef = useRef<HTMLFieldSetElement>(null);
     const DanaButton = ({idx, isTop, label, to, icon}:
                         {idx:number, isTop:boolean, label:string, to:string, icon:JSX.Element}):
                         React.ReactNode => 
@@ -38,11 +37,7 @@ const Dana = () => {
                         ].map((d, i)=>DanaButton({idx:i, isTop:true, ...d}))
                     }
                 </fieldset>
-                <fieldset className={`${styles.fieldsetStyle}`} ref={myRef}
-                    onMouseOver={()=>{
-                        console.log(myRef.current.offsetWidth);
-                    }}
-                >
+                <fieldset className={`${styles.fieldsetStyle}`} ref={myRef} >
                     <legend>Service Lainnya</legend>
                     {
                         [
