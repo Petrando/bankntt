@@ -37,7 +37,7 @@ const Dana = () => {
                         ].map((d, i)=>DanaButton({idx:i, isTop:true, ...d}))
                     }
                 </fieldset>
-                <fieldset className={`${styles.fieldsetStyle}`} ref={myRef} >
+                <fieldset className={`${styles.fieldsetStyle}`} >
                     <legend>Service Lainnya</legend>
                     {
                         [
