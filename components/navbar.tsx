@@ -99,7 +99,7 @@ const NavMenuList = [
     subMenu : [
       {
         label:"Dana", to:"/produk/dana", subMenu : [
-          {label:"Tabungan", to:"#"},
+          {label:"Tabungan", to:"/produk/dana/tabungan/"},
           {label:"Deposito", to:"#"},
           {label:"Giro", to:"#"},
           {label:"Anjungan Tunai Mandiri (ATM)", to:"#"},

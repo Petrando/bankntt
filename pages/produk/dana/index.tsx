@@ -31,7 +31,7 @@ const Dana = () => {
                     <legend>Produk Dana</legend>
                     {
                         [
-                         {label:"Tabungan", to:"#", icon:<AccountBalanceWallet />}, 
+                         {label:"Tabungan", to:"/produk/dana/tabungan/", icon:<AccountBalanceWallet />}, 
                          {label:"Deposito", to:"#", icon:<CreditCardTwoTone />}, 
                          {label:"Giro", to:"#", icon:<AttachMoney />}
                         ].map((d, i)=>DanaButton({idx:i, isTop:true, ...d}))
