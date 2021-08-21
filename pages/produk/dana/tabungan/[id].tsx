@@ -74,7 +74,7 @@ const termsFeatures = (d, i) => {
             </p>
             {
                 d.features.map((df, i)=><div key={i} className={styles.feature}>
-                                            <span className={`${styles.featureIcon} ${"centerRowFlex"}`}>
+                                            <span className={`${styles.featureIcon} ${"startColumnFlex"}`}>
                                                 {
                                                     d.name==="Prasyarat"?
                                                     <ThumbUpIcon fontSize="small" />:
