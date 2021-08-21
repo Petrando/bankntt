@@ -1,7 +1,7 @@
 .main {
 	max-width: 100vw;
 	min-height: 100vh;
-	background: url("../../public/images/products/Pelayanan-Bank-NTT.png") no-repeat;
+	background: url("../../../public/images/products/Pelayanan-Bank-NTT.png") no-repeat;
 	background-size: cover;
 	object-fit: cover;
 	position: relative;

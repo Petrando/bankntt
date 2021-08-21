@@ -11,3 +11,20 @@ export interface TableCardI {
 	setEdited?:()=>void;
 	updateInterestData?:()=>void;
 }
+
+interface termFeatureI {
+    name:string;
+    features:string[];
+}
+
+export interface savingI {
+	_id?:any;
+    name?:string;
+    photo?:any;
+	photoDimension?:{
+		width:number,height:number
+	};
+    displayPhoto?:string;
+    about?:string;
+    termsFeatures?:termFeatureI[];
+}

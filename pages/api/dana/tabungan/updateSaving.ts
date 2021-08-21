@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { updateSaving } from "../../../../lib/dana/tabungan";
 
-export  async function updateSavingData(req:NextApiRequest, res:NextApiResponse) {
+export default async function updateSavingData(req:NextApiRequest, res:NextApiResponse) {
     try {
         const updateResult = await updateSaving(req.body);  
         const  {modifiedCount} = updateResult;

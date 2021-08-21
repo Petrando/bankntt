@@ -1,7 +1,7 @@
 import { useState, useEffect, FC, Dispatch, SetStateAction } from "react";
+import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/router";
 import styles from "../styles/components/Navbar.module.css";
 import { ArrowDropDown } from "@material-ui/icons";
 
@@ -73,22 +73,17 @@ const CloseIcon: FC<IconStrokeI> = ({ stroke }) => {
 interface NavIconI {
   showNavMenu: boolean;
   navbarOnTop: boolean;
-  asPath: string;
+  darkMenuColor: boolean;
 }
 
-const NavIcon: FC<NavIconI> = ({ showNavMenu, navbarOnTop, asPath }) => {
-  const stroke =
-    !navbarOnTop || showNavMenu
-      ? "#FFF"
-      : asPath === "/robot-as-a-service"
-      ? "rgba(0, 0, 0, 0.7)"
-      : "#FFF";
+const NavIcon: FC<NavIconI> = ({ showNavMenu, navbarOnTop, darkMenuColor }) => {
+  
   return (
     <>
       {showNavMenu ? (
-        <CloseIcon stroke={stroke} />
+        <CloseIcon stroke={"#FFFFFF"} />
       ) : (
-        <MenuIcon stroke={stroke} />
+        <MenuIcon stroke={darkMenuColor?"#636363":"#FFFFFF"} />
       )}
     </>
   );
@@ -99,7 +94,7 @@ const NavMenuList = [
     subMenu : [
       {
         label:"Dana", to:"/produk/dana", subMenu : [
-          {label:"Tabungan", to:"/produk/dana/tabungan/"},
+          {label:"Tabungan", to:"/produk/dana/gallery-tabungan/"},
           {label:"Deposito", to:"#"},
           {label:"Giro", to:"#"},
           {label:"Anjungan Tunai Mandiri (ATM)", to:"#"},
@@ -160,6 +155,10 @@ const NavMenuList = [
   ]}
 ]
 
+const brightTopPages = [
+  "/produk/dana/gallery-tabungan"
+]
+
 const Navbar: FC = () => {
   const [showNavMenu, setShowNavMenu] = useState<boolean>(false);
   const [navbarOnTop, setNavbarOnTop] = useState<boolean>(true);
@@ -202,11 +201,12 @@ const Navbar: FC = () => {
       <NavIcon
         showNavMenu={showNavMenu}
         navbarOnTop={navbarOnTop}
-        asPath={asPath}
+        darkMenuColor={darkMenuColor()}
       />
     </div>
   );
 
+  const darkMenuColor = () => brightTopPages.includes(asPath) && navbarOnTop;
   return (
     <div
       className={`${styles.navbar} ${
@@ -220,10 +220,11 @@ const Navbar: FC = () => {
       <div className={"navbarMenu"}>
         {NavMenuList.map((d, i) => (
           <NavItem key={i} {...d} 
+                   darkMenuColor={darkMenuColor()}    
                    navbarOnTop={navbarOnTop} 
                    isMidScreensize={isMidScreensize}
                    currentHover={currentHover} 
-                   setCurrentHover={setCurrentHover}                   
+                   setCurrentHover={setCurrentHover}               
           />
         ))}
       </div>
@@ -283,6 +284,7 @@ interface NavSubMenu {
 interface NavItemI {
   label: string;
   to: string;
+  darkMenuColor:boolean;
   subMenu?:NavSubMenu[];
   navbarOnTop: boolean;
   isMidScreensize: boolean;
@@ -290,7 +292,7 @@ interface NavItemI {
   setCurrentHover:Dispatch<SetStateAction<String>>;
 }
 
-const NavItem: FC<NavItemI> = ({ label, to, navbarOnTop, isMidScreensize, currentHover, setCurrentHover, subMenu }) => {
+const NavItem: FC<NavItemI> = ({ label, to, darkMenuColor, navbarOnTop, isMidScreensize, currentHover, setCurrentHover, subMenu }) => {
   const router = useRouter();
   const { asPath } = router;
 
@@ -406,7 +408,7 @@ const NavItem: FC<NavItemI> = ({ label, to, navbarOnTop, isMidScreensize, curren
     <Link href={to}>
       <>
       <a
-        className={`${styles.menuItem}`}        
+        className={`${styles.menuItem} ${darkMenuColor && styles.menuItem_atBrightTopPages}`}        
         onClick={()=>{
           setCurrentHover(typeof subMenu==="undefined"?"":currentHover===label?"":label);
         }}                

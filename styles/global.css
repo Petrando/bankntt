@@ -49,6 +49,7 @@ img {
   text-align: left;
   /*margin-top: 50px;
   margin-bottom: 0px;*/
+  width:81.25%;
 }
 
 .dialogTitle {
@@ -66,6 +67,12 @@ img {
   width: 81.25%;
   margin-bottom: 0px;
   margin-top: 8px;*/
+}
+
+@media (max-width:648px){
+  .title {
+    width: 90%;
+  }
 }
 
 .spanButton, .okButton, .cancelButton {
@@ -156,9 +163,97 @@ a, a:hover{
   flex-wrap: wrap;
 }
 
+.startColumnFlex {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .flex09{
   flex:0.9;
 }
 .flex01 {
   flex:0.1;
+}
+
+.imageGallery {
+  width: 81.25%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width:648px){
+  .imageGallery {
+    width: 90%;
+  }
+}
+
+.imageContainer {
+  width: 100%;
+  height:100%;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 0px;
+}
+
+.imageHoverInfo {
+  position: absolute;
+  left: 0px;
+  top: 80%;
+  width: 100%;
+  height: 100%;
+  padding: 24px;
+  /*background-color: rgba(0, 0, 0, 0);*/
+  background-image: linear-gradient(rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 10%);
+  /*pointer-events: none;*/
+  transition: top 0.2s;
+}
+
+.imageHoverInfo .description {
+  color: #ffffff;
+  opacity: 0;
+  font-size: 13.5px;
+  transition: opacity 0.25s;
+}
+
+.imageTitle {
+  font-weight: 450;
+  font-size: 15px;
+  line-height: 20px;
+  color: #ffffff;
+  margin: 0px;
+  padding: 0px;
+}
+
+@media (max-width: 320px){
+  .imageHoverInfo .description {  
+    font-size: 12.5px;  
+  }
+
+  .imageTitle {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 15px;
+  }
+}
+
+.imageContainer:hover .imageHoverInfo {
+  top: 0%;
+  background-color: rgba(0, 0, 0, 0.6);
+  background-image: none;
+}
+
+.imageContainer:hover .description {
+  opacity: 1;
+}
+
+@media (max-width:648px){
+  .imageHoverInfo {
+    top: 72.5%;
+  }
 }

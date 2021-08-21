@@ -5,6 +5,8 @@ import styles from "../../styles/home/Events.module.css";
 
 interface ImageInGridI {
   photo: string;
+  photoWidth?:number;
+  photoHeight?:number;
   title: string; 
   titleColor?: string;
   about: string;
@@ -14,6 +16,8 @@ interface ImageInGridI {
 
 const ImageInGrid: FC<ImageInGridI> = ({
   photo,
+  photoWidth,
+  photoHeight,
   title,
   titleColor,
   about,
@@ -21,11 +25,12 @@ const ImageInGrid: FC<ImageInGridI> = ({
 }) => {  
   
   return (
-    <div className={styles.imageContainer}>
-      <Image src={photo} layout="fill" objectFit="cover" alt={title} />
-      <div className={styles.imageHoverInfo}>
-        <p className={`${styles.imageTitle} ${typeof titleColor !== "undefined" && "titleColor"}`}>{title}</p>
-        <p className={styles.description}>
+    <div className={"imageContainer"}>
+      <Image src={photo}  layout="fill" objectFit="cover" alt={title} />
+      
+      <div className={"imageHoverInfo"}>
+        <p className={`${"imageTitle"} ${titleColor && "titleColor"}`}>{title}</p>
+        <p className={"description"}>
           {about}
         </p>
         {

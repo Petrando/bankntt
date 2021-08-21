@@ -3,7 +3,7 @@ import Link from "next/link";
 import {AccountBalanceWallet, Atm, CreditCardTwoTone, AttachMoney, PhoneAndroid, PhonelinkSetup} from '@material-ui/icons/';
 import Layout from "../../../components/layout";
 import Button, {AquaButton} from "../../../components/globals/Button";
-import styles from "../../../styles/produk/DanaMain.module.css";
+import styles from "../../../styles/produk/dana/DanaMain.module.css";
 
 const Dana = () => {
     const DanaButton = ({idx, isTop, label, to, icon}:
@@ -31,7 +31,7 @@ const Dana = () => {
                     <legend>Produk Dana</legend>
                     {
                         [
-                         {label:"Tabungan", to:"/produk/dana/tabungan/", icon:<AccountBalanceWallet />}, 
+                         {label:"Tabungan", to:"/produk/dana/gallery-tabungan/", icon:<AccountBalanceWallet />}, 
                          {label:"Deposito", to:"#", icon:<CreditCardTwoTone />}, 
                          {label:"Giro", to:"#", icon:<AttachMoney />}
                         ].map((d, i)=>DanaButton({idx:i, isTop:true, ...d}))

@@ -2,6 +2,7 @@ import { Fragment, useState, useEffect, useRef, useReducer, Dispatch } from "rea
 import useSWR from 'swr';
 import imageCompression from 'browser-image-compression';
 import fetcher from "../../../lib/fetcher";
+import {savingI} from "../../../types";
 import Layout from "../../../components/admin/layout";
 import Header from "../../../components/admin/components/header";
 import ModalLayout from "../../../components/globals/ModalLayout";
@@ -15,7 +16,6 @@ import BlockIcon from '@material-ui/icons/Block';
 import ClearIcon from '@material-ui/icons/Clear';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import { close } from "node:inspector";
 
 const Savings = () => {
     const { data, mutate, error } = useSWR('/api/dana/tabungan/tabunganList', fetcher);
@@ -64,19 +64,6 @@ const Savings = () => {
     )
 }
 
-interface termFeatureI {
-    name:string;
-    features:string[];
-}
-
-interface savingI {
-    name:string;
-    photo:string;
-    displayPhoto:string;
-    about:string;
-    "terms & features":termFeatureI[];
-}
-
 interface checkboxStatesI {
     Prasyarat:boolean;
     "Syarat Khusus":boolean;
@@ -93,6 +80,8 @@ interface SavingFormI {
 interface actionI {
     type:string;
     name?:string;
+    photoWidth?:number;
+    photoHeight?:number;
     photo?:any;
     displayPhoto?:any;
     about?:string;
@@ -107,9 +96,10 @@ const SavingFormState:SavingFormI = {
     saving : {
         name:"",
         photo:null,
+        photoDimension:{width:0, height:0},
         displayPhoto:null,
         about:"",
-        "terms & features":[
+        termsFeatures:[
             {
                 name:"Prasyarat",
                 features:[]
@@ -148,28 +138,33 @@ const SavingReducer = (state:SavingFormI, action:actionI):SavingFormI => {
             const {photo, displayPhoto} = action;
             updatedState.saving.photo = action.photo;
             updatedState.saving.displayPhoto = displayPhoto;
-            return updatedState;            
+            return updatedState;   
+        case "SET_PHOTO_DIMENSION":
+            const {photoWidth, photoHeight} = action;
+            updatedState.saving.photoDimension.width = photoWidth;
+            updatedState.saving.photoDimension.height = photoHeight;
+            return updatedState;
         case "CHANGE_ABOUT":
             updatedState.saving.about = action.about;
             return updatedState;
         case "ADD_TERM_OR_FEATURE": {
             const {featureName, feature} = action;
-            const idxToUpdate = updatedState.saving["terms & features"].findIndex(d => d.name===featureName);
-            updatedState.saving["terms & features"][idxToUpdate].features.push(feature);
+            const idxToUpdate = updatedState.saving.termsFeatures.findIndex(d => d.name===featureName);
+            updatedState.saving.termsFeatures[idxToUpdate].features.push(feature);
             return updatedState;
         }             
         case "EDIT_TERM_OR_FEATURE": {
             const {featureName, feature, featureIdx} = action;
-            const idxToUpdate = updatedState.saving["terms & features"].findIndex(d => d.name===featureName);
-            updatedState.saving["terms & features"][idxToUpdate].features[featureIdx] = feature;
+            const idxToUpdate = updatedState.saving.termsFeatures.findIndex(d => d.name===featureName);
+            updatedState.saving.termsFeatures[idxToUpdate].features[featureIdx] = feature;
             return updatedState;
         }
         case "DELETE_TERM_OR_FEATURE": {
             const {featureName, featureIdx} = action;
-            const idxToUpdate = updatedState.saving["terms & features"].findIndex(d => d.name===featureName);
-            let updatedFeatures = updatedState.saving["terms & features"][idxToUpdate].features.slice();
+            const idxToUpdate = updatedState.saving.termsFeatures.findIndex(d => d.name===featureName);
+            let updatedFeatures = updatedState.saving.termsFeatures[idxToUpdate].features.slice();
             updatedFeatures = updatedFeatures.filter((d, i)=>i!==featureIdx);
-            updatedState.saving["terms & features"][idxToUpdate].features = updatedFeatures;
+            updatedState.saving.termsFeatures[idxToUpdate].features = updatedFeatures;
             return updatedState;
         }
         case "TOGGLE_CHECKBOX":            
@@ -179,6 +174,9 @@ const SavingReducer = (state:SavingFormI, action:actionI):SavingFormI => {
         case "TOGGLE_LOADING":
             updatedState.loading = !updatedState.loading;
             return updatedState;
+        case "RESET_SAVING_DATA":
+            updatedState = SavingFormState;
+            return updatedState;
         default:
             return state;
     }
@@ -187,9 +185,14 @@ const SavingReducer = (state:SavingFormI, action:actionI):SavingFormI => {
 const AddNewSaving = ({closeAdding}:{closeAdding:()=>void}) => {
     const [formState, dispatch] = useReducer(SavingReducer, SavingFormState);
 
-    const getMyFeatures = (featureLabel) => {
-        const featureIdx = formState.saving["terms & features"].findIndex((d)=>d.name===featureLabel);
-        return formState.saving["terms & features"][featureIdx].features;
+    useEffect(()=>{
+        console.log("new instance.")
+        dispatch({type:"RESET_SAVING_DATA"});
+    }, [])
+
+    const getMyFeatures = (featureLabel: string) => {
+        const featureIdx = formState.saving.termsFeatures.findIndex((d)=>d.name===featureLabel);
+        return formState.saving.termsFeatures[featureIdx].features;
     }
 
     const mayNotSave = () => {
@@ -198,13 +201,14 @@ const AddNewSaving = ({closeAdding}:{closeAdding:()=>void}) => {
 
     const createFormData = () => {
         const formData = new FormData();
-        const {name, photo, about} = formState.saving;
+        const {name, photo, about, photoDimension} = formState.saving;
         formData.append("name", name);
         formData.append("photo", photo);
+        formData.append("photoDimension", JSON.stringify(photoDimension));
         formData.append("about", about);
         
         //append termsFeatures only when checkbox is checked and features has content : length > 0
-        const termsFeatures = formState.saving["terms & features"].filter(d=>formState.checkboxStates[d.name] && d.features.length > 0);
+        const termsFeatures = formState.saving.termsFeatures.filter(d=>formState.checkboxStates[d.name] && d.features.length > 0);
         formData.append("termsFeatures", JSON.stringify(termsFeatures));
         
         return formData;
@@ -268,11 +272,23 @@ const AddNewSaving = ({closeAdding}:{closeAdding:()=>void}) => {
                         </label>
                         <input type="file" className={`${"input"} ${"width100"} ${"photoAndAboutHeight"}`} id="fotoTabungan" 
                             onChange={(e)=>{
+                                const _URL = window.URL || window.webkitURL;//additional for getting image file
                                 const photoFile = e.target.files[0];
+                                console.log(photoFile)
                                 if(!photoFile){
                                     console.log("no files");
                                     return;
                                 }else {
+                                    const img = new Image();
+                                    let objectUrl = _URL.createObjectURL(photoFile);
+                                    img.onload = () => {
+                                        if(typeof img !== "undefined"){
+                                            console.log(img.width, ', ', img.height);
+                                            dispatch({type:"SET_PHOTO_DIMENSION", photoWidth:img.width, photoHeight:img.height});
+                                            _URL.revokeObjectURL(objectUrl)
+                                        }
+                                    }
+                                    img.src = objectUrl;
                                     dispatch({type:"SET_PHOTO", photo:photoFile, displayPhoto:URL.createObjectURL(photoFile)});
                                 }
                             }}
