@@ -19,14 +19,7 @@ async function addSaving(req:NextApiRequest, res:NextApiResponse) {
           if(termsNFeatures.length > 0){
             newSavingData.termsFeatures = termsNFeatures;
           }
-          /*
-          console.log(files.photo);
-          console.log('path : ');
-          console.log(files.photo.path);
-          console.log('type : ');
-          console.log(files.photo.type);
-          res.json({message:"Try play"});
-          */
+          
           newSavingData.photo = {};
           newSavingData.photo.data = fs.readFileSync(files.photo.path);
           newSavingData.photo['Content-Type'] = files.photo.type;

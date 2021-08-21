@@ -64,7 +64,7 @@ const GalleryTabungan = ():JSX.Element => {
                                                  photoHeight={d.photo.height}
                                                  title={d.name}
                                                  about={d.about}
-                                                 linkTo={"#"}
+                                                 linkTo={`/produk/dana/tabungan/${d._id.toString()}`}
                                                  learnMoreLabel={"Selengkapnya"}
                                                />
                                              </div>

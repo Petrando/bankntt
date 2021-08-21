@@ -159,6 +159,9 @@ const brightTopPages = [
   "/produk/dana/gallery-tabungan"
 ]
 
+const brightTopPages_dinamicUrl = [
+  "/produk/dana/tabungan/"
+]
 const Navbar: FC = () => {
   const [showNavMenu, setShowNavMenu] = useState<boolean>(false);
   const [navbarOnTop, setNavbarOnTop] = useState<boolean>(true);
@@ -206,7 +209,20 @@ const Navbar: FC = () => {
     </div>
   );
 
-  const darkMenuColor = () => brightTopPages.includes(asPath) && navbarOnTop;
+  const isBrightTop_dynamicUrl = () => {
+    let isBrightTop = false;
+    
+    for(let i=0; i < brightTopPages_dinamicUrl.length; i++){
+      if(asPath.startsWith(brightTopPages_dinamicUrl[i])){
+        isBrightTop = true;
+        break;
+      }      
+    }
+
+    return isBrightTop;
+  }
+
+  const darkMenuColor = () => (brightTopPages.includes(asPath) || isBrightTop_dynamicUrl()) && navbarOnTop;
   return (
     <div
       className={`${styles.navbar} ${

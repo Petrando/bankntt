@@ -28,6 +28,39 @@ export const getSavings = async (projection?:savingProjectionI) => {
 	return savings;
 }
 
+export const getAllTabunganIds = async ():Promise<{params:{id:string}}[]> => {;
+	const { db } = await connectToDatabase();
+  
+	const savings = await db
+	  		.collection("tabungan")
+	  		.find({})
+			.project({name:0, about:0, photo:0, termsFeatures:0})
+	  		.toArray()
+
+	const formattedSavings = savings.map(d=> {
+		return {			
+			params:{
+				id:d._id.toString()
+			}
+		}
+	})
+
+	return formattedSavings;
+}
+
+export const getTabunganData = async (id:string) => {
+	const { db } = await connectToDatabase();
+
+	const savingData = await db
+		.collection("tabungan")
+		.find({_id: new ObjectId(id)})
+		.toArray();
+	
+	savingData[0]._id = savingData[0]._id.toString();
+	savingData[0].photo = JSON.stringify(savingData[0].photo);
+	return savingData[0];
+}
+
 export const getSavingGalleryData = async (projection:savingProjectionI) => {
 	const { db } = await connectToDatabase();
   
