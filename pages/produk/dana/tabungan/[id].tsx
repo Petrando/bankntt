@@ -122,7 +122,7 @@ return (
                     } 
                     <p className={`${"learnMoreContainer"} ${"learnMoreTop"}`}>
 				        <LearnMore linkTo="/produk/dana/gallery-tabungan" 
-						   label="Kembali ke Gallery" 
+						   label="Gallery Tabungan" 
 						   onBrightSurface={true}/>
 			        </p>      
                 </>

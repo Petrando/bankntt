@@ -24,7 +24,7 @@ export default function Home({frontPageData}:{
     }
   }
 ) {
-  console.log(frontPageData);
+  
   return (
     <Layout>
       <Head>
@@ -32,7 +32,7 @@ export default function Home({frontPageData}:{
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Hero />
-      <Tabungan />
+      <Tabungan savings={frontPageData.savings} />
       <Events />
       <InterestRate interests={frontPageData.interests} />      
     </Layout>
