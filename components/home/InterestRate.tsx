@@ -1,23 +1,29 @@
 import { FC, useState, useEffect } from "react";
 import useSWR from 'swr';
-import { TableCardI } from "../../types";
+import { interestI } from "../../types";
 import styles from  "../../styles/home/Interest.module.css";
 import tableStyles from "../../styles/components/InterestTable.module.css";
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
-const InterestRate = () => {
-	const { data, error } = useSWR('/api/interests/listInterests', fetcher);
+const InterestRate = ({interests}:{interests:interestI[]}) => {
+	//const { data, error } = useSWR('/api/interests/listInterests', fetcher);
 
 	return (
 		<section className={`${styles.interestMain} ${styles.flexRule}`}>
 			<div className={styles.tableCards}>
 				{
-					data &&
-					data.length > 0 &&
-					data.map((d, i) => (<TableCard key={i} {...d} />))
+					interests &&
+					interests.length > 0 &&
+					interests.map((d, i) => (<TableCard key={i} {...d} />))
 				}
-				{
+			</div>
+		</section>
+	)
+}
+
+/*
+			{
 					error &&
 					<h3>Connection error</h3>
 				}
@@ -25,12 +31,9 @@ const InterestRate = () => {
 					!data &&
 					<h3>Loading....</h3>
 				}
-			</div>
-		</section>
-	)
-}
+				*/
 
-const TableCard:FC<TableCardI> = ({title, rates, firstColumnTitle}) => {
+const TableCard:FC<interestI> = ({title, rates, firstColumnTitle}):JSX.Element => {
 	return (
 		<div className={`${styles.tableCard} ${styles.flexRule}`}>
 			<h2 className={styles.interestTitle}>{title}</h2>

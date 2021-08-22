@@ -3,7 +3,7 @@ interface RateI {
 	rate:string;
 }
 
-export interface TableCardI {
+export interface interestI {
 	_id?:string;
 	title: string;
 	rates: RateI[];

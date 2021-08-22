@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import { connectToDatabase } from "../../mongodb";
-import { savingI } from "../../../types";
+//import { savingI, interestI } from "../../../types";
 
 interface savingProjectionI {
 	_id?:number;
@@ -28,7 +28,7 @@ export const getSavings = async (projection?:savingProjectionI) => {
 	return savings;
 }
 
-export const getSavingsForFrontpage = async () => {
+export const getDataForFrontpage = async () => {
 	const { db } = await connectToDatabase();
 
 	const fourSampleSavings = await db
@@ -42,8 +42,18 @@ export const getSavingsForFrontpage = async () => {
 		d._id = d._id.toString();
 		d.photo = JSON.stringify(d.photo);
 	});
+  
+	const interests = await db
+	  .collection("interests")
+	  .find({})
+	  .project({lastModified:0})
+	  .toArray();
 
-	return fourSampleSavings;
+	interests.forEach(d => {
+		d._id = d._id.toString();
+	})
+
+	return {savings:fourSampleSavings, interests};
 }
 
 export const getAllTabunganIds = async ():Promise<{params:{id:string}}[]> => {;

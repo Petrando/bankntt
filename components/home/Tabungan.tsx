@@ -34,6 +34,7 @@ const tabungan = [
 ]
 
 const Tabungan = () => {
+	
 	return (
 		<section className={styles.tabunganSection}>
 			<h2 className={styles.tabunganTitle}>
