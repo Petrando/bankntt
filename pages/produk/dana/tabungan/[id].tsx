@@ -45,7 +45,7 @@ interface SavingI {
     }[]
 }
 
-export default function Post({ savingData }: {
+export default function ASaving({ savingData }: {
   savingData: {
     name: string,
     about: string,
@@ -100,9 +100,6 @@ return (
             {
                 mySavingData &&
                 <>
-                    <h2 className={`${"title"} ${styles.title}`}>
-                        {mySavingData.name}
-                    </h2>
                     <div className={styles.imgContainer}>
                         <Image 
                             src={`data:${mySavingData.photo["Content-Type"]};base64, ${mySavingData.photo["data"]}`}
@@ -110,6 +107,11 @@ return (
                             objectFit="cover" 
                             alt={mySavingData.name} 
                         />
+                        <div className={styles.imageCover}>
+                            <h2 className={`${"title"} ${styles.title}`}>
+                                {mySavingData.name}
+                            </h2>
+                        </div>
                     </div>       
                     <p className={"about"}>
                         {

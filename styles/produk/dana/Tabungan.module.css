@@ -7,6 +7,31 @@
 
 .title {
     margin-top: 116px;
+    color:#ffffff;
+    padding-left: 20px;
+}
+
+.imgContainer {
+    margin-top: 116px;
+    position: relative;
+    width: 81.25%;
+    height: 450px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.imageCover {
+    position:absolute;
+    width: 100%;
+    height: 100%;
+    left:0px;
+    top:0px;
+    background-image: linear-gradient(transparent, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0.8) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: start;
+    padding:auto 10px 10px;
 }
 
 .featureTitle {
@@ -24,18 +49,10 @@
 }
 
 .featureIcon{
-    flex:0.1;
+    flex:0.05;
 }
 .featureAbout {
-    flex:0.9;
-}
-
-.imgContainer {
-    position: relative;
-    width: 81.25%;
-    height: 400px;
-    overflow: hidden;
-    border-radius: 10px;
+    flex:0.95;
 }
 
 @media (max-width:648px) {
@@ -44,16 +61,23 @@
     }
     .imgContainer {
         width: 90%;
-        height: 250px;
+        height: 300px;
     }
     .feature {
         width: 90%;
+    }
+
+    .featureIcon{
+        flex:0.1;
+    }
+    .featureAbout {
+        flex:0.9;
     }
 }
 
 @media (min-width:649px) and (max-width:1024px){
     .imgContainer {
-        height: 350px;;
+        height: 400px;
     }
 }
 
