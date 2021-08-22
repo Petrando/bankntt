@@ -9,9 +9,8 @@ import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import Image from "next/image"
 import Layout from "../../../../components/layout";
 import styles from "../../../../styles/produk/dana/Tabungan.module.css";
-
 import { getAllTabunganIds, getTabunganData  } from '../../../../lib/dana/tabungan'
-import { style } from '@material-ui/system';
+import LearnMore from '../../../../components/globals/LearnMore';
 
 export const getStaticProps: GetStaticProps = async ({params}) => {  
   const savingData = await getTabunganData(params.id as string)
@@ -120,7 +119,12 @@ return (
                     {
                         mySavingData.termsFeatures.length > 0 &&
                         mySavingData.termsFeatures.map((d, i)=>termsFeatures(d, i))
-                    }         
+                    } 
+                    <p className={"learnMoreContainer"}>
+				        <LearnMore linkTo="/produk/dana/gallery-tabungan" 
+						   label="Kembali ke Gallery" 
+						   onBrightSurface={true}/>
+			        </p>      
                 </>
             }
         </main>

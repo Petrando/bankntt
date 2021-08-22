@@ -1,16 +1,23 @@
-.learnMore {
-  color: #4fb0c8;
+.learnMore {  
   font-weight: 500;
   text-decoration: none;
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: flex-end;
   align-items: center;
   overflow: visible;
   cursor: pointer;
   pointer-events: all;
   margin-top: 0px;
-  width: auto;  
+  width: 100%;  
+}
+
+.onDarkSurface {
+  color: #4fb0c8;
+}
+
+.onBrightSurface {
+  color: #4F46E5;
 }
 
 .label {

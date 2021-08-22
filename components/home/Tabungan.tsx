@@ -52,24 +52,10 @@ const Tabungan = () => {
 				}
 			</div>
 			<p className={"learnMoreContainer"}>
-				<LearnMore linkTo="#" label="Produk Tabungan Lainnya" />
-			</p>
-			<style jsx>{`
-				.learnMoreContainer {
-					width: 81.25%;
-					margin: 0px;
-					padding: 0px;
-					margin-bottom: 50px;
-					text-align: right;					
-				}
-
-				@media (max-width: 648px){
-					.learnMoreContainer {
-						width: 90%;
-					}
-				}
-				
-			`}</style>			
+				<LearnMore linkTo="/produk/dana/gallery-tabungan" 
+						   label="Gallery Tabungan" 
+						   onBrightSurface={true}/>
+			</p>		
 		</section>
 	)
 }

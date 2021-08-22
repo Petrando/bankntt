@@ -28,6 +28,24 @@ export const getSavings = async (projection?:savingProjectionI) => {
 	return savings;
 }
 
+export const getSavingsForFrontpage = async () => {
+	const { db } = await connectToDatabase();
+
+	const fourSampleSavings = await db
+		.collection("tabungan")
+		.aggregate(
+			[ { $sample: { size: 4 } } ]
+		)
+		.toArray();
+
+	fourSampleSavings.forEach(d=>{
+		d._id = d._id.toString();
+		d.photo = JSON.stringify(d.photo);
+	});
+
+	return fourSampleSavings;
+}
+
 export const getAllTabunganIds = async ():Promise<{params:{id:string}}[]> => {;
 	const { db } = await connectToDatabase();
   

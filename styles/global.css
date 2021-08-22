@@ -258,3 +258,17 @@ a, a:hover{
     top: 72.5%;
   }
 }
+
+.learnMoreContainer {
+  width: 81.25%;
+  margin: 0px;
+  padding: 0px;
+  text-align: right;					
+  position: relative;
+}
+
+@media (max-width: 648px){
+  .learnMoreContainer {
+    width: 90%;
+  }
+}
