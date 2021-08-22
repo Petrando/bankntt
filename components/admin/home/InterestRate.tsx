@@ -6,7 +6,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import BlockIcon from '@material-ui/icons/Block';
 import ClearIcon from '@material-ui/icons/Clear';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
-import { TableCardI } from "../../../types";
+import { interestI } from "../../../types";
 import styles from  "../../../styles/home/Interest.module.css";
 import tableStyles from "../../../styles/components/InterestTable.module.css";
 import ModalLayout from "../../globals/ModalLayout";
@@ -88,7 +88,7 @@ const InterestRate = () => {
 	)
 }
 
-const TableCard:FC<TableCardI> = ({ title, rates, firstColumnTitle, setEdited}) => {
+const TableCard:FC<interestI> = ({ title, rates, firstColumnTitle, setEdited}) => {
 	return (
 		<div className={`${styles.tableCard} ${styles.flexRule}`}>
 			<div className={tableStyles.titleContainer}>
@@ -122,7 +122,7 @@ const TableCard:FC<TableCardI> = ({ title, rates, firstColumnTitle, setEdited}) 
 	)
 }
 
-const EditedTableCard:FC<TableCardI> = ({ _id, title, rates, firstColumnTitle, setEdited, updateInterestData}) => {
+const EditedTableCard:FC<interestI> = ({ _id, title, rates, firstColumnTitle, setEdited, updateInterestData}) => {
 	const [editedRateIdx, setEditedRate] = useState<number>(-1);
 	const [aRowIsDirty, setARowIsDirty] = useState<boolean>(false);
 	const [errorMsg, setErrorMsg] = useState<string>("");
