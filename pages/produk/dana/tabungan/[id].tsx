@@ -120,7 +120,7 @@ return (
                         mySavingData.termsFeatures.length > 0 &&
                         mySavingData.termsFeatures.map((d, i)=>termsFeatures(d, i))
                     } 
-                    <p className={"learnMoreContainer"}>
+                    <p className={`${"learnMoreContainer"} ${"learnMoreTop"}`}>
 				        <LearnMore linkTo="/produk/dana/gallery-tabungan" 
 						   label="Kembali ke Gallery" 
 						   onBrightSurface={true}/>
@@ -128,6 +128,11 @@ return (
                 </>
             }
         </main>
+        <style jsx>{`
+            .learnMoreTop {
+                margin-top: 40px;
+            }
+        `}</style>
     </Layout>
   )  	
 }
