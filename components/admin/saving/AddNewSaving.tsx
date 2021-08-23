@@ -45,7 +45,7 @@ const AddNewSaving = ({closeForm}:{closeForm:()=>void}) => {
 			
             console.log(saveResult);
 			if(saveResult.message==="success"){
-				closeAdding();
+				closeForm();
 			}else{
                 dispatch({type:"TOGGLE_LOADING"});
 			}

@@ -18,7 +18,7 @@ const SavingForm = ({formState, dispatch, saveData, mayNotSave, closeForm, reset
                         formState:savingFormI, 
                         dispatch:Dispatch<savingActionI>,
                         saveData:()=>void,
-                        resetForm:()=>void,
+                        resetForm?:()=>void,
                         mayNotSave:()=>boolean,
                         closeForm:()=>void
                     }) => {
@@ -322,7 +322,12 @@ const CheckElement = ({label, dispatch, checkState}:{label:string, dispatch:Disp
     )
 }
 
-const AddFeatures = ({title, dispatch, features}:{title:string, dispatch:Dispatch<savingActionI>, features:string[]}) => {
+const AddFeatures = ({title, dispatch, features}:
+                     {
+                         title:string, 
+                         dispatch:Dispatch<savingActionI>, 
+                         features:string[]
+                     }) => {
     const [isAdding, setIsAdding] = useState<boolean>(false);
     const [idxEdited, setEditedIdx] = useState<number>(-1);
 
