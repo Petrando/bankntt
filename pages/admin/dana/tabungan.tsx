@@ -1,13 +1,12 @@
-import { Fragment, useState, useEffect, useRef, useReducer, Dispatch } from "react";
+import { useState, useEffect, useReducer } from "react";
 import useSWR from 'swr';
 import fetcher from "../../../lib/fetcher";
 import fetchJson from "../../../lib/fetchJson";
-import {savingI} from "../../../types";
 import Layout from "../../../components/admin/layout";
 import Header from "../../../components/admin/components/header";
 import ModalLayout from "../../../components/globals/ModalLayout";
 import SavingForm from "../../../components/admin/components/TabunganForm";
-import GridElement from "../../../components/admin/components/TabunganInGrid.tsx";
+import GridElement from "../../../components/admin/components/SavingGridElement";
 import { savingFormI, savingActionI } from "../../../types";
 
 const Savings = () => {
