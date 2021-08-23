@@ -28,3 +28,31 @@ export interface savingI {
     about?:string;
     termsFeatures?:termFeatureI[];
 }
+
+interface checkboxStatesI {
+    Prasyarat:boolean;
+    "Syarat Khusus":boolean;
+    Fasilitas:boolean;
+    Keuntungan:boolean;
+}
+
+export interface savingFormI {
+    saving: savingI;
+    checkboxStates:checkboxStatesI;
+    loading:boolean;
+}
+
+export interface savingActionI {
+    type:string;
+    name?:string;
+    photoWidth?:number;
+    photoHeight?:number;
+    photo?:any;
+    displayPhoto?:any;
+    about?:string;
+    featureName?:string;
+    feature?:string;
+    featureIdx?:number;
+    featureCheck?:string;
+    newState?:boolean;
+}

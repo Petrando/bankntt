@@ -1,6 +1,5 @@
 import { Fragment, useState, useEffect, useRef, useReducer, Dispatch } from "react";
 import useSWR from 'swr';
-
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -15,13 +14,16 @@ import {savingI} from "../../../types";
 import Layout from "../../../components/admin/layout";
 import Header from "../../../components/admin/components/header";
 import ModalLayout from "../../../components/globals/ModalLayout";
-import GridElement from "../../../components/admin/components/tabunganInGrid";
+import SavingForm from "../../../components/admin/components/TabunganForm";
+import GridElement from "../../../components/admin/components/TabunganInGrid";
+import { savingFormI, savingActionI } from "../../../types";
 import dialogStyles from "../../../styles/admin/ProductDialog.module.css";
 
 const Savings = () => {
     const { data, mutate, error } = useSWR('/api/dana/tabungan/tabunganList', fetcher);
     const [isAdding, setIsAdding] = useState<boolean>(false);
-    const [idxEdit, setEditIdx] = useState<number>(-1);
+    const [idEdit, setEditId] = useState<string>("");
+    const [idToDelete, setDeleteId] = useState<string>("");
 
     useEffect(()=>{
         console.log(data);
@@ -37,9 +39,14 @@ const Savings = () => {
                 }
                 {
                     data &&
-                    <div className={`${"imageGallery"} ${"marginTop"}`}>
+                    <div className={`${"imageGallery"} ${"margins"}`}>
                         {
-                            data.map(d => <GridElement data={d} />)
+                            data.map(d => <GridElement 
+                                            key={d._id}
+                                            data={d} 
+                                            setEdit={(id)=>{setEditId(id)}}
+                                            setDelete={(id)=>{setDeleteId(id)}}   
+                                         />)
                         }
 					</div>
                 }
@@ -52,10 +59,19 @@ const Savings = () => {
                 </ModalLayout>
             }
             {
-                idxEdit !== -1 &&
-                <ModalLayout closeModal={()=>{setEditIdx(-1)}}>
+                idEdit !== "" &&
+                <ModalLayout closeModal={()=>{setEditId("")}}>
                     <div className={"dialog"}>
                         <h4>Edit Tabungan</h4>
+                    </div>
+
+                </ModalLayout>
+            }
+            {
+                idToDelete !== "" &&
+                <ModalLayout closeModal={()=>{setDeleteId("")}}>
+                    <div className={"dialog"}>
+                        <h4>Hapus Tabungan</h4>
                     </div>
 
                 </ModalLayout>
@@ -67,43 +83,16 @@ const Savings = () => {
                     background-color:lightsteelblue;
                     display:flex;justify-content:center;align-items:center;flex-wrap:wrap;
                 }
-                .marginTop {
+                .margins {
                     margin-top:15px;
+                    margin-bottom: 60px;
                 }
             `}</style>
         </Layout>        
     )
 }
 
-interface checkboxStatesI {
-    Prasyarat:boolean;
-    "Syarat Khusus":boolean;
-    Fasilitas:boolean;
-    Keuntungan:boolean;
-}
-
-interface SavingFormI {
-    saving: savingI;
-    checkboxStates:checkboxStatesI;
-    loading:boolean;
-}
-
-interface actionI {
-    type:string;
-    name?:string;
-    photoWidth?:number;
-    photoHeight?:number;
-    photo?:any;
-    displayPhoto?:any;
-    about?:string;
-    featureName?:string;
-    feature?:string;
-    featureIdx?:number;
-    featureCheck?:string;
-    newState?:boolean;
-}
-
-const SavingFormState:SavingFormI = {
+const SavingFormState:savingFormI = {
     saving : {
         name:"",
         photo:null,
@@ -138,7 +127,7 @@ const SavingFormState:SavingFormI = {
     loading:false
 }
 
-const SavingReducer = (state:SavingFormI, action:actionI):SavingFormI => {
+const SavingReducer = (state:savingFormI, action:savingActionI):savingFormI => {
     let updatedState = Object.assign({}, state);
 
     switch (action.type){
@@ -201,7 +190,7 @@ const AddNewSaving = ({closeAdding}:{closeAdding:()=>void}) => {
         dispatch({type:"RESET_SAVING_DATA"});
     }, [])
 
-    const getMyFeatures = (featureLabel: string) => {
+    const getMyFeatures = (featureLabel: string):string[] => {
         const featureIdx = formState.saving.termsFeatures.findIndex((d)=>d.name===featureLabel);
         return formState.saving.termsFeatures[featureIdx].features;
     }
@@ -253,258 +242,17 @@ const AddNewSaving = ({closeAdding}:{closeAdding:()=>void}) => {
     }
 
     return (
-        <div className={dialogStyles.dialog}
-            onClick={(e)=>{
-                e.stopPropagation();
-            }}
-        >
-            <div className={dialogStyles.dialogContent}>
-            <h4 className={`${"dialogTitle"} ${"width100"}`}>
-                {!formState.loading?"Jenis Tabungan Baru":"Menyimpan Data...."}
-            </h4>
-            <label htmlFor="namaTabungan" className={`${"label"} ${"width100"}`}>Nama Tabungan</label>
-            <input type="text" className={`${"input"} ${"width100"}`} id="namaTabungan" name="namaTabungan" 
-                value={formState.saving.name}
-                onChange={(e)=>{
-                    dispatch({type:"CHANGE_NAME", name:e.target.value});
-                }}
-                disabled={formState.loading}
-            />
-            <div className={`${"width100"} ${"photoAndAbout"}`} >
-                <div className={`${"photoContainer"}`}>
-                    {
-                        formState.saving.displayPhoto!==null && 
-                        <img src={formState.saving.displayPhoto} style={{width:"100%", height:"100%"}} />
-                    }
-                    <span className={`${"buttonWrap"} ${"centerRowFlex"}`}>
-                        <label htmlFor="fotoTabungan" className={`${"photoButton"} ${"centerRowFlex"}`}>
-                            <CameraAltIcon style={{marginLeft:"3px"}}/>
-                            Foto
-                        </label>
-                        <input type="file" className={`${"input"} ${"width100"} ${"photoAndAboutHeight"}`} id="fotoTabungan" 
-                            onChange={(e)=>{
-                                const _URL = window.URL || window.webkitURL;//additional for getting image file
-                                const photoFile = e.target.files[0];
-                                console.log(photoFile)
-                                if(!photoFile){
-                                    console.log("no files");
-                                    return;
-                                }else {
-                                    const img = new Image();
-                                    let objectUrl = _URL.createObjectURL(photoFile);
-                                    img.onload = () => {
-                                        if(typeof img !== "undefined"){
-                                            console.log(img.width, ', ', img.height);
-                                            dispatch({type:"SET_PHOTO_DIMENSION", photoWidth:img.width, photoHeight:img.height});
-                                            _URL.revokeObjectURL(objectUrl)
-                                        }
-                                    }
-                                    img.src = objectUrl;
-                                    dispatch({type:"SET_PHOTO", photo:photoFile, displayPhoto:URL.createObjectURL(photoFile)});
-                                }
-                            }}
-                            disabled={formState.loading}
-                        />    
-                    </span>                    
-                </div>
-                <div className={"aboutContainer"}>
-                    <label htmlFor="about" className={`${"label"} ${"width100"}`}>Uraian</label>
-                    <input type="text-area" 
-                        className={`${"input"} ${"width100"} ${"photoAndAboutHeight"} ${"about"}`} 
-                        id="about" name="about" 
-                        value={formState.saving.about}
-                        onChange={(e)=>{
-                            dispatch({type:"CHANGE_ABOUT", about:e.target.value});
-                        }}
-                        disabled={formState.loading}
-                    />
-                </div>
-            </div>
-            <fieldset className={`${"width100"} ${"marginTop"} ${"spaceAroundFlex"}`}>
-                <legend style={{fontSize:"14px"}}>Syarat & Fitur</legend>
-                {
-                    ["Prasyarat", "Syarat Khusus", "Fasilitas", "Keuntungan"].map((d, i)=><CheckElement key={i} 
-                                                                                                    label={d} 
-                                                                                                    dispatch={dispatch} 
-                                                                                                    checkState={formState.checkboxStates[d]}
-                                                                                                    />)
-                }
-            </fieldset>  
-            {
-                formState.checkboxStates.Prasyarat &&
-                <AddFeatures 
-                    title={"Prasyarat"}
-                    dispatch={dispatch}
-                    features={getMyFeatures("Prasyarat")}
-                />       
-            }
-            {
-                formState.checkboxStates["Syarat Khusus"] &&
-                <AddFeatures 
-                    title={"Syarat Khusus"}
-                    dispatch={dispatch}
-                    features={getMyFeatures("Syarat Khusus")}
-                />       
-            }
-            {
-                formState.checkboxStates.Fasilitas &&
-                <AddFeatures 
-                    title={"Fasilitas"}
-                    dispatch={dispatch}
-                    features={getMyFeatures("Fasilitas")}
-                />       
-            }   
-            {
-                formState.checkboxStates.Keuntungan &&
-                <AddFeatures 
-                    title={"Keuntungan"}
-                    dispatch={dispatch}
-                    features={getMyFeatures("Keuntungan")}
-                />       
-            }
-            </div>
-            <div className={dialogStyles.dialogFooter}>
-                <span className={`${"saveCancelButton"} ${"saveButton"} ${(mayNotSave() || formState.loading) && "inactiveButton"}`}
-                    onClick={()=>{saveData()}}                    
-                >
-                    <SaveIcon fontSize={"large"} />    
-                    <span className={"btnLabel"}>
-                        Simpan
-                    </span>
-                </span>                
-                <span className={`${"saveCancelButton"} ${"cancelButton"} ${formState.loading && "inactiveButton"}`}
-                    onClick={()=>{closeAdding()}}
-                >
-                    <CancelIcon fontSize={"large"} />
-                    <span className={"btnLabel"}>
-                        Batal
-                    </span>
-                </span>                
-            </div>
-            <style jsx>
-                {`
-                    .photoAndAbout {
-                        display:flex;justify-content:space-between;
-                        flex-wrap:wrap;
-                    }
-                    .photoContainer {
-                        width:calc(40% - 5px);
-                        min-height:100px;
-                        margin:8px 0px 0px;
-                        padding:0px;
-                        position:relative;
-                    }
-
-                    .buttonWrap {
-                        position: absolute;
-                        left: 0px;
-                        top:0px;
-                        width:100%;
-                        height:100%;
-                        border-radius: 4px;
-                        border: 1px solid #636363;  
-                        pointer-events: none;
-                        background-color: transparent;
-                    }
-
-                    .buttonWrap * {
-                        pointer-events:auto;
-                    }
-
-                    #fotoTabungan {
-                        position: absolute;
-                        z-index: -1;
-                        top: 15px;
-                        left: 20px;
-                        font-size: 17px;
-                        color: #b8b8b8;
-                    }                    
-
-                    .photoButton {
-                        background-color: #1d6355;
-                        border-radius: 10px;
-                        border: 4px double #cccccc;
-                        color: #ffffff;
-                        text-align: center;
-                        padding: 8px;
-                        width: 100px;
-                        transition: all 0.25s;
-                        cursor: pointer;
-                        margin: 5px;
-                      }
-                      .photoButton:hover {
-                        background-color: #00ab97;
-                      }
-                
-                    .aboutContainer {
-                        width:calc(60% - 5px);
-                        margin:8px 0px 0px;
-                        padding:0px;
-                    }
-
-                    .photoAndAboutHeight {
-                        height: 230px;
-                    }
-
-                    .about {
-                        display: flex;
-                        flex-direction:column;
-                        justify-content:flex-start;
-                        align-items:start;
-                        flex-wrap:wrap;
-                    }
-
-                    .marginTop {
-                        margin-top:10px;
-                    }
-
-                    .saveCancelButton {
-                        cursor:pointer;
-                        display:flex;
-                        flex-direction:column;
-                        justify-content:center;
-                        align-items:center;
-                        padding: 5px;
-                        border-radius:5px;
-                    }
-
-                    .saveButton {
-                        color:green;
-                        transition:all 0.25s;
-                    }
-                    .saveButton:hover {
-                        color:#ffffff;
-                        background-color:green;
-                    }
-
-                    .cancelButton {
-                        color:brown;
-                        transition:all 0.25s;
-                    }
-                    .cancelButton:hover {
-                        color:#ffffff;
-                        background-color:brown;
-                    }
-
-                    .btnLabel {
-                        font-size:16px;
-                    }
-
-                    @media (max-width:768px){
-                        .photoContainer{
-                            width:100%;
-                        }
-                        .aboutContainer {
-                            width:100%;
-                        }
-                    }
-                `}
-            </style>
-        </div>
+        <SavingForm
+            formState={formState}
+            dispatch={dispatch}
+            saveData={()=>{saveData()}}
+            mayNotSave={()=>mayNotSave()}
+            closeForm={()=>{closeAdding()}}
+        />
     )
 }
 
-const CheckElement = ({label, dispatch, checkState}:{label:string, dispatch:Dispatch<actionI>, checkState:boolean}) => {
+const CheckElement = ({label, dispatch, checkState}:{label:string, dispatch:Dispatch<savingActionI>, checkState:boolean}) => {
     return (
         <span className={"flexRowStart"}>
             <input type={"checkbox"} id={label} name={label} value={label} 
@@ -516,7 +264,7 @@ const CheckElement = ({label, dispatch, checkState}:{label:string, dispatch:Disp
     )
 }
 
-const AddFeatures = ({title, dispatch, features}:{title:string, dispatch:Dispatch<actionI>, features:string[]}) => {
+const AddFeatures = ({title, dispatch, features}:{title:string, dispatch:Dispatch<savingActionI>, features:string[]}) => {
     //const [features, setFeatures] = useState<string[]>([]);
     const [isAdding, setIsAdding] = useState<boolean>(false);
     const [idxEdited, setEditedIdx] = useState<number>(-1);

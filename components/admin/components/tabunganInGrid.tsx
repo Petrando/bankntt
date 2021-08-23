@@ -4,9 +4,9 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { savingI } from "../../../types";
 import galleryTabunganStyles from "../../../styles/produk/dana/GalleryTabungan.module.css";
 
-const GridElement = ({data}:{data:savingI}) => {
+const GridElement = ({data, setEdit, setDelete}:{data:savingI, setEdit:(id)=>void, setDelete:(id)=>void}) => {
     return (
-        <div key={data._id} className={`${galleryTabunganStyles.tabungan} ${"imgContainer"}`}>
+        <div className={`${galleryTabunganStyles.tabungan} ${"imgContainer"}`}>
             <Image
                 className={"img"}
                 src={`data:${data.photo["Content-Type"]};base64, ${data.photo["data"]}`}
@@ -20,10 +20,10 @@ const GridElement = ({data}:{data:savingI}) => {
             </div>
             <div className={"footer"}>
                 <p>
-                    <span className={"button"}>
+                    <span className={"button"} onClick={()=>{setEdit(data._id)}}>
                         <EditIcon />
                     </span>                    
-                    <span className={`${"button"}`}>
+                    <span className={`${"button"}`} onClick={()=>{setDelete(data._id)}}>
                         <DeleteIcon className={"button"} />    
                     </span>                    
                 </p>                
