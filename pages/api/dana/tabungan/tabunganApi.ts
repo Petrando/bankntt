@@ -10,6 +10,7 @@ export async function savingList(req, res) {
       }
 }
 
+/*
 export  async function updateSavingData(req, res) {
     try {
         const updateResult = await updateSaving(req.body);  
@@ -20,7 +21,7 @@ export  async function updateSavingData(req, res) {
         const { response: fetchResponse } = error;
         res.status(fetchResponse?.status || 500).json(error.data);
       }
-}
+}*/
 
 export  async function deleteASaving(req, res) {
     try {
