@@ -9,6 +9,7 @@
     margin-top: 116px;
     color:#ffffff;
     padding-left: 20px;
+    margin:20px 0px 5px;
 }
 
 .imgContainer {
@@ -23,15 +24,16 @@
 .imageCover {
     position:absolute;
     width: 100%;
-    height: 100%;
+    height:auto;
     left:0px;
-    top:0px;
-    background-image: linear-gradient(transparent, rgba(0, 0, 0, 0) 75%, rgba(0, 0, 0, 0.8) 100%);
+    bottom:0px;
+    background-image: linear-gradient(transparent, rgba(0, 0, 0, 0) 5px, rgba(0, 0, 0, 0.8) 100%);
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: start;
-    padding:auto 10px 10px;
+    margin: 0px;
+    padding: 25px 10px 10px;
 }
 
 .featureTitle {

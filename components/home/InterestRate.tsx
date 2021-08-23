@@ -1,10 +1,10 @@
 import { FC, useState, useEffect } from "react";
-import useSWR from 'swr';
+//import useSWR from 'swr';
 import { interestI } from "../../types";
 import styles from  "../../styles/home/Interest.module.css";
 import tableStyles from "../../styles/components/InterestTable.module.css";
 
-const fetcher = (url) => fetch(url).then((res) => res.json())
+//const fetcher = (url) => fetch(url).then((res) => res.json())
 
 const InterestRate = ({interests}:{interests:interestI[]}) => {
 	//const { data, error } = useSWR('/api/interests/listInterests', fetcher);
@@ -23,7 +23,7 @@ const InterestRate = ({interests}:{interests:interestI[]}) => {
 }
 
 /*
-			{
+{
 					error &&
 					<h3>Connection error</h3>
 				}
@@ -31,7 +31,7 @@ const InterestRate = ({interests}:{interests:interestI[]}) => {
 					!data &&
 					<h3>Loading....</h3>
 				}
-				*/
+			*/
 
 const TableCard:FC<interestI> = ({title, rates, firstColumnTitle}):JSX.Element => {
 	return (

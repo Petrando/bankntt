@@ -28,20 +28,28 @@ export const getSavings = async (projection?:savingProjectionI) => {
 	return savings;
 }
 
-export const getDataForFrontpage = async () => {
+export const getSampleSavings = async () => {
 	const { db } = await connectToDatabase();
 
-	const fourSampleSavings = await db
+	const sampleSavings = await db
 		.collection("tabungan")
 		.aggregate(
 			[ { $sample: { size: 4 } } ]
 		)
 		.toArray();
 
-	fourSampleSavings.forEach(d=>{
+	sampleSavings.forEach(d=>{
 		d._id = d._id.toString();
 		d.photo = JSON.stringify(d.photo);
 	});
+
+	return sampleSavings;
+}
+
+export const getDataForFrontpage = async () => {
+	const sampleSavings = await getSampleSavings();
+
+	const { db } = await connectToDatabase();	
   
 	const interests = await db
 	  .collection("interests")
@@ -53,7 +61,7 @@ export const getDataForFrontpage = async () => {
 		d._id = d._id.toString();
 	})
 
-	return {savings:fourSampleSavings, interests};
+	return {savings:sampleSavings, interests};
 }
 
 export const getAllTabunganIds = async ():Promise<{params:{id:string}}[]> => {;

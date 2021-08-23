@@ -1,13 +1,6 @@
 import { Fragment, useState, useEffect, useRef, useReducer, Dispatch } from "react";
 import useSWR from 'swr';
-import imageCompression from 'browser-image-compression';
-import fetcher from "../../../lib/fetcher";
-import {savingI} from "../../../types";
-import Layout from "../../../components/admin/layout";
-import Header from "../../../components/admin/components/header";
-import ModalLayout from "../../../components/globals/ModalLayout";
-import dialogStyles from "../../../styles/admin/ProductDialog.module.css";
-import fetchJson from "../../../lib/fetchJson";
+
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -16,6 +9,14 @@ import BlockIcon from '@material-ui/icons/Block';
 import ClearIcon from '@material-ui/icons/Clear';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import fetcher from "../../../lib/fetcher";
+import fetchJson from "../../../lib/fetchJson";
+import {savingI} from "../../../types";
+import Layout from "../../../components/admin/layout";
+import Header from "../../../components/admin/components/header";
+import ModalLayout from "../../../components/globals/ModalLayout";
+import GridElement from "../../../components/admin/components/tabunganInGrid";
+import dialogStyles from "../../../styles/admin/ProductDialog.module.css";
 
 const Savings = () => {
     const { data, mutate, error } = useSWR('/api/dana/tabungan/tabunganList', fetcher);
@@ -28,11 +29,19 @@ const Savings = () => {
 
     return (
         <Layout>
-            <Header title={"Galeri Tabungan "} addNew={()=>{setIsAdding(true)}} />
+            <Header title={"Galeri Tabungan"} addNew={()=>{setIsAdding(true)}} />
             <div className={"container"}>
                 {
                     !data &&
                     <p>loading</p>
+                }
+                {
+                    data &&
+                    <div className={`${"imageGallery"} ${"marginTop"}`}>
+                        {
+                            data.map(d => <GridElement data={d} />)
+                        }
+					</div>
                 }
             </div>
             {
@@ -58,7 +67,9 @@ const Savings = () => {
                     background-color:lightsteelblue;
                     display:flex;justify-content:center;align-items:center;flex-wrap:wrap;
                 }
-
+                .marginTop {
+                    margin-top:15px;
+                }
             `}</style>
         </Layout>        
     )
