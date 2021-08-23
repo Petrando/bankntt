@@ -1,13 +1,5 @@
 import { Fragment, useState, useEffect, useRef, useReducer, Dispatch } from "react";
 import useSWR from 'swr';
-import EditIcon from '@material-ui/icons/Edit';
-import SaveIcon from '@material-ui/icons/Save';
-import CancelIcon from '@material-ui/icons/Cancel';
-import CameraAltIcon from '@material-ui/icons/CameraAlt';
-import BlockIcon from '@material-ui/icons/Block';
-import ClearIcon from '@material-ui/icons/Clear';
-import DeleteIcon from '@material-ui/icons/Delete';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import fetcher from "../../../lib/fetcher";
 import fetchJson from "../../../lib/fetchJson";
 import {savingI} from "../../../types";
@@ -17,7 +9,6 @@ import ModalLayout from "../../../components/globals/ModalLayout";
 import SavingForm from "../../../components/admin/components/TabunganForm";
 import GridElement from "../../../components/admin/components/TabunganInGrid";
 import { savingFormI, savingActionI } from "../../../types";
-import dialogStyles from "../../../styles/admin/ProductDialog.module.css";
 
 const Savings = () => {
     const { data, mutate, error } = useSWR('/api/dana/tabungan/tabunganList', fetcher);
@@ -29,13 +20,17 @@ const Savings = () => {
         console.log(data);
     }, [data])
 
+    useEffect(()=>{
+        mutate();
+    }, [isAdding]);
+
     return (
         <Layout>
             <Header title={"Galeri Tabungan"} addNew={()=>{setIsAdding(true)}} />
             <div className={"container"}>
                 {
                     !data &&
-                    <p>loading</p>
+                    <p>loading...</p>
                 }
                 {
                     data &&
@@ -252,147 +247,4 @@ const AddNewSaving = ({closeAdding}:{closeAdding:()=>void}) => {
     )
 }
 
-const CheckElement = ({label, dispatch, checkState}:{label:string, dispatch:Dispatch<savingActionI>, checkState:boolean}) => {
-    return (
-        <span className={"flexRowStart"}>
-            <input type={"checkbox"} id={label} name={label} value={label} 
-                checked={checkState}
-                onChange={()=>{dispatch({type:"TOGGLE_CHECKBOX", featureCheck:label, newState:!checkState})}}
-            />
-            <label  htmlFor={label}>{label}</label>
-        </span>
-    )
-}
-
-const AddFeatures = ({title, dispatch, features}:{title:string, dispatch:Dispatch<savingActionI>, features:string[]}) => {
-    //const [features, setFeatures] = useState<string[]>([]);
-    const [isAdding, setIsAdding] = useState<boolean>(false);
-    const [idxEdited, setEditedIdx] = useState<number>(-1);
-
-    const addEditFeature = (feature) => {
-        let updatedFeatures = features.slice();
-        if(isAdding){
-            dispatch({type:"ADD_TERM_OR_FEATURE", featureName:title, feature})
-        }else if(idxEdited > -1){
-            //updatedFeatures[idxEdited] = feature;
-            dispatch({type:"EDIT_TERM_OR_FEATURE", featureName:title, feature, featureIdx:idxEdited});
-        }
-        //setFeatures(updatedFeatures);
-        setIsAdding(false);
-        setEditedIdx(-1);
-    }
-
-    const deleteFeature = (idx) => {
-        //const updatedFeatures = features.slice().filter((d, i)=>i!==idx);
-        //setFeatures(updatedFeatures);
-        dispatch({type:"DELETE_TERM_OR_FEATURE", featureName:title, featureIdx:idx});
-    }
-
-    const buttonActive = idxEdited === -1 && !isAdding;
-
-    const feature = (d, i) => {
-        const iAmEdited = i===idxEdited;
-        return (
-            <Fragment key={i}> 
-            {
-                !iAmEdited?
-                <div className={`${"width100"} ${"centerRowFlex"}`}>
-                    <p className={`${"flex09"}`}>
-                        {d}
-                    </p>
-                    <div className={`${"centerRowFlex"} ${"flex01"}`}>
-                        <EditIcon className={`${buttonActive?"spanButton":"inactiveButton"}`} 
-                            onClick={()=>{setEditedIdx(i)}}
-                        />
-                        <DeleteIcon className={`${buttonActive?"cancelButton":"inactiveButton"}`} 
-                            onClick={()=>{deleteFeature(i)}}
-                        />
-                    </div>
-                </div>:
-                <AddEditFeature 
-                    feature={d}
-                    addEditFeature={(feature)=>{addEditFeature(feature)}} 
-                    cancel={()=>{
-                                setIsAdding(false);
-                                setEditedIdx(-1);
-                            }}
-                /> 
-            }
-            </Fragment>
-        )
-    }
-
-    return (
-        <div className={"width100"}>
-            <Header isMedium={true} title={title} addNew={()=>{setIsAdding(true)}} mayAdd={buttonActive} />
-            {
-                isAdding &&
-                <div style={{margin:"5px 0px"}}>
-                    <AddEditFeature feature={""} 
-                        addEditFeature={(feature)=>{addEditFeature(feature)}} 
-                        cancel={()=>{
-                                        setIsAdding(false);
-                                        setEditedIdx(-1);
-                                }} 
-                    />
-                </div>
-            }
-            {
-                features.length > 0 &&
-                features.map(feature)
-            }
-        </div>
-    )
-}
-
-const AddEditFeature = ({feature, addEditFeature, cancel}:{feature:string, 
-                                                          addEditFeature:(feature:string)=>void, 
-                                                          cancel:()=>void}) => {
-    const [myFeature, setMyFeature] = useState<string>("");
-
-    const myRef = useRef<HTMLInputElement>(null);
-
-    useEffect(()=>{
-        setMyFeature(feature);
-        myRef.current.focus();
-    }, []);
-
-    return (
-        <form className={`${"width100"} ${"centerRowFlex"}`}>
-            <input type="text" className={`${"input"} ${"flex09"}`} ref={myRef}
-                value={myFeature}
-                onChange={(e)=>{setMyFeature(e.target.value)}}
-            />
-            <div className={`${"centerRowFlex"} ${"flex01"}`}>
-                <button type={"submit"} className={"invisibleBtn"}
-                    onClick={(e)=>{
-                        e.stopPropagation();
-                        e.preventDefault();
-                        if(myFeature!==""){
-                            addEditFeature(myFeature);
-                        }
-                    }}
-                >
-                    <CheckCircleIcon 
-                        className={`${myFeature!==""&&"okButton"} ${myFeature===""&&"inactiveButton"}`} 
-                    />
-                </button>
-                <button className={"invisibleBtn"} 
-                    onClick={()=>{cancel()}}
-                >
-                    <CancelIcon className={"cancelButton"} />
-                </button>
-            </div>
-            <style jsx>{`
-                .invisibleBtn {
-                    margin:0px;
-                    padding:0px;
-                    width:auto;
-                    height:auto;
-                    border:0px solid transparent;
-                }
-            `}</style>
-        </form>
-    )
-}
 export default Savings;

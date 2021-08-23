@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef, Fragment, Dispatch } from "react";
-import CameraAltIcon from '@material-ui/icons/CameraAlt';
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
+import CameraAltIcon from '@material-ui/icons/CameraAlt';
+import BlockIcon from '@material-ui/icons/Block';
+import ClearIcon from '@material-ui/icons/Clear';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
@@ -288,7 +290,6 @@ const CheckElement = ({label, dispatch, checkState}:{label:string, dispatch:Disp
 }
 
 const AddFeatures = ({title, dispatch, features}:{title:string, dispatch:Dispatch<savingActionI>, features:string[]}) => {
-    //const [features, setFeatures] = useState<string[]>([]);
     const [isAdding, setIsAdding] = useState<boolean>(false);
     const [idxEdited, setEditedIdx] = useState<number>(-1);
 
@@ -297,17 +298,13 @@ const AddFeatures = ({title, dispatch, features}:{title:string, dispatch:Dispatc
         if(isAdding){
             dispatch({type:"ADD_TERM_OR_FEATURE", featureName:title, feature})
         }else if(idxEdited > -1){
-            //updatedFeatures[idxEdited] = feature;
             dispatch({type:"EDIT_TERM_OR_FEATURE", featureName:title, feature, featureIdx:idxEdited});
         }
-        //setFeatures(updatedFeatures);
         setIsAdding(false);
         setEditedIdx(-1);
     }
 
     const deleteFeature = (idx) => {
-        //const updatedFeatures = features.slice().filter((d, i)=>i!==idx);
-        //setFeatures(updatedFeatures);
         dispatch({type:"DELETE_TERM_OR_FEATURE", featureName:title, featureIdx:idx});
     }
 
