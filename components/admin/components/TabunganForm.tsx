@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, Fragment, Dispatch } from "react";
 import EditIcon from '@material-ui/icons/Edit';
 import SaveIcon from '@material-ui/icons/Save';
 import CameraAltIcon from '@material-ui/icons/CameraAlt';
+import RefreshIcon from '@material-ui/icons/Refresh';
 import BlockIcon from '@material-ui/icons/Block';
 import ClearIcon from '@material-ui/icons/Clear';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -11,11 +12,13 @@ import { savingFormI, savingActionI } from "../../../types";
 import Header from "../../../components/admin/components/header";
 import dialogStyles from "../../../styles/admin/ProductDialog.module.css";
 
-const SavingForm = ({formState, dispatch, saveData, mayNotSave, closeForm}:
+const SavingForm = ({formState, dispatch, saveData, mayNotSave, closeForm, resetForm, editedPhotoSrc}:
                     {
+                        editedPhotoSrc?:string;
                         formState:savingFormI, 
                         dispatch:Dispatch<savingActionI>,
                         saveData:()=>void,
+                        resetForm:()=>void,
                         mayNotSave:()=>boolean,
                         closeForm:()=>void
                     }) => {
@@ -25,6 +28,8 @@ const SavingForm = ({formState, dispatch, saveData, mayNotSave, closeForm}:
         return formState.saving.termsFeatures[featureIdx].features;
     }
 
+    const isEditForm = editedPhotoSrc && editedPhotoSrc!=="";
+
     return (
         <div className={dialogStyles.dialog}
             onClick={(e)=>{
@@ -33,7 +38,13 @@ const SavingForm = ({formState, dispatch, saveData, mayNotSave, closeForm}:
         >
             <div className={dialogStyles.dialogContent}>
             <h4 className={`${"dialogTitle"} ${"width100"}`}>
-                {!formState.loading?"Jenis Tabungan Baru":"Menyimpan Data...."}
+                {
+                    !formState.loading?
+                    isEditForm?
+                    "Edit data " + formState.saving.name:
+                    "Jenis Tabungan Baru":
+                    "Menyimpan Data...."
+                }
             </h4>
             <label htmlFor="namaTabungan" className={`${"label"} ${"width100"}`}>Nama Tabungan</label>
             <input type="text" className={`${"input"} ${"width100"}`} id="namaTabungan" name="namaTabungan" 
@@ -46,8 +57,10 @@ const SavingForm = ({formState, dispatch, saveData, mayNotSave, closeForm}:
             <div className={`${"width100"} ${"photoAndAbout"}`} >
                 <div className={`${"photoContainer"}`}>
                     {
-                        formState.saving.displayPhoto!==null && 
-                        <img src={formState.saving.displayPhoto} style={{width:"100%", height:"100%"}} />
+                        (isEditForm || formState.saving.displayPhoto!==null) && 
+                        <img 
+                            src={formState.saving.displayPhoto!== null?formState.saving.displayPhoto:editedPhotoSrc} 
+                            style={{width:"100%", height:"100%"}} />
                     }
                     <span className={`${"buttonWrap"} ${"centerRowFlex"}`}>
                         <label htmlFor="fotoTabungan" className={`${"photoButton"} ${"centerRowFlex"}`}>
@@ -145,6 +158,17 @@ const SavingForm = ({formState, dispatch, saveData, mayNotSave, closeForm}:
                         Simpan
                     </span>
                 </span>                
+                {
+                    isEditForm && 
+                    <span className={`${"saveCancelButton"} ${"resetButton"} ${formState.loading && "inactiveButton"}`}
+                        onClick={()=>{resetForm()}}
+                    >
+                        <RefreshIcon fontSize={"large"} />
+                        <span className={"btnLabel"}>
+                            Reset
+                        </span>
+                    </span> 
+                }                
                 <span className={`${"saveCancelButton"} ${"cancelButton"} ${formState.loading && "inactiveButton"}`}
                     onClick={()=>{closeForm()}}
                 >
@@ -248,6 +272,15 @@ const SavingForm = ({formState, dispatch, saveData, mayNotSave, closeForm}:
                     .saveButton:hover {
                         color:#ffffff;
                         background-color:green;
+                    }
+
+                    .resetButton {
+                        color:#000000;
+                        transition:all 0.25s;
+                    }
+                    .resetButton:hover {
+                        color:#ffffff;
+                        background-color:#000000;
                     }
 
                     .cancelButton {

@@ -12,7 +12,7 @@ export interface interestI {
 	updateInterestData?:()=>void;
 }
 
-interface termFeatureI {
+export interface termFeatureI {
     name:string;
     features:string[];
 }
@@ -55,4 +55,5 @@ export interface savingActionI {
     featureIdx?:number;
     featureCheck?:string;
     newState?:boolean;
+	editedSaving?:savingI;
 }

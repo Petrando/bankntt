@@ -6,6 +6,7 @@ import Header from "../../../components/admin/components/header";
 import ModalLayout from "../../../components/globals/ModalLayout";
 import GridElement from "../../../components/admin/components/SavingGridElement";
 import AddNewSaving from "../../../components/admin/saving/AddNewSaving";
+import EditSaving from "../../../components/admin/saving/EditSaving";
 
 const Savings = () => {
     const { data, mutate, error } = useSWR('/api/dana/tabungan/tabunganList', fetcher);
@@ -20,6 +21,12 @@ const Savings = () => {
     useEffect(()=>{
         mutate();
     }, [isAdding]);
+
+    useEffect(()=>{
+        if(idEdit === "") {
+            mutate();
+        }
+    }, [idEdit])
 
     return (
         <Layout>
@@ -46,17 +53,15 @@ const Savings = () => {
             {
                 isAdding &&
                 <ModalLayout closeModal={()=>{setIsAdding(false)}}>
-                    <AddNewSaving closeAdding={()=>{setIsAdding(false)}}/>
-
+                    <AddNewSaving closeForm={()=>{setIsAdding(false)}}/>
                 </ModalLayout>
             }
             {
                 idEdit !== "" &&
                 <ModalLayout closeModal={()=>{setEditId("")}}>
-                    <div className={"dialog"}>
-                        <h4>Edit Tabungan</h4>
-                    </div>
-
+                    <EditSaving closeForm={()=>{setEditId("")}}
+                                editedData={data.filter(d=>d._id.toString()===idEdit)[0]}
+                    />
                 </ModalLayout>
             }
             {

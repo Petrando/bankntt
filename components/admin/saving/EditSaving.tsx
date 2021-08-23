@@ -2,24 +2,27 @@ import { useReducer, useEffect } from "react";
 import fetchJson from "../../../lib/fetchJson";
 import SavingForm from "../components/TabunganForm";
 import { SavingFormState, SavingReducer } from "./reducer/SavingStateNReducer";
+import { savingI } from "../../../types";
 
-const AddNewSaving = ({closeForm}:{closeForm:()=>void}) => {
+const EditSaving = ({closeForm, editedData}:{closeForm:()=>void, editedData:savingI}) => {
     const [formState, dispatch] = useReducer(SavingReducer, SavingFormState);
 
-    useEffect(()=>{
-        dispatch({type:"RESET_SAVING_DATA"});
+    useEffect(()=>{   
+        dispatch({type:"INIT_EDITED_DATA", editedSaving:editedData});
     }, [])
 
-    const mayNotSave = () => {
-        return formState.saving.name === "" || formState.saving.photo === null || formState.saving.about === "";
-    }
+    const mayNotSave =  formState.saving.name === "" || formState.saving.about === "";
 
     const createFormData = () => {
         const formData = new FormData();
         const {name, photo, about, photoDimension} = formState.saving;
+        formData.append("id", editedData._id);
         formData.append("name", name);
-        formData.append("photo", photo);
-        formData.append("photoDimension", JSON.stringify(photoDimension));
+        if(photo!==null) {
+            formData.append("photo", photo);
+            formData.append("photoDimension", JSON.stringify(photoDimension));
+        }
+
         formData.append("about", about);
         
         //append termsFeatures only when checkbox is checked and features has content : length > 0
@@ -29,12 +32,12 @@ const AddNewSaving = ({closeForm}:{closeForm:()=>void}) => {
         return formData;
     }
 
-    const saveData = async () => {
+    const saveData = async () => {        
         dispatch({type:"TOGGLE_LOADING"});
         const formData = createFormData();
-    
+            
         try {
-			const saveResult = await fetchJson("/api/dana/tabungan/addSaving", {
+			const updateResult = await fetchJson("/api/dana/tabungan/updateSavingData", {
 			  method: "POST",
 			  //headers: { "Content-Type": "application/json" },
               headers: {
@@ -43,9 +46,9 @@ const AddNewSaving = ({closeForm}:{closeForm:()=>void}) => {
 			  body: formData
 			});
 			
-            console.log(saveResult);
-			if(saveResult.message==="success"){
-				closeAdding();
+            console.log(updateResult);
+			if(updateResult.message==="success"){
+				closeForm();
 			}else{
                 dispatch({type:"TOGGLE_LOADING"});
 			}
@@ -58,13 +61,15 @@ const AddNewSaving = ({closeForm}:{closeForm:()=>void}) => {
 
     return (
         <SavingForm
+            editedPhotoSrc={`data:${editedData.photo["Content-Type"]};base64, ${editedData.photo["data"]}`}
             formState={formState}
             dispatch={dispatch}
             saveData={()=>{saveData()}}
-            mayNotSave={()=>mayNotSave()}
+            mayNotSave={()=>mayNotSave}
             closeForm={()=>{closeForm()}}
+            resetForm={()=>{dispatch({type:"INIT_EDITED_DATA", editedSaving:editedData});}}
         />
     )
 }
 
-export default AddNewSaving;
+export default EditSaving;

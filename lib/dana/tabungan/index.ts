@@ -134,19 +134,23 @@ export const addASaving = async (newSavingData) => {
 	return newSaving;
 }
 
-export const updateSaving = async (updateData) => {
+export const updateSaving = async (id, updateData) => {
 	const { db } = await connectToDatabase();
   
 	const updatedSaving = await db
 	  .collection("tabungan")
 	  .updateOne(
-        { _id: new ObjectId(updateData._id) },
+        { _id: new ObjectId(id) },
         {
-          $set: {rates:updateData.rates },
-          $currentDate: { lastModified: true }
+          $set: { ...updateData },
         }
      )
   
+	/*{
+          $set: {rates:updateData.rates },
+          $currentDate: { lastModified: true }
+        }
+		*/
 	return updatedSaving;
 }
 
