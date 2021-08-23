@@ -7,7 +7,7 @@ import Layout from "../../../components/admin/layout";
 import Header from "../../../components/admin/components/header";
 import ModalLayout from "../../../components/globals/ModalLayout";
 import SavingForm from "../../../components/admin/components/TabunganForm";
-import GridElement from "../../../components/admin/components/TabunganInGrid";
+import GridElement from "../../../components/admin/components/TabunganInGrid.tsx";
 import { savingFormI, savingActionI } from "../../../types";
 
 const Savings = () => {
