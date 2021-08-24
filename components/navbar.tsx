@@ -328,9 +328,6 @@ const NavItem: FC<NavItemI> = ({ label,
       <div className={styles.navbarSubSubMenu}>
         {
               subSubMenu.map((d, i) => {
-                console.log(asPath)
-                console.log(d.to)
-                console.log(asPath.startsWith(d.to))
                 return (
                 <Link href={d.to} key={i}>
                   <span
