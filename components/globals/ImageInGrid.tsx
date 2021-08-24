@@ -21,7 +21,6 @@ const ImageInGrid: FC<ImageInGridI> = ({
   about,
   linkTo, learnMoreLabel
 }) => {  
-  console.log(linkTo);
   return (
     <div className={"imageContainer"}>
       <Image src={photo}  layout="fill" objectFit="cover" alt={title} />

@@ -94,7 +94,7 @@ const NavMenuList = [
     subMenu : [
       {
         label:"Dana", to:"/produk/dana", subMenu : [
-          {label:"Tabungan", to:"/produk/dana/gallery-tabungan"},
+          {label:"Tabungan", to:"/produk/dana/gallery-tabungan", asPathBreadcrumb:"/produk/dana/tabungan"},
           {label:"Deposito", to:"#"},
           {label:"Giro", to:"#"},
           {label:"Anjungan Tunai Mandiri (ATM)", to:"#"},
@@ -323,17 +323,25 @@ const NavItem: FC<NavItemI> = ({ label,
 
   const iAmHovered = label === currentHover && typeof subMenu !== "undefined";  
 
-  const mySubSubMenu = (subSubMenu) => {
+  const mySubSubMenu = (subSubMenu) => {    
     return (
       <div className={styles.navbarSubSubMenu}>
         {
               subSubMenu.map((d, i) => {
+                console.log(asPath)
+                console.log(d.to)
+                console.log(asPath.startsWith(d.to))
                 return (
                 <Link href={d.to} key={i}>
                   <span
                     className={`
                                 ${styles.subMenuItem} 
                                 ${asPath === d.to && styles.atMenu}
+                                ${
+                                  d.asPathBreadcrumb && 
+                                  asPath.startsWith(d.asPathBreadcrumb) && 
+                                  styles.isAtMenuParent
+                                }
                                 ${d.to==="#" && "inactiveButton"}
                               `}                           
                   >
