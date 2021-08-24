@@ -90,11 +90,11 @@ const NavIcon: FC<NavIconI> = ({ showNavMenu, navbarOnTop, darkMenuColor }) => {
 };
 
 const NavMenuList = [         
-  { label: "Produk & Layanan", to: "#",
+  { label: "Produk & Layanan", to: "#", asPathBreadcrumb:"/produk/",
     subMenu : [
       {
         label:"Dana", to:"/produk/dana", subMenu : [
-          {label:"Tabungan", to:"/produk/dana/gallery-tabungan/"},
+          {label:"Tabungan", to:"/produk/dana/gallery-tabungan"},
           {label:"Deposito", to:"#"},
           {label:"Giro", to:"#"},
           {label:"Anjungan Tunai Mandiri (ATM)", to:"#"},
@@ -162,6 +162,7 @@ const brightTopPages = [
 const brightTopPages_dinamicUrl = [
   "/produk/dana/tabungan/"
 ]
+
 const Navbar: FC = () => {
   const [showNavMenu, setShowNavMenu] = useState<boolean>(false);
   const [navbarOnTop, setNavbarOnTop] = useState<boolean>(true);
@@ -223,6 +224,7 @@ const Navbar: FC = () => {
   }
 
   const darkMenuColor = () => (brightTopPages.includes(asPath) || isBrightTop_dynamicUrl()) && navbarOnTop;
+
   return (
     <div
       className={`${styles.navbar} ${
@@ -236,11 +238,11 @@ const Navbar: FC = () => {
       <div className={"navbarMenu"}>
         {NavMenuList.map((d, i) => (
           <NavItem key={i} {...d} 
-                   darkMenuColor={darkMenuColor()}    
-                   navbarOnTop={navbarOnTop} 
+                   darkMenuColor={darkMenuColor()}  
                    isMidScreensize={isMidScreensize}
                    currentHover={currentHover} 
-                   setCurrentHover={setCurrentHover}               
+                   setCurrentHover={setCurrentHover}    
+                   asPath={asPath}           
           />
         ))}
       </div>
@@ -300,17 +302,24 @@ interface NavSubMenu {
 interface NavItemI {
   label: string;
   to: string;
+  asPathBreadcrumb?:string;
   darkMenuColor:boolean;
   subMenu?:NavSubMenu[];
-  navbarOnTop: boolean;
   isMidScreensize: boolean;
   currentHover:string;
   setCurrentHover:Dispatch<SetStateAction<String>>;
+  asPath:string;
 }
 
-const NavItem: FC<NavItemI> = ({ label, to, darkMenuColor, navbarOnTop, isMidScreensize, currentHover, setCurrentHover, subMenu }) => {
-  const router = useRouter();
-  const { asPath } = router;
+const NavItem: FC<NavItemI> = ({ label, 
+                                 to, 
+                                 asPathBreadcrumb,
+                                 darkMenuColor, 
+                                 asPath, 
+                                 isMidScreensize, 
+                                 currentHover, 
+                                 setCurrentHover, 
+                                 subMenu }) => {
 
   const iAmHovered = label === currentHover && typeof subMenu !== "undefined";  
 
@@ -318,28 +327,34 @@ const NavItem: FC<NavItemI> = ({ label, to, darkMenuColor, navbarOnTop, isMidScr
     return (
       <div className={styles.navbarSubSubMenu}>
         {
-              subSubMenu.map((d, i) => (
+              subSubMenu.map((d, i) => {
+                return (
                 <Link href={d.to} key={i}>
                   <span
-                    className={`${styles.subMenuItem}`}                           
+                    className={`${styles.subMenuItem} ${asPath === d.to && styles.atMenu}`}                           
                   >
                     {d.label}                        
                   </span>
                 </Link>
-              ))
+              )})
             } 
       </div>
     )
   }
 
-  const mySubMenu = () => {      
+  const mySubMenu = () => {            
       return (
           <div className={`${styles.navbarSubMenu}`}>
             {
-              subMenu.map((d, i) => (
+              subMenu.map((d, i) => {
+                return (
                 <Link href={d.to} key={i}>
                   <span
-                    className={`${styles.subMenuItem}`}                           
+                    className={`
+                                ${styles.subMenuItem} 
+                                ${asPath === d.to && styles.atMenu}
+                                ${asPath.startsWith(d.to) && styles.isAtMenuParent}
+                              `}                           
                   >
                     {
                       !isMidScreensize && d.subMenu?
@@ -355,7 +370,7 @@ const NavItem: FC<NavItemI> = ({ label, to, darkMenuColor, navbarOnTop, isMidScr
                     }     
                   </span>
                 </Link>
-              ))
+              )})
             }                
           </div>
       )
@@ -424,7 +439,12 @@ const NavItem: FC<NavItemI> = ({ label, to, darkMenuColor, navbarOnTop, isMidScr
     <Link href={to}>
       <>
       <a
-        className={`${styles.menuItem} ${darkMenuColor && styles.menuItem_atBrightTopPages}`}        
+        className={`
+                    ${styles.menuItem} 
+                    ${darkMenuColor && styles.menuItem_atBrightTopPages}
+                    ${asPath === to && styles.atMenu}
+                    ${asPath.startsWith(asPathBreadcrumb) && styles.isAtMenuParent}
+                  `}        
         onClick={()=>{
           setCurrentHover(typeof subMenu==="undefined"?"":currentHover===label?"":label);
         }}                

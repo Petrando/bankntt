@@ -173,6 +173,15 @@
   text-decoration: none;
 }
 
+.menuItem:hover .atMenu, .subMenuItem:hover .atMenu {
+  color: #49c2e0;
+  cursor: default;
+}
+
+.isAtMenuParent, .menuItem:hover .isAtMenuParent {
+  color: #49c2e0;
+}
+
 .menuItem:hover .menuChevron {
   transform: rotate(180deg);
 }
