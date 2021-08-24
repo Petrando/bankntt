@@ -153,7 +153,11 @@ const SavingForm = ({formState, dispatch, saveData, mayNotSave, closeForm, reset
             }
             </div>
             <div className={dialogStyles.dialogFooter}>
-                <span className={`${"saveCancelButton"} ${"saveButton"} ${(mayNotSave() || formState.loading) && "inactiveButton"}`}
+                <span className={`
+                                  ${"saveCancelButton"} 
+                                  ${"saveButton"} 
+                                  ${(mayNotSave() || formState.loading) && "inactiveButton"}
+                                `}
                     onClick={()=>{saveData()}}                    
                 >
                     <SaveIcon fontSize={"large"} />    
@@ -163,7 +167,11 @@ const SavingForm = ({formState, dispatch, saveData, mayNotSave, closeForm, reset
                 </span>                
                 {
                     isEditForm && 
-                    <span className={`${"saveCancelButton"} ${"resetButton"} ${formState.loading && "inactiveButton"}`}
+                    <span className={`
+                                      ${"saveCancelButton"} 
+                                      ${"resetButton"} 
+                                      ${(mayNotSave() || formState.loading) && "inactiveButton"}
+                                    `}
                         onClick={()=>{resetForm()}}
                     >
                         <RefreshIcon fontSize={"large"} />
