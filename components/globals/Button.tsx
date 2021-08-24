@@ -7,13 +7,13 @@ interface ButtonI {
   fullwidth?: boolean;
   onClickHandler?: (event:any)=>Promise<void> | ((event:any)=>void);
   notActive?:boolean;
+  isSubmitButton?:boolean;
 }
 
-const Button: FC<ButtonI> = ({ label, icon, fullwidth, onClickHandler, notActive }):JSX.Element => {
-  console.log(notActive);
+const Button: FC<ButtonI> = ({ label, icon, fullwidth, onClickHandler, notActive, isSubmitButton }):JSX.Element => {
   return (
     <button
-      type="button"
+      type={isSubmitButton?"submit":"button"}
       className={`
                   ${styles.button} 
                   ${fullwidth && styles.fullwidth} 

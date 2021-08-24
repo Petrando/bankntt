@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import {Home} from "@material-ui/icons";
+import Link from "next/link";
 import Button from "../../components/globals/Button";
 import useUser from "../../lib/useUser";
 import fetchJson from "../../lib/fetchJson";
@@ -15,7 +17,7 @@ const Login = () => {
   const [errorMsg, setErrorMsg] = useState<string>("");
 
   async function handleLogin(event) {
-    //event.preventDefault();
+    event.preventDefault();
 
     //: event.currentTarget.username.value,
     const body = {
@@ -44,7 +46,12 @@ const Login = () => {
 
   return (
       <div className={"loginContainer"}>
-      <div className="login">   
+      <form className="login">   
+        <Link href={"/"}>
+          <span className={"backToHome"}>
+            <Home fontSize="large" />
+          </span>
+        </Link>
         <label htmlFor="username">Username:</label>
         <input type="text" id="username" name="username" placeholder="Your username" 
           onChange={(e)=>{setUsername(e.target.value)}}
@@ -53,9 +60,9 @@ const Login = () => {
         <input className={"lastChild"} type="password" id="password" name="password" placeholder="" 
           onChange={(e)=>{setPassword(e.target.value)}}
         />     
-        <Button label={"Login"} fullwidth onClickHandler={handleLogin} />            
+        <Button label={"Login"} fullwidth onClickHandler={handleLogin} isSubmitButton={true} />            
         {errorMsg && <p className="error">{errorMsg}</p>}
-      </div>
+      </form>
       <style jsx>{`
         .loginContainer {
           max-width:100%;
@@ -122,6 +129,19 @@ const Login = () => {
         .login input:last-child {
           margin-bottom: 20px;
         }
+
+        .backToHome {
+          color:#000000;
+          transition:all 0.25s;
+        }
+
+        .backToHome:hover {
+          color:#ffffff;
+          background-color:#000000;
+          cursor:pointer;
+          border-radius:4px;
+        }
+
         .error {
             color: brown;
             margin: 1rem 0 0;
