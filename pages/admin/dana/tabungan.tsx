@@ -7,6 +7,7 @@ import ModalLayout from "../../../components/globals/ModalLayout";
 import GridElement from "../../../components/admin/components/SavingGridElement";
 import AddNewSaving from "../../../components/admin/saving/AddNewSaving";
 import EditSaving from "../../../components/admin/saving/EditSaving";
+import DeleteSaving from "../../../components/admin/saving/DeleteSaving";
 
 const Savings = () => {
     const { data, mutate, error } = useSWR('/api/dana/tabungan/tabunganList', fetcher);
@@ -27,6 +28,12 @@ const Savings = () => {
             mutate();
         }
     }, [idEdit])
+
+    useEffect(()=>{
+        if(idToDelete === "") {
+            mutate();
+        }
+    }, [idToDelete])
 
     return (
         <Layout>
@@ -66,11 +73,10 @@ const Savings = () => {
             }
             {
                 idToDelete !== "" &&
-                <ModalLayout closeModal={()=>{setDeleteId("")}}>
-                    <div className={"dialog"}>
-                        <h4>Hapus Tabungan</h4>
-                    </div>
-
+                <ModalLayout closeModal={()=>{setDeleteId("")}} alignCenter={true}>
+                    <DeleteSaving savingToDelete={data.filter(d=>d._id.toString() === idToDelete)[0]}                                 
+                                  cancelDelete={()=>{setDeleteId("")}}
+                    />
                 </ModalLayout>
             }
             <style jsx>{`

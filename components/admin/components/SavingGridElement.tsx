@@ -23,8 +23,8 @@ const GridElement = ({data, setEdit, setDelete}:{data:savingI, setEdit:(id)=>voi
                     <span className={"button"} onClick={()=>{setEdit(data._id)}}>
                         <EditIcon />
                     </span>                    
-                    <span className={`${"button"}`} onClick={()=>{setDelete(data._id)}}>
-                        <DeleteIcon className={"button"} />    
+                    <span className={`${"deleteButton"}`} onClick={()=>{setDelete(data._id)}}>
+                        <DeleteIcon />    
                     </span>                    
                 </p>                
             </div>
@@ -68,9 +68,8 @@ const GridElement = ({data, setEdit, setDelete}:{data:savingI, setEdit:(id)=>voi
                         align-items:center;
                     }
 
-                    .button {
-                        cursor:pointer;
-                        color:#ffffff;
+                    .button, .deleteButton {
+                        cursor:pointer;                        
                         transition:all 0.25s;
                         border-radius:3px;
                         display:flex;
@@ -79,13 +78,25 @@ const GridElement = ({data, setEdit, setDelete}:{data:savingI, setEdit:(id)=>voi
                         align-items:center;                        
                     }
 
-                    .button:last-child {
-                        margin:auto 5px;
-                    }
-
+                    .button {
+                        color:#ffffff;
+                        transition: all 0.25px;
+                    }                    
+                    
                     .button:hover {
                         color:#000000;
-                        background:#ffffff;
+                        background-color:#ffffff;
+                    }
+                    
+                    .deleteButton {
+                        margin:auto 5px;
+                        color: brown;
+                        transition: all 0.25px;
+                    }
+
+                    .deleteButton:hover {
+                        color:#ffffff;
+                        background-color:brown;
                     }
 
                     .img{

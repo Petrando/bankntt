@@ -2,13 +2,14 @@ import { ReactNode } from "react";
 
 interface ModalI {
     children:ReactNode;
+    alignCenter?:boolean;
     closeModal:()=>void;
 }
 
-const ModalLayout = ({children, closeModal}:ModalI) => {
+const ModalLayout = ({children, alignCenter, closeModal}:ModalI) => {
     
     return (
-        <div className={"modal"} onClick={closeModal}>
+        <div className={`${"modal"} ${alignCenter && "alignCenter"}`} onClick={closeModal}>
             {
                 children
             }
@@ -27,6 +28,14 @@ const ModalLayout = ({children, closeModal}:ModalI) => {
                         transition: all 0.25s;
                         background-color: rgba(0, 0, 0, 0.75);
                         overflow-y:auto;
+                    }
+
+                    .alignStretch {
+                        align-items:stretch;
+                    }
+
+                    .alignCenter {
+                        align-items:center;
                     }
                 `}
             </style>
