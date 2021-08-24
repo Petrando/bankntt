@@ -41,7 +41,7 @@ const SavingForm = ({formState, dispatch, saveData, mayNotSave, closeForm, reset
                 {
                     !formState.loading?
                     isEditForm?
-                    "Edit data " + formState.saving.name:
+                    "Edit " + formState.saving.name:
                     "Jenis Tabungan Baru":
                     "Menyimpan Data...."
                 }

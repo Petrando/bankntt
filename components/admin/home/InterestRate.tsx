@@ -33,7 +33,7 @@ const InterestRate = () => {
 			</div>
 			{
 				editedIdx !== -1 &&
-				<ModalLayout closeModal={()=>{setEditedIdx(-1);}}>
+				<ModalLayout closeModal={()=>{setEditedIdx(-1);}} alignCenter={true}>
 					<div className={"editedContainer"}
 						onClick={(e)=>{
 							e.stopPropagation();
