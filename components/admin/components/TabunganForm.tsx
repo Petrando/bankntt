@@ -439,7 +439,7 @@ const AddEditFeature = ({feature, addEditFeature, cancel}:{feature:string,
     useEffect(()=>{
         setMyFeature(feature);
         myRef.current.focus();
-        //myRef.current.scrollIntoView();
+        myRef.current.scrollIntoView();
     }, []);
 
     return (
