@@ -179,7 +179,7 @@
 }
 
 .isAtMenuParent, .menuItem:hover .isAtMenuParent {
-  color: #49c2e0;
+  color: #49c2e0 !important;
 }
 
 .menuItem:hover .menuChevron {

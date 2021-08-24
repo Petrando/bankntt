@@ -112,6 +112,7 @@ img {
 .inactiveButton {
   opacity:0.5;
   pointer-events: none;
+  cursor: initial;
 }
 
 a, a:hover{

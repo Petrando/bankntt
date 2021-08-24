@@ -331,7 +331,11 @@ const NavItem: FC<NavItemI> = ({ label,
                 return (
                 <Link href={d.to} key={i}>
                   <span
-                    className={`${styles.subMenuItem} ${asPath === d.to && styles.atMenu}`}                           
+                    className={`
+                                ${styles.subMenuItem} 
+                                ${asPath === d.to && styles.atMenu}
+                                ${d.to==="#" && "inactiveButton"}
+                              `}                           
                   >
                     {d.label}                        
                   </span>
@@ -354,6 +358,7 @@ const NavItem: FC<NavItemI> = ({ label,
                                 ${styles.subMenuItem} 
                                 ${asPath === d.to && styles.atMenu}
                                 ${asPath.startsWith(d.to) && styles.isAtMenuParent}
+                                ${d.to==="#" && !d.subMenu && "inactiveButton"}
                               `}                           
                   >
                     {
@@ -397,7 +402,12 @@ const NavItem: FC<NavItemI> = ({ label,
               subMenu.map((d, i) => (
                 <Link href={d.to} key={i}>
                   <span
-                    className={`${styles.subMenuItem}`}                           
+                    className={`
+                                ${styles.subMenuItem}
+                                ${asPath === d.to && styles.atMenu}
+                                ${asPath.startsWith(d.to) && styles.isAtMenuParent}
+                                ${d.to==="#" && "inactiveButton"}
+                              `}                           
                   >
                     {d.label}        
                   </span>
