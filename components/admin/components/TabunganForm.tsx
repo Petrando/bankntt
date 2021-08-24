@@ -95,8 +95,9 @@ const SavingForm = ({formState, dispatch, saveData, mayNotSave, closeForm, reset
                 </div>
                 <div className={"aboutContainer"}>
                     <label htmlFor="about" className={`${"label"} ${"width100"}`}>Uraian</label>
-                    <input type="text-area" 
-                        className={`${"input"} ${"width100"} ${"photoAndAboutHeight"} ${"about"}`} 
+                    <textarea 
+                        rows={10}
+                        className={`${"input"} ${"width100"} ${"about"}`} 
                         id="about" name="about" 
                         value={formState.saving.about}
                         onChange={(e)=>{
@@ -106,6 +107,7 @@ const SavingForm = ({formState, dispatch, saveData, mayNotSave, closeForm, reset
                     />
                 </div>
             </div>
+            <div className={"width100"}>
             <fieldset className={`${"width100"} ${"marginTop"} ${"spaceAroundFlex"}`}>
                 <legend style={{fontSize:"14px"}}>Syarat & Fitur</legend>
                 {
@@ -115,7 +117,8 @@ const SavingForm = ({formState, dispatch, saveData, mayNotSave, closeForm, reset
                                                                                                     checkState={formState.checkboxStates[d]}
                                                                                                     />)
                 }
-            </fieldset>  
+            </fieldset>
+            </div>  
             {
                 formState.checkboxStates.Prasyarat &&
                 <AddFeatures 
@@ -244,11 +247,7 @@ const SavingForm = ({formState, dispatch, saveData, mayNotSave, closeForm, reset
                     }
 
                     .about {
-                        display: flex;
-                        flex-direction:column;
-                        justify-content:flex-start;
-                        align-items:start;
-                        flex-wrap:wrap;
+                        padding-top:15px;
                     }
 
                     .marginTop {
@@ -312,12 +311,29 @@ const SavingForm = ({formState, dispatch, saveData, mayNotSave, closeForm, reset
 
 const CheckElement = ({label, dispatch, checkState}:{label:string, dispatch:Dispatch<savingActionI>, checkState:boolean}) => {
     return (
-        <span className={"flexRowStart"}>
+        <span className={`${"flexRowStart"} ${"checkspan"}`}>
             <input type={"checkbox"} id={label} name={label} value={label} 
                 checked={checkState}
                 onChange={()=>{dispatch({type:"TOGGLE_CHECKBOX", featureCheck:label, newState:!checkState})}}
             />
             <label  htmlFor={label}>{label}</label>
+            <style jsx>{`
+                .checkspan {
+                    width:24%;
+                }
+
+                @media (max-width:411px){
+                    .checkspan {
+                        width:95%;
+                    }
+                }
+
+                @media (min-width:412px) and (max-width:768px){
+                    .checkspan {
+                        width:49%;
+                    }
+                }
+            `}</style>
         </span>
     )
 }
@@ -360,7 +376,9 @@ const AddFeatures = ({title, dispatch, features}:
                     </p>
                     <div className={`${"centerRowFlex"} ${"flex01"}`}>
                         <EditIcon className={`${buttonActive?"spanButton":"inactiveButton"}`} 
-                            onClick={()=>{setEditedIdx(i)}}
+                            onClick={()=>{
+                                setEditedIdx(i)
+                            }}
                         />
                         <DeleteIcon className={`${buttonActive?"cancelButton":"inactiveButton"}`} 
                             onClick={()=>{deleteFeature(i)}}
@@ -413,6 +431,7 @@ const AddEditFeature = ({feature, addEditFeature, cancel}:{feature:string,
     useEffect(()=>{
         setMyFeature(feature);
         myRef.current.focus();
+        myRef.current.scrollIntoView();
     }, []);
 
     return (

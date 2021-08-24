@@ -146,6 +146,10 @@ a, a:hover{
   width: 95%;
 }
 
+.width90{
+  width: 90%;
+}
+
 .centerRowFlex{
   display: flex;
   justify-content: center;

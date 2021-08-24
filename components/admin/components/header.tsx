@@ -23,8 +23,7 @@ const Header = ({isMedium, title, addNew, mayAdd}:HeaderI) =>{
             </div>
             <style jsx>{`
                 .header {
-                    display:flex;justify-content:space-between;
-                    flex-wrap:wrap;
+                    display:flex;justify-content:space-between;align-items:center;
                 }
                 .headerTitle {
                     text-align:center;
