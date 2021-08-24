@@ -1,7 +1,7 @@
 import {FC} from 'react';
 import Image from "next/image";
+import Link from "next/link";
 import LearnMore from "./LearnMore";
-import styles from "../../styles/home/Events.module.css";
 
 interface ImageInGridI {
   photo: string;
@@ -16,23 +16,23 @@ interface ImageInGridI {
 
 const ImageInGrid: FC<ImageInGridI> = ({
   photo,
-  photoWidth,
-  photoHeight,
   title,
   titleColor,
   about,
   linkTo, learnMoreLabel
 }) => {  
-  
+  console.log(linkTo);
   return (
     <div className={"imageContainer"}>
       <Image src={photo}  layout="fill" objectFit="cover" alt={title} />
       
       <div className={"imageHoverInfo"}>
         <p className={`${"imageTitle"} ${titleColor && "titleColor"}`}>{title}</p>
+        <Link href={linkTo?linkTo:"#"}>
         <p className={"description"}>
           {about}
         </p>
+        </Link>
         {
           typeof linkTo !== "undefined" &&
           <LearnMore linkTo={linkTo} label={learnMoreLabel} />
