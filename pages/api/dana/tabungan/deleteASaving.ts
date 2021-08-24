@@ -4,9 +4,7 @@ import { deleteSaving } from "../../../../lib/dana/tabungan";
 export  default async function deleteASaving(req:NextApiRequest, res:NextApiResponse) {
     try {
         const deleteResult = await deleteSaving(req.body._id);  
-        //const  {modifiedCount} = updateResult;
-        
-        //res.json({message:modifiedCount===1?"success":"not updated"});
+        console.log(deleteResult);
         res.json({message:"deleted"});
       } catch (error) {
         const { response: fetchResponse } = error;

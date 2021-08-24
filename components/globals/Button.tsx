@@ -6,14 +6,20 @@ interface ButtonI {
   icon?:JSX.Element;
   fullwidth?: boolean;
   onClickHandler?: (event:any)=>Promise<void> | ((event:any)=>void);
+  notActive?:boolean;
 }
 
-const Button: FC<ButtonI> = ({ label, icon, fullwidth, onClickHandler }):JSX.Element => {
-
+const Button: FC<ButtonI> = ({ label, icon, fullwidth, onClickHandler, notActive }):JSX.Element => {
+  console.log(notActive);
   return (
     <button
       type="button"
-      className={`${styles.button} ${fullwidth && styles.fullwidth} ${icon && "centerRowFlex"}`}
+      className={`
+                  ${styles.button} 
+                  ${fullwidth && styles.fullwidth} 
+                  ${icon && "centerRowFlex"}
+                  ${notActive && "inactiveButton"}
+                `}
       onClick={typeof onClickHandler!=="undefined"?onClickHandler:()=>{}}
     >
       {label}
@@ -24,11 +30,16 @@ const Button: FC<ButtonI> = ({ label, icon, fullwidth, onClickHandler }):JSX.Ele
   );
 };
 
-export const MediaQueryButton: FC<ButtonI> = ({ label, icon, fullwidth, onClickHandler }):JSX.Element => {
+export const MediaQueryButton: FC<ButtonI> = ({ label, icon, fullwidth, onClickHandler, notActive }):JSX.Element => {
   return (
     <button
       type="button"
-      className={`${styles.buttonWithMediaQuery} ${fullwidth && styles.fullwidth} ${icon && "centerRowFlex"}`}
+      className={`
+                  ${styles.buttonWithMediaQuery} 
+                  ${fullwidth && styles.fullwidth} 
+                  ${icon && "centerRowFlex"}
+                  ${notActive && "inactiveButton"}
+                `}
       onClick={typeof onClickHandler!=="undefined"?onClickHandler:()=>{}}
     >
       {label}
@@ -39,9 +50,16 @@ export const MediaQueryButton: FC<ButtonI> = ({ label, icon, fullwidth, onClickH
   );
 };
 
-export const AquaButton = ({ label, icon, fullwidth, onClickHandler }:ButtonI):JSX.Element => {
+export const AquaButton = ({ label, icon, fullwidth, onClickHandler, notActive }:ButtonI):JSX.Element => {
   return (
-    <button type="button" className={`${styles.button} ${styles.aquaButton} ${icon && "centerRowFlex"}`}
+    <button 
+      type="button" 
+      className={`
+                  ${styles.button} 
+                  ${styles.aquaButton} 
+                  ${icon && "centerRowFlex"}
+                  ${notActive && "inactiveButton"}
+                `}
       onClick={typeof onClickHandler!=="undefined"?onClickHandler:()=>{}}
     >
       {label}

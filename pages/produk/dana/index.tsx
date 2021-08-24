@@ -15,8 +15,8 @@ const Dana = () => {
                 <a className={`${styles.anchorStyle} ${"centerRowFlex"}`}>
                     {
                         isTop?
-                        <Button label={label} icon={icon} />:
-                        <AquaButton label={label} icon={icon} />                                                                                
+                        <Button label={label} icon={icon} notActive={to==="#"} />:
+                        <AquaButton label={label} icon={icon} notActive={to==="#"}  />                                                                                
                     }                  	
                 </a>
           	</Link>
