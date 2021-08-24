@@ -48,21 +48,28 @@ export const SavingReducer = (state:savingFormI, action:savingActionI):savingFor
             updatedState.saving.photoDimension.height = 0;
             updatedState.saving.displayPhoto = null;
 
-            updatedState.saving.termsFeatures.map(d=>{
-                const featuresIdx = termsFeatures.findIndex(df=>{
-                    return df.name===d.name
-                });
-
-                const featuresExisted = featuresIdx > -1;
-
-                if(featuresExisted){
-                    d.features = termsFeatures[featuresIdx].features.slice();
-                    updatedState.checkboxStates[d.name] = true;
-                }else {
+            if(Array.isArray(termsFeatures) && termsFeatures.length > 0){
+                updatedState.saving.termsFeatures.map(d=>{
+                    const featuresIdx = termsFeatures.findIndex(df=>{
+                        return df.name===d.name
+                    });
+    
+                    const featuresExisted = featuresIdx > -1;
+    
+                    if(featuresExisted){
+                        d.features = termsFeatures[featuresIdx].features.slice();
+                        updatedState.checkboxStates[d.name] = true;
+                    }else {
+                        d.features = [];
+                        updatedState.checkboxStates[d.name] = false;
+                    }
+                })
+            }else {
+                updatedState.saving.termsFeatures.map(d=>{
                     d.features = [];
                     updatedState.checkboxStates[d.name] = false;
-                }
-            })
+                })
+            }
 
             return updatedState;            
         }

@@ -1,10 +1,10 @@
+import {useState} from "react";
 import { savingI } from "../../../types";
 import Image from "next/image"
 import BlockIcon from '@material-ui/icons/Block';
-import ClearIcon from '@material-ui/icons/Clear';
 import DeleteIcon from '@material-ui/icons/Delete';
+import fetchJson from "../../../lib/fetchJson";
 import dialogStyles from "../../../styles/admin/ProductDialog.module.css";
-import { Delete } from "@material-ui/icons";
 
 interface deleteSavingI {
     savingToDelete:savingI;    
@@ -12,8 +12,31 @@ interface deleteSavingI {
 }
 
 const DeleteSaving = ({savingToDelete, cancelDelete}:deleteSavingI):JSX.Element => {
-    const deleteSaving = () => {
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
+    const deleteSaving = async () => {
+        setIsLoading(true);
+
+        try {
+			const deleteResult = await fetchJson("/api/dana/tabungan/deleteASaving", {
+			  method: "POST",
+              headers: {
+                Accept: 'application/json'
+              },
+			  body: JSON.stringify({id:savingToDelete._id})
+			});
+			
+            console.log(deleteResult);
+			if(deleteResult.message === "success"){
+                cancelDelete();
+            }else {
+                setIsLoading(false);
+            }
+			
+		  } catch (error) {
+			console.error("An unexpected error happened:", error);
+            setIsLoading(false);
+		  }
     }
     return (
         <div className={dialogStyles.dialog}
@@ -23,7 +46,13 @@ const DeleteSaving = ({savingToDelete, cancelDelete}:deleteSavingI):JSX.Element 
         >
             <div className={dialogStyles.dialogContent}>
                 <h4 className={`${"dialogTitle"} ${"width100"}`}>
-                    Hapus {savingToDelete.name}?
+                    {
+                        isLoading?
+                        `Menghapus  ${savingToDelete.name} ...`:
+                        `Hapus ${savingToDelete.name}?`
+                    }
+                    
+                    
                 </h4>
                 <div className={`${"imgContainer"} ${"centerRowFlex"}`}>
                     <Image src={`data:${savingToDelete.photo["Content-Type"]};base64, ${savingToDelete.photo["data"]}`} 
@@ -37,7 +66,7 @@ const DeleteSaving = ({savingToDelete, cancelDelete}:deleteSavingI):JSX.Element 
                 </p>
             </div>
             <div className={dialogStyles.dialogFooter}>
-                <span className={`${"deleteCancelButton"} ${"deleteButton"}`}
+                <span className={`${"deleteCancelButton"} ${"deleteButton"} ${isLoading && "inactiveButton"}`}
                     onClick={()=>{deleteSaving()}}                    
                 >
                     <DeleteIcon fontSize={"large"} />    
@@ -45,7 +74,7 @@ const DeleteSaving = ({savingToDelete, cancelDelete}:deleteSavingI):JSX.Element 
                         Hapus
                     </span>
                 </span> 
-                <span className={`${"deleteCancelButton"} ${"cancelButton"}`}
+                <span className={`${"deleteCancelButton"} ${"cancelButton"} ${isLoading && "inactiveButton"}`}
                     onClick={()=>{cancelDelete()}}                    
                 >
                     <BlockIcon fontSize={"large"} />    
