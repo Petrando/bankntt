@@ -40,7 +40,7 @@ export const getSampleSavings = async () => {
 
 	sampleSavings.forEach(d=>{
 		d._id = d._id.toString();
-		d.photo = JSON.stringify(d.photo);
+		//d.photo = JSON.stringify(d.photo);
 	});
 
 	return sampleSavings;

@@ -1,6 +1,7 @@
+import { NextApiRequest, NextApiResponse } from 'next'
 import { connectToDatabase } from "../../../lib/mongodb";
 
-export default async function handler(req, res) {
+export default async function handler(req: NextApiRequest, res:NextApiResponse) {
     try {
         const interests = await getInterests();  
         res.json(interests);
