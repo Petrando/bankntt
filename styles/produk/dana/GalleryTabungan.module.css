@@ -9,10 +9,12 @@
 }
 
 .tabungan {
-    width:calc(25% - 5px);
-    margin: 5px 0px;
-    height:280px;
+    width:calc(25% - 10px);
+    margin: 5px 5px;
+    height:300px;
 }
+
+
 
 @media (max-width:648px){
     .tabungan {
@@ -22,6 +24,6 @@
 
 @media (min-width:649px) and (max-width: 1024px) {
     .tabungan {
-        width: calc(50% - 5px);
+        width: calc(50% - 10px);
     }
 }
