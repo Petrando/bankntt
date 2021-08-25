@@ -156,16 +156,12 @@ export const updateSaving = async (id, updateData) => {
 
 export const deleteSaving = async (id) => {
 	const { db } = await connectToDatabase();
-  
-	console.log('id : ', id);
 	const deletedSaving = await db
 	  .collection("tabungan")
 	  .deleteOne(
         { _id: new ObjectId(id) }
      )
   
-	console.log('deleted saving in lib : ');
-	console.log(deletedSaving);
 	return deletedSaving;
 }
 

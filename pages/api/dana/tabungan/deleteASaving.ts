@@ -5,8 +5,7 @@ export  default async function deleteASaving(req:NextApiRequest, res:NextApiResp
     const {id} = JSON.parse(req.body);
     
     try {
-        const deleteResult = await deleteSaving(id);  
-        console.log(deleteResult);
+        const deleteResult = await deleteSaving(id); 
         const {deletedCount} = deleteResult;
         res.json({message:deletedCount===1?"success":"failed to delete"});
       } catch (error) {

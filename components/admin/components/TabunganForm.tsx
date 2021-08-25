@@ -8,9 +8,11 @@ import ClearIcon from '@material-ui/icons/Clear';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CancelIcon from '@material-ui/icons/Cancel';
+import MyDialog from "../../globals/Dialog";
 import { savingFormI, savingActionI } from "../../../types";
 import Header from "../../../components/admin/components/header";
 import dialogStyles from "../../../styles/admin/ProductDialog.module.css";
+import styles from "../../../styles/admin/TabunganForm.module.css";
 
 const SavingForm = ({formState, dispatch, saveData, mayNotSave, closeForm, resetForm, editedPhotoSrc}:
                     {
@@ -28,292 +30,178 @@ const SavingForm = ({formState, dispatch, saveData, mayNotSave, closeForm, reset
         return formState.saving.termsFeatures[featureIdx].features;
     }
 
-    const isEditForm = editedPhotoSrc && editedPhotoSrc!=="";
+    const dialogTitle = ():string => {
+        return (
+            !formState.loading?
+            isEditForm?
+            "Edit " + formState.saving.name:
+            "Jenis Tabungan Baru":
+            "Menyimpan Data...."                
+        )
+    }
 
-    return (
-        <div className={dialogStyles.dialog}
-            onClick={(e)=>{
-                e.stopPropagation();
-            }}
-        >
-            <div className={dialogStyles.dialogContent}>
-            <h4 className={`${"dialogTitle"} ${"width100"}`}>
-                {
-                    !formState.loading?
-                    isEditForm?
-                    "Edit " + formState.saving.name:
-                    "Jenis Tabungan Baru":
-                    "Menyimpan Data...."
-                }
-            </h4>
-            <label htmlFor="namaTabungan" className={`${"label"} ${"width100"}`}>Nama Tabungan</label>
-            <input type="text" className={`${"input"} ${"width100"}`} id="namaTabungan" name="namaTabungan" 
-                value={formState.saving.name}
-                onChange={(e)=>{
-                    dispatch({type:"CHANGE_NAME", name:e.target.value});
-                }}
-                disabled={formState.loading}
-            />
-            <div className={`${"width100"} ${"photoAndAbout"}`} >
-                <div className={`${"photoContainer"}`}>
-                    {
-                        (isEditForm || formState.saving.displayPhoto!==null) && 
-                        <img 
-                            src={formState.saving.displayPhoto!== null?formState.saving.displayPhoto:editedPhotoSrc} 
-                            style={{width:"100%", height:"100%"}} />
-                    }
-                    <span className={`${"buttonWrap"} ${"centerRowFlex"}`}>
-                        <label htmlFor="fotoTabungan" className={`${"photoButton"} ${"centerRowFlex"}`}>
-                            <CameraAltIcon style={{marginLeft:"3px"}}/>
-                            Foto
-                        </label>
-                        <input type="file" className={`${"input"} ${"width100"} ${"photoAndAboutHeight"}`} id="fotoTabungan" 
-                            onChange={(e)=>{
-                                const _URL = window.URL || window.webkitURL;//additional for getting image file
-                                const photoFile = e.target.files[0];
-                                console.log(photoFile)
-                                if(!photoFile){
-                                    console.log("no files");
-                                    return;
-                                }else {
-                                    const img = new Image();
-                                    let objectUrl = _URL.createObjectURL(photoFile);
-                                    img.onload = () => {
-                                        if(typeof img !== "undefined"){
-                                            console.log(img.width, ', ', img.height);
-                                            dispatch({type:"SET_PHOTO_DIMENSION", photoWidth:img.width, photoHeight:img.height});
-                                            _URL.revokeObjectURL(objectUrl)
+    const dialogContent = ():JSX.Element => {
+        return (
+            <>
+                <label htmlFor="namaTabungan" className={`${"label"} ${"width100"}`}>Nama Tabungan</label>
+                <input type="text" className={`${"input"} ${"width100"}`} id="namaTabungan" name="namaTabungan" 
+                    value={formState.saving.name}
+                    onChange={(e)=>{
+                        dispatch({type:"CHANGE_NAME", name:e.target.value});
+                    }}
+                    disabled={formState.loading}
+                />
+                <div className={`${"width100"} ${styles.photoAndAbout}`} >
+                    <div className={`${styles.photoContainer}`}>
+                        {
+                            (isEditForm || formState.saving.displayPhoto!==null) && 
+                            <img 
+                                src={formState.saving.displayPhoto!== null?formState.saving.displayPhoto:editedPhotoSrc} 
+                                style={{width:"100%", height:"100%"}} />
+                        }
+                        <span className={`${styles.buttonWrap} ${"centerRowFlex"}`}>
+                            <label htmlFor="fotoTabungan" className={`${styles.photoButton} ${"centerRowFlex"}`}>
+                                <CameraAltIcon style={{marginLeft:"3px"}}/>
+                                Foto
+                            </label>
+                            <input type="file" className={`${"input"} ${"width100"} ${styles.photoAndAboutHeight}`} id="fotoTabungan" 
+                                onChange={(e)=>{
+                                    const _URL = window.URL || window.webkitURL;//additional for getting image file
+                                    const photoFile = e.target.files[0];
+                                    console.log(photoFile)
+                                    if(!photoFile){
+                                        console.log("no files");
+                                        return;
+                                    }else {
+                                        const img = new Image();
+                                        let objectUrl = _URL.createObjectURL(photoFile);
+                                        img.onload = () => {
+                                            if(typeof img !== "undefined"){
+                                                console.log(img.width, ', ', img.height);
+                                                dispatch({type:"SET_PHOTO_DIMENSION", photoWidth:img.width, photoHeight:img.height});
+                                                _URL.revokeObjectURL(objectUrl)
+                                            }
                                         }
+                                        img.src = objectUrl;
+                                        dispatch({type:"SET_PHOTO", photo:photoFile, displayPhoto:URL.createObjectURL(photoFile)});
                                     }
-                                    img.src = objectUrl;
-                                    dispatch({type:"SET_PHOTO", photo:photoFile, displayPhoto:URL.createObjectURL(photoFile)});
-                                }
+                                }}
+                                disabled={formState.loading}
+                            />    
+                        </span>                    
+                    </div>
+                    <div className={styles.aboutContainer}>
+                        <label htmlFor="about" className={`${"label"} ${"width100"}`}>Uraian</label>
+                        <textarea 
+                            rows={10}
+                            className={`${"input"} ${"width100"} ${styles.about}`} 
+                            id="about" name="about" 
+                            value={formState.saving.about}
+                            onChange={(e)=>{
+                                dispatch({type:"CHANGE_ABOUT", about:e.target.value});
                             }}
                             disabled={formState.loading}
-                        />    
-                    </span>                    
+                        />
+                    </div>
                 </div>
-                <div className={"aboutContainer"}>
-                    <label htmlFor="about" className={`${"label"} ${"width100"}`}>Uraian</label>
-                    <textarea 
-                        rows={10}
-                        className={`${"input"} ${"width100"} ${"about"}`} 
-                        id="about" name="about" 
-                        value={formState.saving.about}
-                        onChange={(e)=>{
-                            dispatch({type:"CHANGE_ABOUT", about:e.target.value});
-                        }}
-                        disabled={formState.loading}
-                    />
-                </div>
-            </div>
-            <div className={"width100"}>
-            <fieldset className={`${"width100"} ${"marginTop"} ${"spaceAroundFlex"}`}>
-                <legend style={{fontSize:"14px"}}>Syarat & Fitur</legend>
-                {
-                    ["Prasyarat", "Syarat Khusus", "Fasilitas", "Keuntungan"].map((d, i)=><CheckElement key={i} 
+                
+                <fieldset className={`${"width100"} ${"marginTop"} ${"spaceAroundFlex"}`}>
+                    <legend style={{fontSize:"14px"}}>Syarat & Fitur</legend>
+                    {
+                        ["Prasyarat", "Syarat Khusus", "Fasilitas", "Keuntungan"].map((d, i)=><CheckElement key={i} 
                                                                                                     label={d} 
                                                                                                     dispatch={dispatch} 
                                                                                                     checkState={formState.checkboxStates[d]}
                                                                                                     />)
+                    }
+                </fieldset>
+              
+                {
+                    formState.checkboxStates.Prasyarat &&
+                    <AddFeatures 
+                        title={"Prasyarat"}
+                        dispatch={dispatch}
+                        features={getMyFeatures("Prasyarat")}
+                    />       
                 }
-            </fieldset>
-            </div>  
-            {
-                formState.checkboxStates.Prasyarat &&
-                <AddFeatures 
-                    title={"Prasyarat"}
-                    dispatch={dispatch}
-                    features={getMyFeatures("Prasyarat")}
-                />       
-            }
-            {
-                formState.checkboxStates["Syarat Khusus"] &&
-                <AddFeatures 
-                    title={"Syarat Khusus"}
-                    dispatch={dispatch}
-                    features={getMyFeatures("Syarat Khusus")}
-                />       
-            }
-            {
-                formState.checkboxStates.Fasilitas &&
-                <AddFeatures 
-                    title={"Fasilitas"}
-                    dispatch={dispatch}
-                    features={getMyFeatures("Fasilitas")}
-                />       
-            }   
-            {
-                formState.checkboxStates.Keuntungan &&
-                <AddFeatures 
-                    title={"Keuntungan"}
-                    dispatch={dispatch}
-                    features={getMyFeatures("Keuntungan")}
-                />       
-            }
-            </div>
-            <div className={dialogStyles.dialogFooter}>
+                {
+                    formState.checkboxStates["Syarat Khusus"] &&
+                    <AddFeatures 
+                        title={"Syarat Khusus"}
+                        dispatch={dispatch}
+                        features={getMyFeatures("Syarat Khusus")}
+                    />       
+                }
+                {
+                    formState.checkboxStates.Fasilitas &&
+                    <AddFeatures 
+                        title={"Fasilitas"}
+                        dispatch={dispatch}
+                        features={getMyFeatures("Fasilitas")}
+                    />       
+                }   
+                {
+                    formState.checkboxStates.Keuntungan &&
+                    <AddFeatures 
+                        title={"Keuntungan"}
+                        dispatch={dispatch}
+                        features={getMyFeatures("Keuntungan")}
+                    />       
+                }
+            </>
+        )
+    }
+
+    const dialogFooter = ():JSX.Element => {
+        return (
+            <>
                 <span className={`
-                                  ${"saveCancelButton"} 
-                                  ${"saveButton"} 
+                                  ${styles.saveCancelButton} 
+                                  ${styles.saveButton} 
                                   ${(mayNotSave() || formState.loading) && "inactiveButton"}
                                 `}
                     onClick={()=>{saveData()}}                    
                 >
                     <SaveIcon fontSize={"large"} />    
-                    <span className={"btnLabel"}>
+                    <span className={styles.btnLabel}>
                         Simpan
                     </span>
                 </span>                
                 {
                     isEditForm && 
                     <span className={`
-                                      ${"saveCancelButton"} 
-                                      ${"resetButton"} 
+                                      ${styles.saveCancelButton} 
+                                      ${styles.resetButton} 
                                       ${(mayNotSave() || formState.loading) && "inactiveButton"}
                                     `}
                         onClick={()=>{resetForm()}}
                     >
                         <RefreshIcon fontSize={"large"} />
-                        <span className={"btnLabel"}>
+                        <span className={styles.btnLabel}>
                             Reset
                         </span>
                     </span> 
                 }                
-                <span className={`${"saveCancelButton"} ${"cancelButton"} ${formState.loading && "inactiveButton"}`}
+                <span className={`${styles.saveCancelButton} ${styles.cancelButton} ${formState.loading && "inactiveButton"}`}
                     onClick={()=>{closeForm()}}
                 >
                     <CancelIcon fontSize={"large"} />
-                    <span className={"btnLabel"}>
+                    <span className={styles.btnLabel}>
                         Batal
                     </span>
-                </span>                
-            </div>
-            <style jsx>
-                {`
-                    .photoAndAbout {
-                        display:flex;justify-content:space-between;
-                        flex-wrap:wrap;
-                    }
-                    .photoContainer {
-                        width:calc(40% - 5px);
-                        min-height:100px;
-                        margin:8px 0px 0px;
-                        padding:0px;
-                        position:relative;
-                    }
+                </span>
+            </>
+        )
+    }
 
-                    .buttonWrap {
-                        position: absolute;
-                        left: 0px;
-                        top:0px;
-                        width:100%;
-                        height:100%;
-                        border-radius: 4px;
-                        border: 1px solid #636363;  
-                        pointer-events: none;
-                        background-color: transparent;
-                    }
+    const isEditForm = editedPhotoSrc && editedPhotoSrc!=="";
 
-                    .buttonWrap * {
-                        pointer-events:auto;
-                    }
-
-                    #fotoTabungan {
-                        position: absolute;
-                        z-index: -1;
-                        top: 15px;
-                        left: 20px;
-                        font-size: 17px;
-                        color: #b8b8b8;
-                    }                    
-
-                    .photoButton {
-                        background-color: #1d6355;
-                        border-radius: 10px;
-                        border: 4px double #cccccc;
-                        color: #ffffff;
-                        text-align: center;
-                        padding: 8px;
-                        width: 100px;
-                        transition: all 0.25s;
-                        cursor: pointer;
-                        margin: 5px;
-                      }
-                      .photoButton:hover {
-                        background-color: #00ab97;
-                      }
-                
-                    .aboutContainer {
-                        width:calc(60% - 5px);
-                        margin:8px 0px 0px;
-                        padding:0px;
-                    }
-
-                    .photoAndAboutHeight {
-                        height: 230px;
-                    }
-
-                    .about {
-                        padding-top:15px;
-                    }
-
-                    .marginTop {
-                        margin-top:10px;
-                    }
-
-                    .saveCancelButton {
-                        cursor:pointer;
-                        display:flex;
-                        flex-direction:column;
-                        justify-content:center;
-                        align-items:center;
-                        padding: 5px;
-                        border-radius:5px;
-                    }
-
-                    .saveButton {
-                        color:green;
-                        transition:all 0.25s;
-                    }
-                    .saveButton:hover {
-                        color:#ffffff;
-                        background-color:green;
-                    }
-
-                    .resetButton {
-                        color:#000000;
-                        transition:all 0.25s;
-                    }
-                    .resetButton:hover {
-                        color:#ffffff;
-                        background-color:#000000;
-                    }
-
-                    .cancelButton {
-                        color:brown;
-                        transition:all 0.25s;
-                    }
-                    .cancelButton:hover {
-                        color:#ffffff;
-                        background-color:brown;
-                    }
-
-                    .btnLabel {
-                        font-size:16px;
-                    }
-
-                    @media (max-width:768px){
-                        .photoContainer{
-                            width:100%;
-                        }
-                        .aboutContainer {
-                            width:100%;
-                        }
-                    }
-                `}
-            </style>
-        </div>
+    return (
+        <MyDialog
+            title={dialogTitle()}
+            content={dialogContent()}
+            footer={dialogFooter()}
+        />
     )
 }
 

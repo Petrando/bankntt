@@ -65,11 +65,10 @@ const Savings = () => {
             }
             {
                 idEdit !== "" &&
-                <ModalLayout closeModal={()=>{setEditId("")}}>
-                    <EditSaving closeForm={()=>{setEditId("")}}
-                                editedData={data.filter(d=>d._id.toString()===idEdit)[0]}
-                    />
-                </ModalLayout>
+                <EditSaving 
+                    closeForm={()=>{setEditId("")}}
+                    editedData={data.filter(d=>d._id.toString()===idEdit)[0]}
+                />
             }
             {
                 idToDelete !== "" &&
@@ -94,5 +93,12 @@ const Savings = () => {
         </Layout>        
     )
 }
+
+/*
+<ModalLayout closeModal={()=>{setEditId("")}}>
+                    <EditSaving closeForm={()=>{setEditId("")}}
+                                editedData={data.filter(d=>d._id.toString()===idEdit)[0]}
+                    />
+                </ModalLayout>*/
 
 export default Savings;
