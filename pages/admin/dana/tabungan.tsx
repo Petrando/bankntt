@@ -59,9 +59,7 @@ const Savings = () => {
             </div>
             {
                 isAdding &&
-                <ModalLayout closeModal={()=>{setIsAdding(false)}}>
-                    <AddNewSaving closeForm={()=>{setIsAdding(false)}}/>
-                </ModalLayout>
+                <AddNewSaving closeForm={()=>{setIsAdding(false)}}/>
             }
             {
                 idEdit !== "" &&
